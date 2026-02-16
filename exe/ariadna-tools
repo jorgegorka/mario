@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-
-require "ariadna"
-require "ariadna/tools/cli"
-
-Ariadna::Tools::CLI.run(ARGV)

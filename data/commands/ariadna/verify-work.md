@@ -1,5 +1,5 @@
 ---
-name: ariadna:verify-work
+name: mario:verify-work
 description: Validate built features through conversational UAT
 argument-hint: "[phase number, e.g., '4']"
 allowed-tools:
@@ -16,12 +16,12 @@ Validate built features through conversational testing with persistent state.
 
 Purpose: Confirm what Claude built actually works from user's perspective. One test at a time, plain text responses, no interrogation. When issues are found, automatically diagnose, plan fixes, and prepare for execution.
 
-Output: {phase}-UAT.md tracking all test results. If issues found: diagnosed gaps, verified fix plans ready for /ariadna:execute-phase
+Output: {phase}-UAT.md tracking all test results. If issues found: diagnosed gaps, verified fix plans ready for /mario:execute-phase
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/verify-work.md
-@~/.claude/ariadna/templates/UAT.md
+@~/.claude/mario/workflows/verify-work.md
+@~/.claude/mario/templates/UAT.md
 </execution_context>
 
 <context>
@@ -34,6 +34,6 @@ Phase: $ARGUMENTS (optional)
 </context>
 
 <process>
-Execute the verify-work workflow from @~/.claude/ariadna/workflows/verify-work.md end-to-end.
+Execute the verify-work workflow from @~/.claude/mario/workflows/verify-work.md end-to-end.
 Preserve all workflow gates (session management, test presentation, diagnosis, fix planning, routing).
 </process>

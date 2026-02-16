@@ -1,5 +1,5 @@
 ---
-name: ariadna:add-todo
+name: mario:add-todo
 description: Capture idea or task as todo from current conversation context
 argument-hint: [optional description]
 allowed-tools:
@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <objective>
-Capture an idea, task, or issue that surfaces during an Ariadna session as a structured todo for later work.
+Capture an idea, task, or issue that surfaces during an Mario session as a structured todo for later work.
 
 Routes to the add-todo workflow which handles:
 - Directory structure creation
@@ -24,11 +24,11 @@ Routes to the add-todo workflow which handles:
 
 <execution_context>
 @.planning/STATE.md
-@~/.claude/ariadna/workflows/add-todo.md
+@~/.claude/mario/workflows/add-todo.md
 </execution_context>
 
 <process>
-**Follow the add-todo workflow** from `@~/.claude/ariadna/workflows/add-todo.md`.
+**Follow the add-todo workflow** from `@~/.claude/mario/workflows/add-todo.md`.
 
 The workflow handles all logic including:
 1. Directory ensuring

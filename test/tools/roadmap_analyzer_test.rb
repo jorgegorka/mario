@@ -1,5 +1,5 @@
 require "test_helper"
-require "ariadna/tools/roadmap_analyzer"
+require "mario/tools/roadmap_analyzer"
 
 class RoadmapAnalyzerTest < Minitest::Test
   def setup
@@ -30,7 +30,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(@planning_dir, "ROADMAP.md"), roadmap)
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.get_phase("1") }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.get_phase("1") }
       assert result[:found]
       assert_equal "1", result[:phase_number]
       assert_includes result[:phase_name], "Setup"
@@ -43,7 +43,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(@planning_dir, "ROADMAP.md"), "# ROADMAP\n\n### Phase 1: Setup\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.get_phase("99") }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.get_phase("99") }
       refute result[:found]
     end
   end
@@ -51,7 +51,7 @@ class RoadmapAnalyzerTest < Minitest::Test
   def test_get_phase_no_roadmap
     Dir.chdir(@dir) do
       FileUtils.rm_f(File.join(@planning_dir, "ROADMAP.md"))
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.get_phase("1") }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.get_phase("1") }
       refute result[:found]
       assert_equal "ROADMAP.md not found", result[:error]
     end
@@ -87,7 +87,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(phase2_dir, "02-01-PLAN.md"), "---\nphase: 2\nplan: 01\n---\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.analyze }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.analyze }
       assert_equal 2, result[:phase_count]
       assert_equal 1, result[:completed_phases]
       assert_equal 2, result[:total_plans]
@@ -110,7 +110,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(@planning_dir, "ROADMAP.md"), roadmap)
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.analyze }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.analyze }
       assert_equal 1, result[:milestones].length
       assert_equal "v1.0", result[:milestones].first[:version]
     end
@@ -125,7 +125,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(@planning_dir, "ROADMAP.md"), "# ROADMAP\n\n## v1.0: MVP\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.progress(["json"]) }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.progress(["json"]) }
       assert_equal 1, result[:total_plans]
       assert_equal 1, result[:total_summaries]
       assert_equal 100, result[:percent]
@@ -141,7 +141,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(@planning_dir, "ROADMAP.md"), "# ROADMAP\n\n## v1.0: MVP\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.progress(["bar"]) }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.progress(["bar"]) }
       assert_equal 0, result[:percent]
       assert_includes result[:bar], "0/1 plans"
     end
@@ -156,7 +156,7 @@ class RoadmapAnalyzerTest < Minitest::Test
     File.write(File.join(@planning_dir, "ROADMAP.md"), "# ROADMAP\n\n## v1.0: MVP\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::RoadmapAnalyzer.progress(["table"]) }
+      result = capture_json { Mario::Tools::RoadmapAnalyzer.progress(["table"]) }
       assert_includes result[:rendered], "Phase"
       assert_includes result[:rendered], "Status"
       assert_includes result[:rendered], "100%"

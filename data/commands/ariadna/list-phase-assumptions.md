@@ -1,5 +1,5 @@
 ---
-name: ariadna:list-phase-assumptions
+name: mario:list-phase-assumptions
 description: Surface Claude's assumptions about a phase approach before planning
 argument-hint: "[phase]"
 allowed-tools:
@@ -17,7 +17,7 @@ Output: Conversational output only (no file creation) - ends with "What do you t
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/list-phase-assumptions.md
+@~/.claude/mario/workflows/list-phase-assumptions.md
 </execution_context>
 
 <context>

@@ -1,5 +1,5 @@
 require "test_helper"
-require "ariadna/tools/config_manager"
+require "mario/tools/config_manager"
 
 class ConfigManagerTest < Minitest::Test
   def setup
@@ -13,7 +13,7 @@ class ConfigManagerTest < Minitest::Test
   end
 
   def test_load_defaults_when_no_config
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "balanced", config["model_profile"]
     assert_equal true, config["commit_docs"]
     assert_equal "none", config["branching_strategy"]
@@ -28,7 +28,7 @@ class ConfigManagerTest < Minitest::Test
     }
     File.write(File.join(@planning_dir, "config.json"), JSON.pretty_generate(config_data))
 
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "quality", config["model_profile"]
     assert_equal false, config["commit_docs"]
     assert_equal false, config["parallelization"]
@@ -45,7 +45,7 @@ class ConfigManagerTest < Minitest::Test
     }
     File.write(File.join(@planning_dir, "config.json"), JSON.pretty_generate(config_data))
 
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "budget", config["model_profile"]
     assert_equal false, config["research"]
     assert_equal false, config["plan_checker"]
@@ -54,12 +54,12 @@ class ConfigManagerTest < Minitest::Test
 
   def test_load_malformed_json_returns_defaults
     File.write(File.join(@planning_dir, "config.json"), "not json")
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "balanced", config["model_profile"]
   end
 
   def test_load_defaults_include_execution_mode
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "vertical", config["execution_mode"]
     assert_equal false, config["team_execution"]
   end
@@ -71,7 +71,7 @@ class ConfigManagerTest < Minitest::Test
     }
     File.write(File.join(@planning_dir, "config.json"), JSON.pretty_generate(config_data))
 
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "domain-split", config["execution_mode"]
     assert_equal true, config["team_execution"]
   end
@@ -85,7 +85,7 @@ class ConfigManagerTest < Minitest::Test
     }
     File.write(File.join(@planning_dir, "config.json"), JSON.pretty_generate(config_data))
 
-    config = Ariadna::Tools::ConfigManager.load_config(@dir)
+    config = Mario::Tools::ConfigManager.load_config(@dir)
     assert_equal "domain-split", config["execution_mode"]
     assert_equal true, config["team_execution"]
   end

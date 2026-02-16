@@ -1,9 +1,9 @@
 ---
-name: ariadna:help
-description: Show available Ariadna commands and usage guide
+name: mario:help
+description: Show available Mario commands and usage guide
 ---
 <objective>
-Display the complete Ariadna command reference.
+Display the complete Mario command reference.
 
 Output ONLY the reference content below. Do NOT add:
 - Project-specific analysis
@@ -13,10 +13,10 @@ Output ONLY the reference content below. Do NOT add:
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/help.md
+@~/.claude/mario/workflows/help.md
 </execution_context>
 
 <process>
-Output the complete Ariadna command reference from @~/.claude/ariadna/workflows/help.md.
+Output the complete Mario command reference from @~/.claude/mario/workflows/help.md.
 Display the reference content directly — no additions or modifications.
 </process>

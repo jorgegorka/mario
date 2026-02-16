@@ -1,5 +1,5 @@
 ---
-name: ariadna:discuss-phase
+name: mario:discuss-phase
 description: Gather phase context through adaptive questioning before planning
 argument-hint: "<phase>"
 allowed-tools:
@@ -24,8 +24,8 @@ Extract implementation decisions that downstream agents need — researcher and 
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/discuss-phase.md
-@~/.claude/ariadna/templates/context.md
+@~/.claude/mario/workflows/discuss-phase.md
+@~/.claude/mario/templates/context.md
 </execution_context>
 
 <context>

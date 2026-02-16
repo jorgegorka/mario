@@ -1,5 +1,5 @@
 require "test_helper"
-require "ariadna/tools/utilities"
+require "mario/tools/utilities"
 
 class UtilitiesTest < Minitest::Test
   def test_generate_slug_basic

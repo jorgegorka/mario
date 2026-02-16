@@ -1,8 +1,8 @@
 ---
-name: ariadna:plan-phase
+name: mario:plan-phase
 description: Create detailed execution plan for a phase (PLAN.md) with verification loop
 argument-hint: "[phase] [--research] [--skip-research] [--gaps] [--skip-verify]"
-agent: ariadna-planner
+agent: mario-planner
 allowed-tools:
   - Read
   - Write
@@ -18,12 +18,12 @@ Create executable phase prompts (PLAN.md files) for a roadmap phase with integra
 
 **Default flow:** Research (if needed) → Plan → Verify → Done
 
-**Orchestrator role:** Parse arguments, validate phase, research domain (unless skipped), spawn ariadna-planner, verify with ariadna-plan-checker, iterate until pass or max iterations, present results.
+**Orchestrator role:** Parse arguments, validate phase, research domain (unless skipped), spawn mario-planner, verify with mario-plan-checker, iterate until pass or max iterations, present results.
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/plan-phase.md
-@~/.claude/ariadna/references/ui-brand.md
+@~/.claude/mario/workflows/plan-phase.md
+@~/.claude/mario/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -39,6 +39,6 @@ Normalize phase input in step 2 before any directory lookups.
 </context>
 
 <process>
-Execute the plan-phase workflow from @~/.claude/ariadna/workflows/plan-phase.md end-to-end.
+Execute the plan-phase workflow from @~/.claude/mario/workflows/plan-phase.md end-to-end.
 Preserve all workflow gates (validation, research, planning, verification loop, routing).
 </process>

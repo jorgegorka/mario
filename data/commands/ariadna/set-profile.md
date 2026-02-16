@@ -1,6 +1,6 @@
 ---
-name: ariadna:set-profile
-description: Switch model profile for Ariadna agents (quality/balanced/budget)
+name: mario:set-profile
+description: Switch model profile for Mario agents (quality/balanced/budget)
 argument-hint: <profile>
 allowed-tools:
   - Read
@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Switch the model profile used by Ariadna agents. Controls which Claude model each agent uses, balancing quality vs token spend.
+Switch the model profile used by Mario agents. Controls which Claude model each agent uses, balancing quality vs token spend.
 
 Routes to the set-profile workflow which handles:
 - Argument validation (quality/balanced/budget)
@@ -19,11 +19,11 @@ Routes to the set-profile workflow which handles:
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/set-profile.md
+@~/.claude/mario/workflows/set-profile.md
 </execution_context>
 
 <process>
-**Follow the set-profile workflow** from `@~/.claude/ariadna/workflows/set-profile.md`.
+**Follow the set-profile workflow** from `@~/.claude/mario/workflows/set-profile.md`.
 
 The workflow handles all logic including:
 1. Profile argument validation

@@ -1,5 +1,5 @@
 require "test_helper"
-require "ariadna/tools/init"
+require "mario/tools/init"
 
 class InitTest < Minitest::Test
   def setup
@@ -23,7 +23,7 @@ class InitTest < Minitest::Test
     File.write(File.join(phase_dir, "01-01-PLAN.md"), "---\nphase: 1\nplan: 01\n---\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["execute-phase", "1"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["execute-phase", "1"]) }
       assert result[:phase_found]
       assert_equal "01", result[:phase_number]
       assert_equal "setup", result[:phase_name]
@@ -39,7 +39,7 @@ class InitTest < Minitest::Test
     File.write(File.join(@planning_dir, "STATE.md"), "**Status:** Active\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["execute-phase", "1", "--include", "state,roadmap"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["execute-phase", "1", "--include", "state,roadmap"]) }
       assert result[:state_content]
       assert result[:roadmap_content]
     end
@@ -50,7 +50,7 @@ class InitTest < Minitest::Test
     FileUtils.mkdir_p(phase_dir)
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["plan-phase", "1"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["plan-phase", "1"]) }
       assert result[:phase_found]
       assert_includes result.keys, :researcher_model
       assert_includes result.keys, :planner_model
@@ -60,7 +60,7 @@ class InitTest < Minitest::Test
 
   def test_init_new_project
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["new-project"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["new-project"]) }
       assert_includes result.keys, :researcher_model
       assert_includes result.keys, :is_brownfield
       assert_includes result.keys, :has_git
@@ -70,7 +70,7 @@ class InitTest < Minitest::Test
 
   def test_init_new_milestone
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["new-milestone"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["new-milestone"]) }
       assert_equal "v1.0", result[:current_milestone]
       assert_includes result.keys, :researcher_model
       assert_includes result.keys, :roadmapper_model
@@ -79,7 +79,7 @@ class InitTest < Minitest::Test
 
   def test_init_quick
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["quick", "fix", "login", "bug"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["quick", "fix", "login", "bug"]) }
       assert_equal 1, result[:next_num]
       assert_equal "fix-login-bug", result[:slug]
       assert_includes result[:task_dir], "1-fix-login-bug"
@@ -91,7 +91,7 @@ class InitTest < Minitest::Test
     FileUtils.mkdir_p(File.join(quick_dir, "1-first-task"))
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["quick", "second", "task"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["quick", "second", "task"]) }
       assert_equal 2, result[:next_num]
     end
   end
@@ -101,7 +101,7 @@ class InitTest < Minitest::Test
     File.write(File.join(@planning_dir, "PROJECT.md"), "project content")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["resume"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["resume"]) }
       assert result[:state_exists]
       assert result[:project_exists]
       assert result[:planning_exists]
@@ -113,7 +113,7 @@ class InitTest < Minitest::Test
     File.write(File.join(@planning_dir, "current-agent-id.txt"), "agent-123")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["resume"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["resume"]) }
       assert result[:has_interrupted_agent]
       assert_equal "agent-123", result[:interrupted_agent_id]
     end
@@ -125,7 +125,7 @@ class InitTest < Minitest::Test
     File.write(File.join(phase_dir, "01-VERIFICATION.md"), "verification")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["verify-work", "1"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["verify-work", "1"]) }
       assert result[:phase_found]
       assert result[:has_verification]
     end
@@ -138,7 +138,7 @@ class InitTest < Minitest::Test
     File.write(File.join(phase_dir, "01-01-PLAN.md"), "plan")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["phase-op", "1"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["phase-op", "1"]) }
       assert result[:phase_found]
       assert result[:has_research]
       assert result[:has_plans]
@@ -153,7 +153,7 @@ class InitTest < Minitest::Test
     File.write(File.join(pending_dir, "todo2.md"), "title: Write docs\narea: docs\ncreated: 2024-01-02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["todos"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["todos"]) }
       assert_equal 2, result[:todo_count]
       assert_equal 2, result[:todos].length
     end
@@ -166,7 +166,7 @@ class InitTest < Minitest::Test
     File.write(File.join(pending_dir, "todo2.md"), "title: Write docs\narea: docs\ncreated: 2024-01-02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["todos", "code"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["todos", "code"]) }
       assert_equal 1, result[:todo_count]
       assert_equal "code", result[:todos].first[:area]
     end
@@ -178,7 +178,7 @@ class InitTest < Minitest::Test
     File.write(File.join(phase_dir, "01-01-SUMMARY.md"), "summary")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["milestone-op"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["milestone-op"]) }
       assert_equal "v1.0", result[:milestone_version]
       assert_equal 1, result[:phase_count]
       assert_equal 1, result[:completed_phases]
@@ -192,7 +192,7 @@ class InitTest < Minitest::Test
     File.write(File.join(codebase_dir, "architecture.md"), "arch")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["map-codebase"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["map-codebase"]) }
       assert result[:has_maps]
       assert_equal ["architecture.md"], result[:existing_maps]
       assert result[:codebase_dir_exists]
@@ -210,7 +210,7 @@ class InitTest < Minitest::Test
     File.write(File.join(phase2_dir, "02-01-PLAN.md"), "plan")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["progress"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
       assert_equal 2, result[:phase_count]
       assert_equal 1, result[:completed_count]
       assert_equal 1, result[:in_progress_count]
@@ -223,7 +223,7 @@ class InitTest < Minitest::Test
     File.write(File.join(@planning_dir, "STATE.md"), "**Paused At:** Task 3 of Plan 02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::Init.dispatch(["progress"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
       assert_equal "Task 3 of Plan 02", result[:paused_at]
     end
   end

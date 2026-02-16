@@ -1,5 +1,5 @@
 require "test_helper"
-require "ariadna/tools/phase_manager"
+require "mario/tools/phase_manager"
 
 class PhaseManagerTest < Minitest::Test
   def setup
@@ -14,7 +14,7 @@ class PhaseManagerTest < Minitest::Test
 
   def test_normalize_phase_name
     # Access private method for testing
-    pm = Ariadna::Tools::PhaseManager
+    pm = Mario::Tools::PhaseManager
     assert_equal "01", pm.send(:normalize_phase_name, "1")
     assert_equal "02", pm.send(:normalize_phase_name, "2")
     assert_equal "10", pm.send(:normalize_phase_name, "10")

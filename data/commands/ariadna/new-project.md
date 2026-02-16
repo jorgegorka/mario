@@ -1,5 +1,5 @@
 ---
-name: ariadna:new-project
+name: mario:new-project
 description: Initialize a new project with deep context gathering and PROJECT.md
 argument-hint: "[--auto]"
 allowed-tools:
@@ -25,18 +25,18 @@ Initialize a new project through unified flow: questioning → research (optiona
 - `.planning/ROADMAP.md` — phase structure
 - `.planning/STATE.md` — project memory
 
-**After this command:** Run `/ariadna:plan-phase 1` to start execution.
+**After this command:** Run `/mario:plan-phase 1` to start execution.
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/new-project.md
-@~/.claude/ariadna/references/questioning.md
-@~/.claude/ariadna/references/ui-brand.md
-@~/.claude/ariadna/templates/project.md
-@~/.claude/ariadna/templates/requirements.md
+@~/.claude/mario/workflows/new-project.md
+@~/.claude/mario/references/questioning.md
+@~/.claude/mario/references/ui-brand.md
+@~/.claude/mario/templates/project.md
+@~/.claude/mario/templates/requirements.md
 </execution_context>
 
 <process>
-Execute the new-project workflow from @~/.claude/ariadna/workflows/new-project.md end-to-end.
+Execute the new-project workflow from @~/.claude/mario/workflows/new-project.md end-to-end.
 Preserve all workflow gates (validation, approvals, commits, routing).
 </process>

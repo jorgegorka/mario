@@ -1,5 +1,5 @@
 ---
-name: ariadna:new-milestone
+name: mario:new-milestone
 description: Start a new milestone cycle — update PROJECT.md and route to requirements
 argument-hint: "[milestone name, e.g., 'v1.1 Notifications']"
 allowed-tools:
@@ -21,15 +21,15 @@ Brownfield equivalent of new-project. Project exists, PROJECT.md has history. Ga
 - `.planning/ROADMAP.md` — phase structure (continues numbering)
 - `.planning/STATE.md` — reset for new milestone
 
-**After:** `/ariadna:plan-phase [N]` to start execution.
+**After:** `/mario:plan-phase [N]` to start execution.
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/new-milestone.md
-@~/.claude/ariadna/references/questioning.md
-@~/.claude/ariadna/references/ui-brand.md
-@~/.claude/ariadna/templates/project.md
-@~/.claude/ariadna/templates/requirements.md
+@~/.claude/mario/workflows/new-milestone.md
+@~/.claude/mario/references/questioning.md
+@~/.claude/mario/references/ui-brand.md
+@~/.claude/mario/templates/project.md
+@~/.claude/mario/templates/requirements.md
 </execution_context>
 
 <context>
@@ -41,11 +41,11 @@ Milestone name: $ARGUMENTS (optional - will prompt if not provided)
 @.planning/MILESTONES.md
 @.planning/config.json
 
-**Load milestone context (if exists, from /ariadna:discuss-milestone):**
+**Load milestone context (if exists, from /mario:discuss-milestone):**
 @.planning/MILESTONE-CONTEXT.md
 </context>
 
 <process>
-Execute the new-milestone workflow from @~/.claude/ariadna/workflows/new-milestone.md end-to-end.
+Execute the new-milestone workflow from @~/.claude/mario/workflows/new-milestone.md end-to-end.
 Preserve all workflow gates (validation, questioning, research, requirements, roadmap approval, commits).
 </process>

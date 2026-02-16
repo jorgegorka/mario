@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+require "mario"
+require "mario/installer"
+
+command = ARGV.shift
+
+case command
+when "install"
+  global = ARGV.include?("--global") || ARGV.include?("-g")
+  local = ARGV.include?("--local") || ARGV.include?("-l")
+
+  unless global || local
+    warn "Usage: mario install --global   (install to ~/.claude/)"
+    warn "       mario install --local    (install to ./.claude/)"
+    exit 1
+  end
+
+  Mario::Installer.new(local: local).install
+when "uninstall"
+  require "mario/uninstaller"
+  global = ARGV.include?("--global") || ARGV.include?("-g")
+  local = ARGV.include?("--local") || ARGV.include?("-l")
+
+  unless global || local
+    warn "Usage: mario uninstall --global"
+    warn "       mario uninstall --local"
+    exit 1
+  end
+
+  Mario::Uninstaller.new(local: local).uninstall
+when "version", "--version", "-v"
+  puts "mario #{Mario::VERSION}"
+else
+  puts <<~HELP
+    Mario v#{Mario::VERSION} — Context engineering for Claude Code
+
+    Usage:
+      mario install --global    Install to ~/.claude/
+      mario install --local     Install to ./.claude/
+      mario uninstall --global  Remove from ~/.claude/
+      mario uninstall --local   Remove from ./.claude/
+      mario version             Show version
+
+    After install, use /mario:help in Claude Code.
+  HELP
+end

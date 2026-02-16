@@ -1,5 +1,5 @@
 ---
-name: ariadna:check-todos
+name: mario:check-todos
 description: List pending todos and select one to work on
 argument-hint: [area filter]
 allowed-tools:
@@ -23,11 +23,11 @@ Routes to the check-todos workflow which handles:
 <execution_context>
 @.planning/STATE.md
 @.planning/ROADMAP.md
-@~/.claude/ariadna/workflows/check-todos.md
+@~/.claude/mario/workflows/check-todos.md
 </execution_context>
 
 <process>
-**Follow the check-todos workflow** from `@~/.claude/ariadna/workflows/check-todos.md`.
+**Follow the check-todos workflow** from `@~/.claude/mario/workflows/check-todos.md`.
 
 The workflow handles all logic including:
 1. Todo existence checking

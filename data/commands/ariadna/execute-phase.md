@@ -1,5 +1,5 @@
 ---
-name: ariadna:execute-phase
+name: mario:execute-phase
 description: Execute all plans in a phase with wave-based parallelization
 argument-hint: "<phase-number> [--gaps-only] [--team]"
 allowed-tools:
@@ -32,8 +32,8 @@ Context budget: ~15% orchestrator, 100% fresh per subagent.
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/execute-phase.md
-@~/.claude/ariadna/references/ui-brand.md
+@~/.claude/mario/workflows/execute-phase.md
+@~/.claude/mario/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -48,7 +48,7 @@ Phase: $ARGUMENTS
 </context>
 
 <process>
-Execute the execute-phase workflow from @~/.claude/ariadna/workflows/execute-phase.md end-to-end.
+Execute the execute-phase workflow from @~/.claude/mario/workflows/execute-phase.md end-to-end.
 Preserve all workflow gates (wave/team execution, checkpoint handling, verification, state updates, routing).
 
 **Mode selection:** If `--team` flag is present or `team_execution: true` in config, use the `team_execution` step. Otherwise use the standard `execute_waves` step.

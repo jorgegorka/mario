@@ -1,5 +1,5 @@
 ---
-name: ariadna:debug
+name: mario:debug
 description: Systematic debugging with persistent state across context resets
 argument-hint: [issue description]
 allowed-tools:
@@ -12,7 +12,7 @@ allowed-tools:
 <objective>
 Debug issues using scientific method with subagent isolation.
 
-**Orchestrator role:** Gather symptoms, spawn ariadna-debugger agent, handle checkpoints, spawn continuations.
+**Orchestrator role:** Gather symptoms, spawn mario-debugger agent, handle checkpoints, spawn continuations.
 
 **Why subagent:** Investigation burns context fast (reading files, forming hypotheses, testing). Fresh 200k context per investigation. Main context stays lean for user interaction.
 </objective>
@@ -31,12 +31,12 @@ ls .planning/debug/*.md 2>/dev/null | grep -v resolved | head -5
 ## 0. Initialize Context
 
 ```bash
-INIT=$(ariadna-tools state load)
+INIT=$(mario-tools state load)
 ```
 
 Extract `commit_docs` from init JSON. Resolve debugger model:
 ```bash
-DEBUGGER_MODEL=$(ariadna-tools resolve-model ariadna-debugger --raw)
+DEBUGGER_MODEL=$(mario-tools resolve-model mario-debugger --raw)
 ```
 
 ## 1. Check Active Sessions
@@ -60,7 +60,7 @@ Use AskUserQuestion for each:
 
 After all gathered, confirm ready to investigate.
 
-## 3. Spawn ariadna-debugger Agent
+## 3. Spawn mario-debugger Agent
 
 Fill prompt and spawn:
 
@@ -92,7 +92,7 @@ Create: .planning/debug/{slug}.md
 ```
 Task(
   prompt=filled_prompt,
-  subagent_type="ariadna-debugger",
+  subagent_type="mario-debugger",
   model="{debugger_model}",
   description="Debug {slug}"
 )
@@ -104,7 +104,7 @@ Task(
 - Display root cause and evidence summary
 - Offer options:
   - "Fix now" - spawn fix subagent
-  - "Plan fix" - suggest /ariadna:plan-phase --gaps
+  - "Plan fix" - suggest /mario:plan-phase --gaps
   - "Manual fix" - done
 
 **If `## CHECKPOINT REACHED`:**
@@ -145,7 +145,7 @@ goal: find_and_fix
 ```
 Task(
   prompt=continuation_prompt,
-  subagent_type="ariadna-debugger",
+  subagent_type="mario-debugger",
   model="{debugger_model}",
   description="Continue debug {slug}"
 )
@@ -156,7 +156,7 @@ Task(
 <success_criteria>
 - [ ] Active sessions checked
 - [ ] Symptoms gathered (if new)
-- [ ] ariadna-debugger spawned with context
+- [ ] mario-debugger spawned with context
 - [ ] Checkpoints handled correctly
 - [ ] Root cause confirmed before fixing
 </success_criteria>

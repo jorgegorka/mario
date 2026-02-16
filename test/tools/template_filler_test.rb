@@ -1,5 +1,5 @@
 require "test_helper"
-require "ariadna/tools/template_filler"
+require "mario/tools/template_filler"
 
 class TemplateFillerTest < Minitest::Test
   def setup
@@ -19,7 +19,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@dir, "test-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.select("test-PLAN.md") }
+      result = capture_json { Mario::Tools::TemplateFiller.select("test-PLAN.md") }
       assert_equal "minimal", result[:type]
       assert_includes result[:template], "minimal"
     end
@@ -31,7 +31,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@dir, "complex-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.select("complex-PLAN.md") }
+      result = capture_json { Mario::Tools::TemplateFiller.select("complex-PLAN.md") }
       assert_equal "complex", result[:type]
     end
   end
@@ -42,7 +42,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@dir, "std-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.select("std-PLAN.md") }
+      result = capture_json { Mario::Tools::TemplateFiller.select("std-PLAN.md") }
       assert_equal "standard", result[:type]
     end
   end
@@ -50,7 +50,7 @@ class TemplateFillerTest < Minitest::Test
   def test_fill_summary_template
     Dir.chdir(@dir) do
       result = capture_json do
-        Ariadna::Tools::TemplateFiller.fill("summary", { phase: "1", plan: "01", name: "Setup" })
+        Mario::Tools::TemplateFiller.fill("summary", { phase: "1", plan: "01", name: "Setup" })
       end
       assert result[:created]
       assert_includes result[:path], "SUMMARY.md"
@@ -61,7 +61,7 @@ class TemplateFillerTest < Minitest::Test
   def test_fill_plan_template
     Dir.chdir(@dir) do
       result = capture_json do
-        Ariadna::Tools::TemplateFiller.fill("plan", { phase: "1", plan: "01", type: "execute", wave: "1" })
+        Mario::Tools::TemplateFiller.fill("plan", { phase: "1", plan: "01", type: "execute", wave: "1" })
       end
       assert result[:created]
       assert_includes result[:path], "PLAN.md"
@@ -75,7 +75,7 @@ class TemplateFillerTest < Minitest::Test
   def test_fill_verification_template
     Dir.chdir(@dir) do
       result = capture_json do
-        Ariadna::Tools::TemplateFiller.fill("verification", { phase: "1" })
+        Mario::Tools::TemplateFiller.fill("verification", { phase: "1" })
       end
       assert result[:created]
       assert_includes result[:path], "VERIFICATION.md"
@@ -87,7 +87,7 @@ class TemplateFillerTest < Minitest::Test
 
     Dir.chdir(@dir) do
       result = capture_json do
-        Ariadna::Tools::TemplateFiller.fill("summary", { phase: "1", plan: "01" })
+        Mario::Tools::TemplateFiller.fill("summary", { phase: "1", plan: "01" })
       end
       assert result[:error]
       assert_includes result[:error], "already exists"
@@ -96,7 +96,7 @@ class TemplateFillerTest < Minitest::Test
 
   def test_scaffold_context
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.scaffold(["context", "--phase", "1"]) }
+      result = capture_json { Mario::Tools::TemplateFiller.scaffold(["context", "--phase", "1"]) }
       assert result[:created]
       assert_includes result[:path], "CONTEXT.md"
     end
@@ -104,7 +104,7 @@ class TemplateFillerTest < Minitest::Test
 
   def test_scaffold_uat
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.scaffold(["uat", "--phase", "1"]) }
+      result = capture_json { Mario::Tools::TemplateFiller.scaffold(["uat", "--phase", "1"]) }
       assert result[:created]
       assert_includes result[:path], "UAT.md"
     end
@@ -112,7 +112,7 @@ class TemplateFillerTest < Minitest::Test
 
   def test_scaffold_verification
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.scaffold(["verification", "--phase", "1"]) }
+      result = capture_json { Mario::Tools::TemplateFiller.scaffold(["verification", "--phase", "1"]) }
       assert result[:created]
       assert_includes result[:path], "VERIFICATION.md"
     end
@@ -120,7 +120,7 @@ class TemplateFillerTest < Minitest::Test
 
   def test_scaffold_phase_dir
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.scaffold(["phase-dir", "--phase", "3", "--name", "Deploy"]) }
+      result = capture_json { Mario::Tools::TemplateFiller.scaffold(["phase-dir", "--phase", "3", "--name", "Deploy"]) }
       assert result[:created]
       assert_includes result[:directory], "03-deploy"
       assert File.directory?(File.join(@dir, ".planning", "phases", "03-deploy"))
@@ -131,7 +131,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@phase_dir, "01-CONTEXT.md"), "existing")
 
     Dir.chdir(@dir) do
-      result = capture_json { Ariadna::Tools::TemplateFiller.scaffold(["context", "--phase", "1"]) }
+      result = capture_json { Mario::Tools::TemplateFiller.scaffold(["context", "--phase", "1"]) }
       refute result[:created]
       assert_equal "already_exists", result[:reason]
     end

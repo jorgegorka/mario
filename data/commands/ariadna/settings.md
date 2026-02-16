@@ -1,6 +1,6 @@
 ---
-name: ariadna:settings
-description: Configure Ariadna workflow toggles and model profile
+name: mario:settings
+description: Configure Mario workflow toggles and model profile
 allowed-tools:
   - Read
   - Write
@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Interactive configuration of Ariadna workflow agents and model profile via multi-question prompt.
+Interactive configuration of Mario workflow agents and model profile via multi-question prompt.
 
 Routes to the settings workflow which handles:
 - Config existence ensuring
@@ -20,11 +20,11 @@ Routes to the settings workflow which handles:
 </objective>
 
 <execution_context>
-@~/.claude/ariadna/workflows/settings.md
+@~/.claude/mario/workflows/settings.md
 </execution_context>
 
 <process>
-**Follow the settings workflow** from `@~/.claude/ariadna/workflows/settings.md`.
+**Follow the settings workflow** from `@~/.claude/mario/workflows/settings.md`.
 
 The workflow handles all logic including:
 1. Config file creation with defaults if missing

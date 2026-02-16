@@ -1,6 +1,6 @@
 ---
-name: ariadna:research-phase
-description: Research how to implement a phase (standalone - usually use /ariadna:plan-phase instead)
+name: mario:research-phase
+description: Research how to implement a phase (standalone - usually use /mario:plan-phase instead)
 argument-hint: "[phase]"
 allowed-tools:
   - Read
@@ -9,9 +9,9 @@ allowed-tools:
 ---
 
 <objective>
-Research how to implement a phase. Spawns ariadna-phase-researcher agent with phase context.
+Research how to implement a phase. Spawns mario-phase-researcher agent with phase context.
 
-**Note:** This is a standalone research command. For most workflows, use `/ariadna:plan-phase` which integrates research automatically.
+**Note:** This is a standalone research command. For most workflows, use `/mario:plan-phase` which integrates research automatically.
 
 **Use this command when:**
 - You want to research without planning yet
@@ -34,20 +34,20 @@ Normalize phase input in step 1 before any directory lookups.
 ## 0. Initialize Context
 
 ```bash
-INIT=$(ariadna-tools init phase-op "$ARGUMENTS")
+INIT=$(mario-tools init phase-op "$ARGUMENTS")
 ```
 
 Extract from init JSON: `phase_dir`, `phase_number`, `phase_name`, `phase_found`, `commit_docs`, `has_research`.
 
 Resolve researcher model:
 ```bash
-RESEARCHER_MODEL=$(ariadna-tools resolve-model ariadna-phase-researcher --raw)
+RESEARCHER_MODEL=$(mario-tools resolve-model mario-phase-researcher --raw)
 ```
 
 ## 1. Validate Phase
 
 ```bash
-PHASE_INFO=$(ariadna-tools roadmap get-phase "${phase_number}")
+PHASE_INFO=$(mario-tools roadmap get-phase "${phase_number}")
 ```
 
 **If `found` is false:** Error and exit. **If `found` is true:** Extract `phase_number`, `phase_name`, `goal` from JSON.
@@ -74,7 +74,7 @@ grep -A30 "### Decisions Made" .planning/STATE.md 2>/dev/null
 
 Present summary with phase description, requirements, prior decisions.
 
-## 4. Spawn ariadna-phase-researcher Agent
+## 4. Spawn mario-phase-researcher Agent
 
 Research modes: ecosystem (default), feasibility, implementation, comparison.
 
@@ -109,7 +109,7 @@ Mode: ecosystem
 </context>
 
 <downstream_consumer>
-Your RESEARCH.md will be loaded by `/ariadna:plan-phase` which uses specific sections:
+Your RESEARCH.md will be loaded by `/mario:plan-phase` which uses specific sections:
 - `## Standard Stack` → Plans use these libraries
 - `## Architecture Patterns` → Task structure follows these
 - `## Don't Hand-Roll` → Tasks NEVER build custom solutions for listed problems
@@ -135,7 +135,7 @@ Write to: .planning/phases/${PHASE}-{slug}/${PHASE}-RESEARCH.md
 
 ```
 Task(
-  prompt="First, read ~/.claude/agents/ariadna-phase-researcher.md for your role and instructions.\n\n" + filled_prompt,
+  prompt="First, read ~/.claude/agents/mario-phase-researcher.md for your role and instructions.\n\n" + filled_prompt,
   subagent_type="general-purpose",
   model="{researcher_model}",
   description="Research Phase {phase}"
@@ -169,7 +169,7 @@ Research file: @.planning/phases/${PHASE}-{slug}/${PHASE}-RESEARCH.md
 
 ```
 Task(
-  prompt="First, read ~/.claude/agents/ariadna-phase-researcher.md for your role and instructions.\n\n" + continuation_prompt,
+  prompt="First, read ~/.claude/agents/mario-phase-researcher.md for your role and instructions.\n\n" + continuation_prompt,
   subagent_type="general-purpose",
   model="{researcher_model}",
   description="Continue research Phase {phase}"
@@ -181,7 +181,7 @@ Task(
 <success_criteria>
 - [ ] Phase validated against roadmap
 - [ ] Existing research checked
-- [ ] ariadna-phase-researcher spawned with context
+- [ ] mario-phase-researcher spawned with context
 - [ ] Checkpoints handled correctly
 - [ ] User knows next steps
 </success_criteria>

@@ -1,10 +1,10 @@
 ---
-description: Reapply local modifications after an Ariadna update
+description: Reapply local modifications after an Mario update
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 ---
 
 <purpose>
-After an Ariadna update wipes and reinstalls files, this command merges user's previously saved local modifications back into the new version. Uses intelligent comparison to handle cases where the upstream file also changed.
+After an Mario update wipes and reinstalls files, this command merges user's previously saved local modifications back into the new version. Uses intelligent comparison to handle cases where the upstream file also changed.
 </purpose>
 
 <process>
@@ -15,10 +15,10 @@ Check for local patches directory:
 
 ```bash
 # Global install
-PATCHES_DIR="${HOME}/.claude/ariadna-local-patches"
+PATCHES_DIR="${HOME}/.claude/mario-local-patches"
 # Local install fallback
 if [ ! -d "$PATCHES_DIR" ]; then
-  PATCHES_DIR="./.claude/ariadna-local-patches"
+  PATCHES_DIR="./.claude/mario-local-patches"
 fi
 ```
 
@@ -28,8 +28,8 @@ Read `backup-meta.json` from the patches directory.
 ```
 No local patches found. Nothing to reapply.
 
-Local patches are automatically saved when you run /ariadna:update
-after modifying any Ariadna workflow, command, or agent files.
+Local patches are automatically saved when you run /mario:update
+after modifying any Mario workflow, command, or agent files.
 ```
 Exit.
 
@@ -52,7 +52,7 @@ Exit.
 
 For each file in `backup-meta.json`:
 
-1. **Read the backed-up version** (user's modified copy from `ariadna-local-patches/`)
+1. **Read the backed-up version** (user's modified copy from `mario-local-patches/`)
 2. **Read the newly installed version** (current file after update)
 3. **Compare and merge:**
 
@@ -76,15 +76,15 @@ For each file in `backup-meta.json`:
 After reapplying, regenerate the file manifest so future updates correctly detect these as user modifications:
 
 ```bash
-# The manifest will be regenerated on next /ariadna:update
+# The manifest will be regenerated on next /mario:update
 # For now, just note which files were modified
 ```
 
 ## Step 5: Cleanup option
 
 Ask user:
-- "Keep patch backups for reference?" → preserve `ariadna-local-patches/`
-- "Clean up patch backups?" → remove `ariadna-local-patches/` directory
+- "Keep patch backups for reference?" → preserve `mario-local-patches/`
+- "Clean up patch backups?" → remove `mario-local-patches/` directory
 
 ## Step 6: Report
 
