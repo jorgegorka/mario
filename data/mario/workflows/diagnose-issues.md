@@ -1,9 +1,9 @@
 <purpose>
-Orchestrate parallel debug agents to investigate UAT gaps and find root causes.
+Orchestrate parallel debug agents to investigate review gaps and find root causes.
 
-After UAT finds gaps, spawn one debug agent per gap. Each agent investigates autonomously with symptoms pre-filled from UAT. Collect root causes, update UAT.md gaps with diagnosis, then hand off to plan-phase --gaps with actual diagnoses.
+After review finds gaps, spawn one debug agent per gap. Each agent investigates autonomously with symptoms pre-filled from review notes. Collect root causes, update gap tracking with diagnosis, then hand off to planning with actual diagnoses.
 
-Orchestrator stays lean: parse gaps, spawn agents, collect results, update UAT.
+Orchestrator stays lean: parse gaps, spawn agents, collect results, update tracking.
 </purpose>
 
 <paths>
@@ -15,7 +15,7 @@ Debug files use the `.planning/debug/` path (hidden directory with leading dot).
 <core_principle>
 **Diagnose before planning fixes.**
 
-UAT tells us WHAT is broken (symptoms). Debug agents find WHY (root cause). plan-phase --gaps then creates targeted fixes based on actual causes, not guesses.
+Review tells us WHAT is broken (symptoms). Debug agents find WHY (root cause). Planning then creates targeted fixes based on actual causes, not guesses.
 
 Without diagnosis: "Email open rates are low" → guess at fix → maybe wrong
 With diagnosis: "Email open rates are low" → "subject lines don't match audience pain points from positioning" → precise fix
@@ -24,7 +24,7 @@ With diagnosis: "Email open rates are low" → "subject lines don't match audien
 <process>
 
 <step name="parse_gaps">
-**Extract gaps from UAT.md:**
+**Extract gaps from review notes:**
 
 Read the "Gaps" section (YAML format):
 ```yaml
@@ -37,7 +37,7 @@ Read the "Gaps" section (YAML format):
   missing: []
 ```
 
-For each gap, also read the corresponding test from "Tests" section to get full context.
+For each gap, also read any corresponding notes to get full context.
 
 Build gap list:
 ```
@@ -94,7 +94,7 @@ Template placeholders:
 - `{errors}`: Any error messages from UAT (or "None reported")
 - `{reproduction}`: "Test {test_num} in UAT"
 - `{timeline}`: "Discovered during UAT"
-- `{goal}`: `find_root_cause_only` (UAT flow - plan-phase --gaps handles fixes)
+- `{goal}`: `find_root_cause_only` (review flow - planning handles fixes)
 - `{slug}`: Generated from truth
 </step>
 
@@ -118,7 +118,7 @@ Each agent returns with:
 - {file1}: {what's wrong}
 - {file2}: {related issue}
 
-**Suggested Fix Direction:** {brief hint for plan-phase --gaps}
+**Suggested Fix Direction:** {brief hint for planning}
 ```
 
 Parse each return to extract:
@@ -134,9 +134,9 @@ If agent returns `## INVESTIGATION INCONCLUSIVE`:
 </step>
 
 <step name="update_uat">
-**Update UAT.md gaps with diagnosis:**
+**Update gap tracking with diagnosis:**
 
-For each gap in the Gaps section, add artifacts and missing fields:
+For each gap, add artifacts and missing fields:
 
 ```yaml
 - truth: "Email welcome sequence drives trial signups"
@@ -154,11 +154,11 @@ For each gap in the Gaps section, add artifacts and missing fields:
   debug_session: .planning/debug/email-low-clickthrough.md
 ```
 
-Update status in frontmatter to "diagnosed".
+Update status to "diagnosed".
 
-Commit the updated UAT.md:
+Commit the updated tracking:
 ```bash
-mario-tools commit "docs({phase}): add root causes from diagnosis" --files ".planning/phases/XX-name/{phase}-UAT.md"
+mario-tools commit "docs(plan): add root causes from diagnosis" --files ".planning/plans/NNN-slug/gaps.md"
 ```
 </step>
 
@@ -182,15 +182,15 @@ Debug sessions: ${DEBUG_DIR}/
 Proceeding to plan fixes...
 ```
 
-Return to verify-work orchestrator for automatic planning.
-Do NOT offer manual next steps - verify-work handles the rest.
+Return to the orchestrator for next steps.
+Do NOT offer manual next steps - the orchestrator handles the rest.
 </step>
 
 </process>
 
 <context_efficiency>
 Agents start with symptoms pre-filled from UAT (no symptom gathering).
-Agents only diagnose—plan-phase --gaps handles fixes (no fix application).
+Agents only diagnose—planning handles fixes (no fix application).
 </context_efficiency>
 
 <failure_handling>
@@ -206,14 +206,14 @@ Agents only diagnose—plan-phase --gaps handles fixes (no fix application).
 **All agents fail:**
 - Something systemic (permissions, git, etc.)
 - Report for manual investigation
-- Fall back to plan-phase --gaps without root causes (less precise)
+- Fall back to planning without root causes (less precise)
 </failure_handling>
 
 <success_criteria>
-- [ ] Gaps parsed from UAT.md
+- [ ] Gaps parsed from review notes
 - [ ] Debug agents spawned in parallel
 - [ ] Root causes collected from all agents
-- [ ] UAT.md gaps updated with artifacts and missing
+- [ ] Gap tracking updated with artifacts and missing
 - [ ] Debug sessions saved to ${DEBUG_DIR}/
-- [ ] Hand off to verify-work for automatic planning
+- [ ] Hand off to orchestrator for automatic planning
 </success_criteria>

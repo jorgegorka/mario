@@ -1,5 +1,5 @@
 <purpose>
-Interactive configuration of Mario workflow agents (research, plan_check, verifier) and model profile selection via multi-question prompt. Updates .planning/config.json with user preferences.
+Interactive configuration of Mario workflow settings and model profile selection via multi-question prompt. Updates .planning/config.json with user preferences. Also handles direct profile switching (e.g., `/mario:settings quality`).
 </purpose>
 
 <required_reading>
@@ -7,6 +7,35 @@ Read all files referenced by the invoking prompt's execution_context before star
 </required_reading>
 
 <process>
+
+<step name="check_direct_profile">
+**If $ARGUMENTS matches a profile name** (`quality`, `balanced`, `budget`):
+
+Quick-switch model profile without interactive menu:
+
+```bash
+mario-tools config-ensure-section
+```
+
+Update `model_profile` field in `.planning/config.json` to the provided value.
+
+Display confirmation with model table:
+```
+Model profile set to: $ARGUMENTS
+
+Agents will now use:
+
+| Agent | Model |
+|-------|-------|
+| mario-planner | [model] |
+| mario-executor | [model] |
+| ... | ... |
+
+Next spawned agents will use the new profile.
+```
+
+Exit — skip interactive settings below.
+</step>
 
 <step name="ensure_and_load_config">
 Ensure config exists and load current state:
@@ -25,11 +54,8 @@ cat .planning/config.json
 ```
 
 Parse current values (default to `true` if not present):
-- `workflow.research` — spawn researcher during plan-phase
-- `workflow.plan_check` — spawn plan checker during plan-phase
-- `workflow.verifier` — spawn verifier during execute-phase
+- `workflow.research` — spawn researcher before planning
 - `model_profile` — which model each agent uses (default: `balanced`)
-- `git.branching_strategy` — branching approach (default: `"none"`)
 </step>
 
 <step name="present_settings">
@@ -42,9 +68,9 @@ AskUserQuestion([
     header: "Model",
     multiSelect: false,
     options: [
-      { label: "Quality", description: "Opus everywhere except verification (highest cost)" },
-      { label: "Balanced (Recommended)", description: "Opus for planning, Sonnet for execution/verification" },
-      { label: "Budget", description: "Sonnet for writing, Haiku for research/verification (lowest cost)" }
+      { label: "Quality", description: "Opus everywhere (highest cost)" },
+      { label: "Balanced (Recommended)", description: "Opus for planning, Sonnet for execution" },
+      { label: "Budget", description: "Sonnet for writing, Haiku for research (lowest cost)" }
     ]
   },
   {
@@ -52,36 +78,8 @@ AskUserQuestion([
     header: "Research",
     multiSelect: false,
     options: [
-      { label: "Yes", description: "Research phase goals before planning" },
+      { label: "Yes", description: "Research plan goals before planning" },
       { label: "No", description: "Skip research, plan directly" }
-    ]
-  },
-  {
-    question: "Spawn Plan Checker? (verifies plans before execution)",
-    header: "Plan Check",
-    multiSelect: false,
-    options: [
-      { label: "Yes", description: "Verify plans meet phase goals" },
-      { label: "No", description: "Skip plan verification" }
-    ]
-  },
-  {
-    question: "Spawn Execution Verifier? (verifies phase completion)",
-    header: "Verifier",
-    multiSelect: false,
-    options: [
-      { label: "Yes", description: "Verify must-haves after execution" },
-      { label: "No", description: "Skip post-execution verification" }
-    ]
-  },
-  {
-    question: "Git branching strategy?",
-    header: "Branching",
-    multiSelect: false,
-    options: [
-      { label: "None (Recommended)", description: "Commit directly to current branch" },
-      { label: "Per Phase", description: "Create branch for each phase (mario/phase-{N}-{name})" },
-      { label: "Per Milestone", description: "Create branch for entire milestone (mario/{version}-{name})" }
     ]
   }
 ])
@@ -96,12 +94,7 @@ Merge new settings into existing config.json:
   ...existing_config,
   "model_profile": "quality" | "balanced" | "budget",
   "workflow": {
-    "research": true/false,
-    "plan_check": true/false,
-    "verifier": true/false
-  },
-  "git": {
-    "branching_strategy": "none" | "phase" | "milestone"
+    "research": true/false
   }
 }
 ```
@@ -121,17 +114,13 @@ Display:
 |----------------------|-------|
 | Model Profile        | {quality/balanced/budget} |
 | Plan Researcher      | {On/Off} |
-| Plan Checker         | {On/Off} |
-| Execution Verifier   | {On/Off} |
-| Git Branching        | {None/Per Phase/Per Milestone} |
 
-These settings apply to future /mario:plan-phase and /mario:execute-phase runs.
+These settings apply to future /mario:plan and /mario:execute runs.
 
 Quick commands:
-- /mario:set-profile <profile> — switch model profile
-- /mario:plan-phase --research — force research
-- /mario:plan-phase --skip-research — skip research
-- /mario:plan-phase --skip-verify — skip plan check
+- /mario:settings <profile> — switch model profile directly
+- /mario:plan --research — force research
+- /mario:plan --skip-research — skip research
 ```
 </step>
 
@@ -139,7 +128,9 @@ Quick commands:
 
 <success_criteria>
 - [ ] Current config read
-- [ ] User presented with 5 settings (profile + 3 workflow toggles + git branching)
-- [ ] Config updated with model_profile, workflow, and git sections
+- [ ] User presented with settings (profile + research toggle)
+- [ ] Config updated with model_profile and workflow sections
 - [ ] Changes confirmed to user
+- [ ] Direct profile switching supported via argument
 </success_criteria>
+</output>

@@ -7,7 +7,7 @@ Commit planning artifacts using the mario-tools CLI, which automatically checks 
 Always use `mario-tools commit` for `.planning/` files — it handles `commit_docs` and gitignore checks automatically:
 
 ```bash
-mario-tools commit "docs({scope}): {description}" --files .planning/STATE.md .planning/ROADMAP.md
+mario-tools commit "docs({scope}): {description}" --files .planning/STATE.md .planning/BACKLOG.md
 ```
 
 The CLI will return `skipped` (with reason) if `commit_docs` is `false` or `.planning/` is gitignored. No manual conditional checks needed.
@@ -24,12 +24,8 @@ mario-tools commit "" --files .planning/codebase/*.md --amend
 
 | Command | Scope | Example |
 |---------|-------|---------|
-| plan-phase | phase | `docs(phase-03): create authentication plans` |
-| execute-phase | phase | `docs(phase-03): complete authentication phase` |
-| new-milestone | milestone | `docs: start milestone v1.1` |
-| remove-phase | chore | `chore: remove phase 17 (dashboard)` |
-| insert-phase | phase | `docs: insert phase 16.1 (critical fix)` |
-| add-phase | phase | `docs: add phase 07 (settings page)` |
+| plan | plan | `docs(plan-003): create authentication plans` |
+| execute | plan | `docs(plan-003): complete authentication plan` |
 
 ## When to Skip
 

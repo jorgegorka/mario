@@ -1,5 +1,5 @@
 <purpose>
-Execute small, ad-hoc tasks with Mario guarantees (atomic commits, STATE.md tracking) while skipping optional agents (research, plan-checker, verifier). Quick mode spawns mario-planner (quick mode) + mario-executor(s), tracks tasks in `.planning/quick/`, and updates STATE.md's "Quick Tasks Completed" table.
+Execute small, ad-hoc tasks with Mario guarantees (atomic commits, STATE.md tracking) while skipping optional agents (research). Quick mode spawns mario-planner (quick mode) + mario-executor, creates a plan in `.planning/plans/`, and updates BACKLOG.md.
 </purpose>
 
 <required_reading>
@@ -31,38 +31,31 @@ If empty, re-prompt: "Please provide a task description."
 INIT=$(mario-tools init quick "$DESCRIPTION")
 ```
 
-Parse JSON for: `planner_model`, `executor_model`, `commit_docs`, `next_num`, `slug`, `date`, `timestamp`, `quick_dir`, `task_dir`, `roadmap_exists`, `planning_exists`.
+Parse JSON for: `planner_model`, `executor_model`, `commit_docs`, `next_num`, `slug`, `date`, `timestamp`, `plan_dir`, `planning_exists`, `backlog_exists`.
 
-**If `roadmap_exists` is false:** Error — Quick mode requires an active project with ROADMAP.md. Run `/mario:new-project` first.
-
-Quick tasks can run mid-phase - validation only checks ROADMAP.md exists, not phase status.
+**If `backlog_exists` is false:** Error — Quick mode requires an active project with BACKLOG.md. Run `/mario:new-project` first.
 
 ---
 
-**Step 3: Create task directory**
+**Step 3: Create plan directory**
 
 ```bash
-mkdir -p "${task_dir}"
-```
-
----
-
-**Step 4: Create quick task directory**
-
-Create the directory for this quick task:
-
-```bash
-QUICK_DIR=".planning/quick/${next_num}-${slug}"
-mkdir -p "$QUICK_DIR"
+mkdir -p "${plan_dir}"
 ```
 
 Report to user:
 ```
-Creating quick task ${next_num}: ${DESCRIPTION}
-Directory: ${QUICK_DIR}
+Creating quick plan ${next_num}: ${DESCRIPTION}
+Directory: ${plan_dir}
 ```
 
-Store `$QUICK_DIR` for use in orchestration.
+---
+
+**Step 4: Add to backlog**
+
+```bash
+mario-tools backlog add "${DESCRIPTION}"
+```
 
 ---
 
@@ -76,7 +69,7 @@ Task(
 <planning_context>
 
 **Mode:** quick
-**Directory:** ${QUICK_DIR}
+**Directory:** ${plan_dir}
 **Description:** ${DESCRIPTION}
 
 **Project State:**
@@ -85,14 +78,14 @@ Task(
 </planning_context>
 
 <constraints>
-- Create a SINGLE plan with 1-3 focused tasks
+- Create a SINGLE PLAN.md with 1-3 focused tasks
 - Quick tasks should be atomic and self-contained
-- No research phase, no checker phase
+- No research, no checker
 - Target ~30% context usage (simple, focused)
 </constraints>
 
 <output>
-Write plan to: ${QUICK_DIR}/${next_num}-PLAN.md
+Write plan to: ${plan_dir}/PLAN.md
 Return: ## PLANNING COMPLETE with plan path
 </output>
 ",
@@ -103,11 +96,10 @@ Return: ## PLANNING COMPLETE with plan path
 ```
 
 After planner returns:
-1. Verify plan exists at `${QUICK_DIR}/${next_num}-PLAN.md`
-2. Extract plan count (typically 1 for quick tasks)
-3. Report: "Plan created: ${QUICK_DIR}/${next_num}-PLAN.md"
+1. Verify plan exists at `${plan_dir}/PLAN.md`
+2. Report: "Plan created: ${plan_dir}/PLAN.md"
 
-If plan not found, error: "Planner failed to create ${next_num}-PLAN.md"
+If plan not found, error: "Planner failed to create PLAN.md"
 
 ---
 
@@ -118,16 +110,15 @@ Spawn mario-executor with plan reference:
 ```
 Task(
   prompt="
-Execute quick task ${next_num}.
+Execute quick plan ${next_num}.
 
-Plan: @${QUICK_DIR}/${next_num}-PLAN.md
+Plan: @${plan_dir}/PLAN.md
 Project state: @.planning/STATE.md
 
 <constraints>
 - Execute all tasks in the plan
 - Commit each task atomically
-- Create summary at: ${QUICK_DIR}/${next_num}-SUMMARY.md
-- Do NOT update ROADMAP.md (quick tasks are separate from planned phases)
+- Create summary at: ${plan_dir}/SUMMARY.md
 </constraints>
 ",
   subagent_type="mario-executor",
@@ -137,61 +128,39 @@ Project state: @.planning/STATE.md
 ```
 
 After executor returns:
-1. Verify summary exists at `${QUICK_DIR}/${next_num}-SUMMARY.md`
+1. Verify summary exists at `${plan_dir}/SUMMARY.md`
 2. Extract commit hash from executor output
 3. Report completion status
 
 **Known Claude Code bug (classifyHandoffIfNeeded):** If executor reports "failed" with error `classifyHandoffIfNeeded is not defined`, this is a Claude Code runtime bug — not a real failure. Check if summary file exists and git log shows commits. If so, treat as successful.
 
-If summary not found, error: "Executor failed to create ${next_num}-SUMMARY.md"
-
-Note: For quick tasks producing multiple plans (rare), spawn executors in parallel waves per execute-phase patterns.
+If summary not found, error: "Executor failed to create SUMMARY.md"
 
 ---
 
-**Step 7: Update STATE.md**
+**Step 7: Mark complete and update STATE.md**
 
-Update STATE.md with quick task completion record.
-
-**7a. Check if "Quick Tasks Completed" section exists:**
-
-Read STATE.md and check for `### Quick Tasks Completed` section.
-
-**7b. If section doesn't exist, create it:**
-
-Insert after `### Blockers/Concerns` section:
-
-```markdown
-### Quick Tasks Completed
-
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
+```bash
+mario-tools backlog complete "${next_num}"
+mario-tools state advance-plan
+mario-tools state update-progress
 ```
 
-**7c. Append new row to table:**
+Update STATE.md with:
 
-Use `date` from init:
-```markdown
-| ${next_num} | ${DESCRIPTION} | ${date} | ${commit_hash} | [${next_num}-${slug}](./quick/${next_num}-${slug}/) |
+**Last activity line:**
 ```
-
-**7d. Update "Last activity" line:**
-
-Use `date` from init:
+Last activity: ${date} - Completed quick plan ${next_num}: ${DESCRIPTION}
 ```
-Last activity: ${date} - Completed quick task ${next_num}: ${DESCRIPTION}
-```
-
-Use Edit tool to make these changes atomically
 
 ---
 
 **Step 8: Final commit and completion**
 
-Stage and commit quick task artifacts:
+Stage and commit plan artifacts:
 
 ```bash
-mario-tools commit "docs(quick-${next_num}): ${DESCRIPTION}" --files ${QUICK_DIR}/${next_num}-PLAN.md ${QUICK_DIR}/${next_num}-SUMMARY.md .planning/STATE.md
+mario-tools commit "docs(plan-${next_num}): ${DESCRIPTION}" --files ${plan_dir}/PLAN.md ${plan_dir}/SUMMARY.md .planning/STATE.md .planning/BACKLOG.md
 ```
 
 Get final commit hash:
@@ -203,11 +172,11 @@ Display completion output:
 ```
 ---
 
-Mario > QUICK TASK COMPLETE
+Mario > QUICK PLAN COMPLETE
 
-Quick Task ${next_num}: ${DESCRIPTION}
+Plan ${next_num}: ${DESCRIPTION}
 
-Summary: ${QUICK_DIR}/${next_num}-SUMMARY.md
+Summary: ${plan_dir}/SUMMARY.md
 Commit: ${commit_hash}
 
 ---
@@ -218,13 +187,15 @@ Ready for next task: /mario:quick
 </process>
 
 <success_criteria>
-- [ ] ROADMAP.md validation passes
+- [ ] BACKLOG.md validation passes
 - [ ] User provides task description
 - [ ] Slug generated (lowercase, hyphens, max 40 chars)
 - [ ] Next number calculated (001, 002, 003...)
-- [ ] Directory created at `.planning/quick/NNN-slug/`
-- [ ] `${next_num}-PLAN.md` created by planner
-- [ ] `${next_num}-SUMMARY.md` created by executor
-- [ ] STATE.md updated with quick task row
+- [ ] Directory created at `.planning/plans/NNN-slug/`
+- [ ] PLAN.md created by planner
+- [ ] SUMMARY.md created by executor
+- [ ] BACKLOG.md updated (plan added and marked complete)
+- [ ] STATE.md updated
 - [ ] Artifacts committed
 </success_criteria>
+</output>

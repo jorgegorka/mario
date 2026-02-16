@@ -1,6 +1,6 @@
 # Summary Template
 
-Template for `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md` - phase completion documentation.
+Template for `.planning/plans/NNN-name/NNN-SUMMARY.md` - plan completion documentation.
 
 ---
 
@@ -8,22 +8,21 @@ Template for `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md` - phase comple
 
 ```markdown
 ---
-phase: XX-name
-plan: YY
+plan: NNN-name
 subsystem: [primary category: auth, payments, ui, api, database, infra, testing, etc.]
 tags: [searchable tech: email, social, seo, ads, brand, content]
 
 # Dependency graph
 requires:
-  - phase: [prior phase this depends on]
-    provides: [what that phase built that this uses]
+  - plan: [prior plan this depends on]
+    provides: [what that plan built that this uses]
 provides:
-  - [bullet list of what this phase built/delivered]
-affects: [list of phase names or keywords that will need this context]
+  - [bullet list of what this plan built/delivered]
+affects: [list of plan names or keywords that will need this context]
 
 # Tech tracking
 tech-stack:
-  added: [libraries/tools added in this phase]
+  added: [libraries/tools added in this plan]
   patterns: [architectural/code patterns established]
 
 key-files:
@@ -43,9 +42,9 @@ duration: Xmin
 completed: YYYY-MM-DD
 ---
 
-# Phase [X]: [Name] Summary
+# Plan NNN: [Name] Summary
 
-**[Substantive one-liner describing outcome - NOT "phase complete" or "implementation finished"]**
+**[Substantive one-liner describing outcome - NOT "plan complete" or "implementation finished"]**
 
 ## Performance
 
@@ -110,7 +109,7 @@ _Note: TDD tasks may have multiple commits (test → feat → refactor)_
 ## User Setup Required
 
 [If USER-SETUP.md was generated:]
-**External services require manual configuration.** See [{phase}-USER-SETUP.md](./{phase}-USER-SETUP.md) for:
+**External services require manual configuration.** See [NNN-USER-SETUP.md](./NNN-USER-SETUP.md) for:
 - Environment variables to add
 - Dashboard configuration steps
 - Verification commands
@@ -118,29 +117,29 @@ _Note: TDD tasks may have multiple commits (test → feat → refactor)_
 [If no USER-SETUP.md:]
 None - no external service configuration required.
 
-## Next Phase Readiness
-[What's ready for next phase]
+## Next Steps
+[What's ready for the next plan]
 [Any blockers or concerns]
 
 ---
-*Phase: XX-name*
+*Plan: NNN-name*
 *Completed: [date]*
 ```
 
 <frontmatter_guidance>
-**Purpose:** Enable automatic context assembly via dependency graph. Frontmatter makes summary metadata machine-readable so plan-phase can scan all summaries quickly and select relevant ones based on dependencies.
+**Purpose:** Enable automatic context assembly via dependency graph. Frontmatter makes summary metadata machine-readable so planning can scan all summaries quickly and select relevant ones based on dependencies.
 
 **Fast scanning:** Frontmatter is first ~25 lines, cheap to scan across all summaries without reading full content.
 
-**Dependency graph:** `requires`/`provides`/`affects` create explicit links between phases, enabling transitive closure for context selection.
+**Dependency graph:** `requires`/`provides`/`affects` create explicit links between plans, enabling transitive closure for context selection.
 
-**Subsystem:** Primary categorization (auth, payments, ui, api, database, infra, testing) for detecting related phases.
+**Subsystem:** Primary categorization (auth, payments, ui, api, database, infra, testing) for detecting related plans.
 
 **Tags:** Searchable technical keywords (libraries, frameworks, tools) for tech stack awareness.
 
 **Key-files:** Important files for @context references in PLAN.md.
 
-**Patterns:** Established conventions future phases should maintain.
+**Patterns:** Established conventions future plans should maintain.
 
 **Population:** Frontmatter is populated during summary creation in execute-plan.md. See `<step name="create_summary">` for field-by-field guidance.
 </frontmatter_guidance>
@@ -154,7 +153,7 @@ The one-liner MUST be substantive:
 - "30-day social media calendar with platform-specific content for 4 channels"
 
 **Bad:**
-- "Phase complete"
+- "Plan complete"
 - "Authentication implemented"
 - "Foundation finished"
 - "All tasks done"
@@ -164,7 +163,7 @@ The one-liner should tell someone what actually shipped.
 
 <example>
 ```markdown
-# Phase 1: Foundation Summary
+# Plan 001: Foundation Summary
 
 **5-email welcome sequence with progressive CTAs, brand-aligned tone, and audience-segmented messaging**
 
@@ -221,12 +220,12 @@ The one-liner should tell someone what actually shipped.
 ## Issues Encountered
 - Original subject lines were too long for mobile preview — shortened all to under 40 characters
 
-## Next Phase Readiness
+## Next Steps
 - Email welcome sequence complete, ready for landing page creation
 - Social media calendar needed to align cross-channel messaging
 
 ---
-*Phase: 01-foundation*
+*Plan: 001-foundation*
 *Completed: 2025-01-15*
 ```
 </example>

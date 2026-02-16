@@ -1,5 +1,5 @@
 <purpose>
-Initialize a new project through unified flow: questioning, research (optional), requirements, roadmap. This is the most leveraged moment in any project — deep questioning here means better plans, better execution, better outcomes. One workflow takes you from idea to ready-for-planning.
+Initialize a new project through unified flow: questioning, research (optional), requirements, backlog. This is the most leveraged moment in any project — deep questioning here means better plans, better execution, better outcomes. One workflow takes you from idea to ready-for-planning.
 </purpose>
 
 <required_reading>
@@ -12,14 +12,13 @@ Read all files referenced by the invoking prompt's execution_context before star
 Check if `--auto` flag is present in $ARGUMENTS.
 
 **If auto mode:**
-- Skip brownfield mapping offer (assume greenfield)
 - Skip deep questioning (extract context from provided document)
 - Config questions still required (Step 5)
-- After config: run Steps 6-9 automatically with smart defaults:
+- After config: run Steps 6-8 automatically with smart defaults:
   - Research: Always yes
   - Requirements: Include all table stakes + features from provided document
   - Requirements approval: Auto-approve
-  - Roadmap approval: Auto-approve
+  - Backlog approval: Auto-approve
 
 **Document requirement:**
 Auto mode requires an idea document via @ reference (e.g., `/mario:new-project --auto @prd.md`). If no document provided, error:
@@ -43,7 +42,7 @@ The document should describe the product or business you want to market.
 INIT=$(mario-tools init new-project)
 ```
 
-Parse JSON for: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `commit_docs`, `project_exists`, `has_codebase_map`, `planning_exists`, `has_existing_code`, `has_package_file`, `is_brownfield`, `needs_codebase_map`, `has_git`.
+Parse JSON for: `researcher_model`, `synthesizer_model`, `backlog_planner_model`, `commit_docs`, `project_exists`, `planning_exists`, `has_git`.
 
 **If `project_exists` is true:** Error — project already initialized. Use `/mario:progress`.
 
@@ -52,30 +51,9 @@ Parse JSON for: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `co
 git init
 ```
 
-## 2. Brownfield Offer
+## 2. Deep Questioning
 
-**If auto mode:** Skip to Step 4 (assume greenfield, synthesize PROJECT.md from provided document).
-
-**If `needs_codebase_map` is true** (from init — existing marketing materials detected but no codebase map):
-
-Use AskUserQuestion:
-- header: "Existing Materials"
-- question: "I detected existing marketing materials in this directory. Would you like to map them first?"
-- options:
-  - "Map materials first" — Run /mario:map-codebase to understand existing marketing assets (Recommended)
-  - "Skip mapping" — Proceed with project initialization
-
-**If "Map materials first":**
-```
-Run `/mario:map-codebase` first, then return to `/mario:new-project`
-```
-Exit command.
-
-**If "Skip mapping" OR `needs_codebase_map` is false:** Continue to Step 3.
-
-## 3. Deep Questioning
-
-**If auto mode:** Skip. Extract project context from provided document instead and proceed to Step 4.
+**If auto mode:** Skip. Extract project context from provided document instead and proceed to Step 3.
 
 **Display stage banner:**
 
@@ -131,13 +109,11 @@ If "Keep exploring" — ask what they want to add, or identify gaps and probe na
 
 Loop until "Create PROJECT.md" selected.
 
-## 4. Write PROJECT.md
+## 3. Write PROJECT.md
 
 **If auto mode:** Synthesize from provided document. No "Ready?" gate was shown — proceed directly to commit.
 
 Synthesize all context into `.planning/PROJECT.md` using the template from `templates/project.md`.
-
-**For greenfield projects:**
 
 Initialize requirements as hypotheses:
 
@@ -161,33 +137,6 @@ Initialize requirements as hypotheses:
 ```
 
 All Active requirements are hypotheses until shipped and validated.
-
-**For brownfield projects (codebase map exists):**
-
-Infer Validated requirements from existing marketing materials:
-
-1. Read `.planning/codebase/ARCHITECTURE.md` and `STACK.md`
-2. Identify what marketing assets already exist
-3. These become the initial Validated set
-
-```markdown
-## Requirements
-
-### Validated
-
-- ✓ [Existing capability 1] — existing
-- ✓ [Existing capability 2] — existing
-- ✓ [Existing capability 3] — existing
-
-### Active
-
-- [ ] [New requirement 1]
-- [ ] [New requirement 2]
-
-### Out of Scope
-
-- [Exclusion 1] — [why]
-```
 
 **Key Decisions:**
 
@@ -217,9 +166,9 @@ mkdir -p .planning
 mario-tools commit "docs: initialize project" --files .planning/PROJECT.md
 ```
 
-## 5. Workflow Preferences
+## 4. Workflow Preferences
 
-**Round 1 — Core workflow settings (4 questions):**
+**Round 1 — Core workflow settings (3 questions):**
 
 ```
 questions: [
@@ -237,18 +186,9 @@ questions: [
     question: "How thorough should planning be?",
     multiSelect: false,
     options: [
-      { label: "Quick", description: "Ship fast (3-5 phases, 1-3 plans each)" },
-      { label: "Standard", description: "Balanced scope and speed (5-8 phases, 3-5 plans each)" },
-      { label: "Comprehensive", description: "Thorough coverage (8-12 phases, 5-10 plans each)" }
-    ]
-  },
-  {
-    header: "Execution",
-    question: "Run plans in parallel?",
-    multiSelect: false,
-    options: [
-      { label: "Parallel (Recommended)", description: "Independent plans run simultaneously" },
-      { label: "Sequential", description: "One plan at a time" }
+      { label: "Quick", description: "Ship fast (3-5 plans)" },
+      { label: "Standard", description: "Balanced scope and speed (5-10 plans)" },
+      { label: "Comprehensive", description: "Thorough coverage (10-20 plans)" }
     ]
   },
   {
@@ -269,39 +209,17 @@ These spawn additional agents during planning/execution. They add tokens and tim
 
 | Agent | When it runs | What it does |
 |-------|--------------|--------------|
-| **Researcher** | Before planning each phase | Investigates domain, finds patterns, surfaces gotchas |
-| **Plan Checker** | After plan is created | Verifies plan actually achieves the phase goal |
-| **Verifier** | After phase execution | Confirms must-haves were delivered |
-
-All recommended for important projects. Skip for quick experiments.
+| **Researcher** | Before planning each plan | Investigates domain, finds patterns, surfaces gotchas |
 
 ```
 questions: [
   {
     header: "Research",
-    question: "Research before planning each phase? (adds tokens/time)",
+    question: "Research before planning? (adds tokens/time)",
     multiSelect: false,
     options: [
       { label: "Yes (Recommended)", description: "Investigate domain, find patterns, surface gotchas" },
       { label: "No", description: "Plan directly from requirements" }
-    ]
-  },
-  {
-    header: "Plan Check",
-    question: "Verify plans will achieve their goals? (adds tokens/time)",
-    multiSelect: false,
-    options: [
-      { label: "Yes (Recommended)", description: "Catch gaps before execution starts" },
-      { label: "No", description: "Execute plans without verification" }
-    ]
-  },
-  {
-    header: "Verifier",
-    question: "Verify work satisfies requirements after each phase? (adds tokens/time)",
-    multiSelect: false,
-    options: [
-      { label: "Yes (Recommended)", description: "Confirm deliverables match phase goals" },
-      { label: "No", description: "Trust execution, skip verification" }
     ]
   },
   {
@@ -310,7 +228,7 @@ questions: [
     multiSelect: false,
     options: [
       { label: "Balanced (Recommended)", description: "Sonnet for most agents — good quality/cost ratio" },
-      { label: "Quality", description: "Opus for research/roadmap — higher cost, deeper analysis" },
+      { label: "Quality", description: "Opus for research/planning — higher cost, deeper analysis" },
       { label: "Budget", description: "Haiku where possible — fastest, lowest cost" }
     ]
   }
@@ -323,13 +241,10 @@ Create `.planning/config.json` with all settings:
 {
   "mode": "yolo|interactive",
   "depth": "quick|standard|comprehensive",
-  "parallelization": true|false,
   "commit_docs": true|false,
   "model_profile": "quality|balanced|budget",
   "workflow": {
-    "research": true|false,
-    "plan_check": true|false,
-    "verifier": true|false
+    "research": true|false
   }
 }
 ```
@@ -349,11 +264,11 @@ mario-tools commit "chore: add project config" --files .planning/config.json
 
 **Note:** Run `/mario:settings` anytime to update these preferences.
 
-## 5.5. Resolve Model Profile
+## 4.5. Resolve Model Profile
 
-Use models from init: `researcher_model`, `synthesizer_model`, `roadmapper_model`.
+Use models from init: `researcher_model`, `synthesizer_model`, `backlog_planner_model`.
 
-## 6. Research Decision
+## 5. Research Decision
 
 **If auto mode:** Default to "Research first" without asking.
 
@@ -380,11 +295,11 @@ Create research directory:
 mkdir -p .planning/research
 ```
 
-**Determine milestone context:**
+**Determine project context:**
 
-Check if this is greenfield or subsequent milestone:
+Check if this is greenfield or has existing materials:
 - If no "Validated" requirements in PROJECT.md → Greenfield (building from scratch)
-- If "Validated" requirements exist → Subsequent milestone (adding to existing app)
+- If "Validated" requirements exist → Building on existing work
 
 Display spawning indicator:
 ```
@@ -404,13 +319,6 @@ Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your r
 Project Research — Channel landscape dimension for [domain].
 </research_type>
 
-<milestone_context>
-[greenfield OR subsequent]
-
-Greenfield: Research the standard marketing channels and tools for [domain] businesses.
-Subsequent: Research what channels and tools are needed to expand marketing for an existing [domain] business. Don't re-research existing channels.
-</milestone_context>
-
 <question>
 What channels are competitors using? What's the standard marketing stack for this type of business?
 </question>
@@ -420,21 +328,15 @@ What channels are competitors using? What's the standard marketing stack for thi
 </project_context>
 
 <downstream_consumer>
-Your STACK.md feeds into roadmap creation. Be prescriptive:
+Your CHANNELS.md feeds into backlog creation. Be prescriptive:
 - Specific channels with priority ranking
 - Recommended tools and platforms
 - What channels to avoid and why
 </downstream_consumer>
 
-<quality_gate>
-- [ ] Channel recommendations are current and relevant to the business type
-- [ ] Rationale explains WHY each channel matters, not just WHAT it is
-- [ ] Confidence levels assigned to each recommendation
-</quality_gate>
-
 <output>
-Write to: .planning/research/STACK.md
-Use template: ~/.claude/mario/templates/research-project/STACK.md
+Write to: .planning/research/CHANNELS.md
+Use template: ~/.claude/mario/templates/research-project/CHANNELS.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Channel landscape research")
 
@@ -443,13 +345,6 @@ Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your r
 <research_type>
 Project Research — Audience & messaging dimension for [domain].
 </research_type>
-
-<milestone_context>
-[greenfield OR subsequent]
-
-Greenfield: What messaging resonates with [domain] audiences? What are table-stakes marketing assets?
-Subsequent: What messaging and assets are needed to reach [target audience]? What's expected from businesses in this space?
-</milestone_context>
 
 <question>
 What messaging resonates with the target audience? What are table-stakes marketing assets for this business type?
@@ -460,21 +355,15 @@ What messaging resonates with the target audience? What are table-stakes marketi
 </project_context>
 
 <downstream_consumer>
-Your FEATURES.md feeds into requirements definition. Categorize clearly:
+Your AUDIENCE.md feeds into requirements definition. Categorize clearly:
 - Table stakes (must-have marketing assets or prospects leave)
 - Differentiators (messaging that creates competitive advantage)
 - Anti-patterns (messaging approaches to deliberately avoid)
 </downstream_consumer>
 
-<quality_gate>
-- [ ] Categories are clear (table stakes vs differentiators vs anti-patterns)
-- [ ] Effort level noted for each asset
-- [ ] Dependencies between assets identified
-</quality_gate>
-
 <output>
-Write to: .planning/research/FEATURES.md
-Use template: ~/.claude/mario/templates/research-project/FEATURES.md
+Write to: .planning/research/AUDIENCE.md
+Use template: ~/.claude/mario/templates/research-project/AUDIENCE.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Audience & messaging research")
 
@@ -483,13 +372,6 @@ Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your r
 <research_type>
 Project Research — Content strategy dimension for [domain].
 </research_type>
-
-<milestone_context>
-[greenfield OR subsequent]
-
-Greenfield: How should marketing content be structured for [domain]? What are the content pillars, funnel stages, and distribution channels?
-Subsequent: How should new content integrate with existing [domain] marketing strategy?
-</milestone_context>
 
 <question>
 How should content be structured? What are the right content pillars, funnel stages, and distribution plan?
@@ -500,21 +382,15 @@ How should content be structured? What are the right content pillars, funnel sta
 </project_context>
 
 <downstream_consumer>
-Your ARCHITECTURE.md informs phase structure in roadmap. Include:
+Your CONTENT.md informs plan structure in backlog. Include:
 - Content pillars and their relationships
 - Funnel stages (awareness → consideration → decision → retention)
 - Suggested build order (what content depends on what)
 </downstream_consumer>
 
-<quality_gate>
-- [ ] Content pillars clearly defined with audience alignment
-- [ ] Funnel stages mapped to content types
-- [ ] Build order implications noted
-</quality_gate>
-
 <output>
-Write to: .planning/research/ARCHITECTURE.md
-Use template: ~/.claude/mario/templates/research-project/ARCHITECTURE.md
+Write to: .planning/research/CONTENT.md
+Use template: ~/.claude/mario/templates/research-project/CONTENT.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Content strategy research")
 
@@ -523,13 +399,6 @@ Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your r
 <research_type>
 Project Research — Marketing pitfalls dimension for [domain].
 </research_type>
-
-<milestone_context>
-[greenfield OR subsequent]
-
-Greenfield: What do businesses in this space commonly get wrong with marketing? Critical mistakes?
-Subsequent: What are common mistakes when expanding marketing for [domain] businesses?
-</milestone_context>
 
 <question>
 What do businesses in this space commonly get wrong with marketing? Critical mistakes?
@@ -540,17 +409,11 @@ What do businesses in this space commonly get wrong with marketing? Critical mis
 </project_context>
 
 <downstream_consumer>
-Your PITFALLS.md prevents mistakes in roadmap/planning. For each pitfall:
+Your PITFALLS.md prevents mistakes in planning. For each pitfall:
 - Warning signs (how to detect early)
 - Prevention strategy (how to avoid)
-- Which phase should address it
+- Which plan should address it
 </downstream_consumer>
-
-<quality_gate>
-- [ ] Pitfalls are specific to this business type (not generic marketing advice)
-- [ ] Prevention strategies are actionable
-- [ ] Phase mapping included where relevant
-</quality_gate>
 
 <output>
 Write to: .planning/research/PITFALLS.md
@@ -569,9 +432,9 @@ Synthesize research outputs into SUMMARY.md.
 
 <research_files>
 Read these files:
-- .planning/research/STACK.md
-- .planning/research/FEATURES.md
-- .planning/research/ARCHITECTURE.md
+- .planning/research/CHANNELS.md
+- .planning/research/AUDIENCE.md
+- .planning/research/CONTENT.md
 - .planning/research/PITFALLS.md
 </research_files>
 
@@ -591,16 +454,16 @@ Display research complete banner and key findings:
 
 ## Key Findings
 
-**Stack:** [from SUMMARY.md]
+**Channels:** [from SUMMARY.md]
 **Table Stakes:** [from SUMMARY.md]
 **Watch Out For:** [from SUMMARY.md]
 
 Files: `.planning/research/`
 ```
 
-**If "Skip research":** Continue to Step 7.
+**If "Skip research":** Continue to Step 6.
 
-## 7. Define Requirements
+## 6. Define Requirements
 
 Display stage banner:
 ```
@@ -616,7 +479,7 @@ Read PROJECT.md and extract:
 - Stated constraints (budget, timeline, tech limitations)
 - Any explicit scope boundaries
 
-**If research exists:** Read research/FEATURES.md and extract feature categories.
+**If research exists:** Read research/AUDIENCE.md and extract feature categories.
 
 **If auto mode:**
 - Auto-include all table stakes features (users expect these)
@@ -698,7 +561,6 @@ Create `.planning/REQUIREMENTS.md` with:
 - v1 Requirements grouped by category (checkboxes, REQ-IDs)
 - v2 Requirements (deferred)
 - Out of Scope (explicit exclusions with reasoning)
-- Traceability section (empty, filled by roadmap)
 
 **REQ-ID format:** `[CATEGORY]-[NUMBER]` (BRAND-01, WEB-02, EMAIL-01, SOCIAL-02, SEO-01, ADS-01)
 
@@ -710,9 +572,7 @@ Good requirements are:
 - **Atomic:** One deliverable per requirement (not "Create all email sequences and social posts")
 - **Independent:** Minimal dependencies on other requirements
 
-Reject vague requirements. Push for specificity:
-- "Handle email marketing" → "Welcome sequence with 5 emails over 14 days introducing the product and driving first purchase"
-- "Do social media" → "30-day content calendar with 3 posts/week across Instagram and LinkedIn aligned to content pillars"
+Reject vague requirements. Push for specificity.
 
 **Present full requirements list (interactive mode only):**
 
@@ -745,18 +605,18 @@ If "adjust": Return to scoping.
 mario-tools commit "docs: define v1 requirements" --files .planning/REQUIREMENTS.md
 ```
 
-## 8. Create Roadmap
+## 7. Create Backlog
 
 Display stage banner:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Mario ► CREATING ROADMAP
+ Mario ► CREATING BACKLOG
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-◆ Spawning roadmapper...
+◆ Spawning backlog planner...
 ```
 
-Spawn mario-roadmapper agent with context:
+Spawn mario-backlog-planner agent with context:
 
 ```
 Task(prompt="
@@ -777,62 +637,43 @@ Task(prompt="
 </planning_context>
 
 <instructions>
-Create roadmap:
-1. Derive phases from requirements (don't impose structure)
-2. Map every v1 requirement to exactly one phase
-3. Derive 2-5 success criteria per phase (observable user behaviors)
+Create backlog:
+1. Derive plans from requirements (each plan = one deliverable)
+2. Map every v1 requirement to exactly one plan
+3. Order plans by dependency and priority
 4. Validate 100% coverage
-5. Write files immediately (ROADMAP.md, STATE.md, update REQUIREMENTS.md traceability)
-6. Return ROADMAP CREATED with summary
+5. Write files immediately (BACKLOG.md, STATE.md, update REQUIREMENTS.md traceability)
+6. Return BACKLOG CREATED with summary
 
 Write files first, then return. This ensures artifacts persist even if context is lost.
 </instructions>
-", subagent_type="mario-roadmapper", model="{roadmapper_model}", description="Create roadmap")
+", subagent_type="mario-backlog-planner", model="{backlog_planner_model}", description="Create backlog")
 ```
 
-**Handle roadmapper return:**
+**Handle backlog planner return:**
 
-**If `## ROADMAP BLOCKED`:**
+**If `## BACKLOG BLOCKED`:**
 - Present blocker information
 - Work with user to resolve
 - Re-spawn when resolved
 
-**If `## ROADMAP CREATED`:**
+**If `## BACKLOG CREATED`:**
 
-Read the created ROADMAP.md and present it nicely inline:
+Read the created BACKLOG.md and present it nicely inline:
 
 ```
 ---
 
-## Proposed Roadmap
+## Proposed Backlog
 
-**[N] phases** | **[X] requirements mapped** | All v1 requirements covered ✓
+**[N] plans** | **[X] requirements mapped** | All v1 requirements covered ✓
 
-| # | Phase | Goal | Requirements | Success Criteria |
-|---|-------|------|--------------|------------------|
-| 1 | [Name] | [Goal] | [REQ-IDs] | [count] |
-| 2 | [Name] | [Goal] | [REQ-IDs] | [count] |
-| 3 | [Name] | [Goal] | [REQ-IDs] | [count] |
+| # | Plan | Description | Requirements |
+|---|------|-------------|--------------|
+| 001 | [Name] | [Description] | [REQ-IDs] |
+| 002 | [Name] | [Description] | [REQ-IDs] |
+| 003 | [Name] | [Description] | [REQ-IDs] |
 ...
-
-### Phase Details
-
-**Phase 1: [Name]**
-Goal: [goal]
-Requirements: [REQ-IDs]
-Success criteria:
-1. [criterion]
-2. [criterion]
-3. [criterion]
-
-**Phase 2: [Name]**
-Goal: [goal]
-Requirements: [REQ-IDs]
-Success criteria:
-1. [criterion]
-2. [criterion]
-
-[... continue for all phases ...]
 
 ---
 ```
@@ -842,43 +683,43 @@ Success criteria:
 **CRITICAL: Ask for approval before committing (interactive mode only):**
 
 Use AskUserQuestion:
-- header: "Roadmap"
-- question: "Does this roadmap structure work for you?"
+- header: "Backlog"
+- question: "Does this backlog structure work for you?"
 - options:
   - "Approve" — Commit and continue
-  - "Adjust phases" — Tell me what to change
-  - "Review full file" — Show raw ROADMAP.md
+  - "Adjust plans" — Tell me what to change
+  - "Review full file" — Show raw BACKLOG.md
 
 **If "Approve":** Continue to commit.
 
-**If "Adjust phases":**
+**If "Adjust plans":**
 - Get user's adjustment notes
-- Re-spawn roadmapper with revision context:
+- Re-spawn backlog planner with revision context:
   ```
   Task(prompt="
   <revision>
-  User feedback on roadmap:
+  User feedback on backlog:
   [user's notes]
 
-  Current ROADMAP.md: @.planning/ROADMAP.md
+  Current BACKLOG.md: @.planning/BACKLOG.md
 
-  Update the roadmap based on feedback. Edit files in place.
-  Return ROADMAP REVISED with changes made.
+  Update the backlog based on feedback. Edit files in place.
+  Return BACKLOG REVISED with changes made.
   </revision>
-  ", subagent_type="mario-roadmapper", model="{roadmapper_model}", description="Revise roadmap")
+  ", subagent_type="mario-backlog-planner", model="{backlog_planner_model}", description="Revise backlog")
   ```
-- Present revised roadmap
+- Present revised backlog
 - Loop until user approves
 
-**If "Review full file":** Display raw `cat .planning/ROADMAP.md`, then re-ask.
+**If "Review full file":** Display raw `cat .planning/BACKLOG.md`, then re-ask.
 
-**Commit roadmap (after approval or auto mode):**
+**Commit backlog (after approval or auto mode):**
 
 ```bash
-mario-tools commit "docs: create roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
+mario-tools commit "docs: create backlog ([N] plans)" --files .planning/BACKLOG.md .planning/STATE.md .planning/REQUIREMENTS.md
 ```
 
-## 9. Done
+## 8. Done
 
 Present completion with next steps:
 
@@ -895,24 +736,24 @@ Present completion with next steps:
 | Config         | `.planning/config.json`     |
 | Research       | `.planning/research/`       |
 | Requirements   | `.planning/REQUIREMENTS.md` |
-| Roadmap        | `.planning/ROADMAP.md`      |
+| Backlog        | `.planning/BACKLOG.md`      |
 
-**[N] phases** | **[X] requirements** | Ready to build ✓
+**[N] plans** | **[X] requirements** | Ready to build ✓
 
 ───────────────────────────────────────────────────────────────
 
 ## ▶ Next Up
 
-**Phase 1: [Phase Name]** — [Goal from ROADMAP.md]
+**Plan 001: [Plan Name]** — [Description]
 
-/mario:discuss-phase 1 — gather context and clarify approach
+/mario:plan 001
 
 <sub>/clear first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- /mario:plan-phase 1 — skip discussion, plan directly
+- /mario:execute 001 — skip planning, execute directly
 
 ───────────────────────────────────────────────────────────────
 ```
@@ -924,13 +765,13 @@ Present completion with next steps:
 - `.planning/PROJECT.md`
 - `.planning/config.json`
 - `.planning/research/` (if research selected)
-  - `STACK.md`
-  - `FEATURES.md`
-  - `ARCHITECTURE.md`
+  - `CHANNELS.md`
+  - `AUDIENCE.md`
+  - `CONTENT.md`
   - `PITFALLS.md`
   - `SUMMARY.md`
 - `.planning/REQUIREMENTS.md`
-- `.planning/ROADMAP.md`
+- `.planning/BACKLOG.md`
 - `.planning/STATE.md`
 
 </output>
@@ -939,22 +780,22 @@ Present completion with next steps:
 
 - [ ] .planning/ directory created
 - [ ] Git repo initialized
-- [ ] Brownfield detection completed
 - [ ] Deep questioning completed (threads followed, not rushed)
 - [ ] PROJECT.md captures full context → **committed**
-- [ ] config.json has workflow mode, depth, parallelization → **committed**
+- [ ] config.json has workflow mode, depth → **committed**
 - [ ] Research completed (if selected) — 4 parallel agents spawned → **committed**
 - [ ] Requirements gathered (from research or conversation)
 - [ ] User scoped each category (v1/v2/out of scope)
 - [ ] REQUIREMENTS.md created with REQ-IDs → **committed**
-- [ ] mario-roadmapper spawned with context
-- [ ] Roadmap files written immediately (not draft)
+- [ ] mario-backlog-planner spawned with context
+- [ ] Backlog files written immediately (not draft)
 - [ ] User feedback incorporated (if any)
-- [ ] ROADMAP.md created with phases, requirement mappings, success criteria
+- [ ] BACKLOG.md created with plans mapped to requirements
 - [ ] STATE.md initialized
 - [ ] REQUIREMENTS.md traceability updated
-- [ ] User knows next step is `/mario:discuss-phase 1`
+- [ ] User knows next step is `/mario:plan 001`
 
-**Atomic commits:** Each phase commits its artifacts immediately. If context is lost, artifacts persist.
+**Atomic commits:** Each step commits its artifacts immediately. If context is lost, artifacts persist.
 
 </success_criteria>
+</output>

@@ -85,7 +85,7 @@ Common types: Budget, Timeline, Brand guidelines, Regulatory constraints, Channe
 
 **Requirements — Validated:**
 - Requirements that shipped and proved valuable
-- Format: `- ✓ [Requirement] — [version/phase]`
+- Format: `- ✓ [Requirement] — [plan]`
 - These are locked — changing them requires explicit discussion
 
 **Requirements — Active:**
@@ -119,7 +119,7 @@ Common types: Budget, Timeline, Brand guidelines, Regulatory constraints, Channe
 
 **Last Updated:**
 - Always note when and why the document was updated
-- Format: `after Phase 2` or `after v1.0 milestone`
+- Format: `after Plan 002`
 - Triggers review of whether content is still accurate
 
 </guidelines>
@@ -128,18 +128,12 @@ Common types: Budget, Timeline, Brand guidelines, Regulatory constraints, Channe
 
 PROJECT.md evolves throughout the project lifecycle.
 
-**After each phase transition:**
+**After completing each plan:**
 1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
+2. Requirements validated? → Move to Validated with plan reference
 3. New requirements emerged? → Add to Active
 4. Decisions to log? → Add to Key Decisions
 5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone:**
-1. Full review of all sections
-2. Core Message check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state (users, feedback, metrics)
 
 </evolution>
 
@@ -176,7 +170,7 @@ STATE.md references PROJECT.md:
 See: .planning/PROJECT.md (updated [date])
 
 **Core message:** [One-liner from Core Message section]
-**Current focus:** [Current phase name]
+**Current focus:** [Current plan name]
 ```
 
 This ensures Claude reads current PROJECT.md context.

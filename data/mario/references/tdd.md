@@ -38,7 +38,7 @@ Each review plan covers **one content deliverable** through the full DRAFT-REVIE
 
 ```markdown
 ---
-phase: XX-name
+plan: NNN-slug
 plan: NN
 type: review
 ---
@@ -51,7 +51,7 @@ Output: [Polished, reviewed content ready for publication]
 
 <context>
 @.planning/PROJECT.md
-@.planning/ROADMAP.md
+@.planning/BACKLOG.md
 @relevant/strategy/briefs.md
 @relevant/brand/voice-guide.md
 </context>

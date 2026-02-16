@@ -9,34 +9,26 @@ Template for spawning mario-planner agent. The agent contains all planning exper
 ```markdown
 <planning_context>
 
-**Phase:** {phase_number}
-**Mode:** {standard | gap_closure}
+**Plan:** {plan_number}
 
 **Project State:**
 @.planning/STATE.md
 
-**Roadmap:**
-@.planning/ROADMAP.md
+**Backlog:**
+@.planning/BACKLOG.md
 
 **Requirements (if exists):**
 @.planning/REQUIREMENTS.md
 
-**Phase Context (if exists):**
-@.planning/phases/{phase_dir}/{phase}-CONTEXT.md
-
 **Research (if exists):**
-@.planning/phases/{phase_dir}/{phase}-RESEARCH.md
-
-**Gap Closure (if --gaps mode):**
-@.planning/phases/{phase_dir}/{phase}-VERIFICATION.md
-@.planning/phases/{phase_dir}/{phase}-UAT.md
+@.planning/plans/{plan_dir}/{plan}-RESEARCH.md
 
 </planning_context>
 
 <downstream_consumer>
-Output consumed by /mario:execute-phase
+Output consumed by /mario:execute
 Plans must be executable prompts with:
-- Frontmatter (wave, depends_on, files_modified, autonomous)
+- Frontmatter (depends_on, files_modified, autonomous)
 - Tasks in XML format
 - Verification criteria
 - must_haves for goal-backward verification
@@ -44,12 +36,11 @@ Plans must be executable prompts with:
 
 <quality_gate>
 Before returning PLANNING COMPLETE:
-- [ ] PLAN.md files created in phase directory
+- [ ] PLAN.md files created in plan directory
 - [ ] Each plan has valid frontmatter
 - [ ] Tasks are specific and actionable
 - [ ] Dependencies correctly identified
-- [ ] Waves assigned for parallel execution
-- [ ] must_haves derived from phase goal
+- [ ] must_haves derived from plan goal
 </quality_gate>
 ```
 
@@ -59,30 +50,20 @@ Before returning PLANNING COMPLETE:
 
 | Placeholder | Source | Example |
 |-------------|--------|---------|
-| `{phase_number}` | From roadmap/arguments | `5` or `2.1` |
-| `{phase_dir}` | Phase directory name | `05-user-profiles` |
-| `{phase}` | Phase prefix | `05` |
-| `{standard \| gap_closure}` | Mode flag | `standard` |
+| `{plan_number}` | From backlog/arguments | `001` |
+| `{plan_dir}` | Plan directory name | `001-brand-foundation` |
+| `{plan}` | Plan prefix | `001` |
 
 ---
 
 ## Usage
 
-**From /mario:plan-phase (standard mode):**
+**From /mario:plan:**
 ```python
 Task(
   prompt=filled_template,
   subagent_type="mario-planner",
-  description="Plan Phase {phase}"
-)
-```
-
-**From /mario:plan-phase --gaps (gap closure mode):**
-```python
-Task(
-  prompt=filled_template,  # with mode: gap_closure
-  subagent_type="mario-planner",
-  description="Plan gaps for Phase {phase}"
+  description="Plan {plan_number}"
 )
 ```
 
@@ -94,24 +75,20 @@ For checkpoints, spawn fresh agent with:
 
 ```markdown
 <objective>
-Continue planning for Phase {phase_number}: {phase_name}
+Continue planning for Plan {plan_number}: {plan_name}
 </objective>
 
 <prior_state>
-Phase directory: @.planning/phases/{phase_dir}/
-Existing plans: @.planning/phases/{phase_dir}/*-PLAN.md
+Plan directory: @.planning/plans/{plan_dir}/
+Existing plans: @.planning/plans/{plan_dir}/*-PLAN.md
 </prior_state>
 
 <checkpoint_response>
 **Type:** {checkpoint_type}
 **Response:** {user_response}
 </checkpoint_response>
-
-<mode>
-Continue: {standard | gap_closure}
-</mode>
 ```
 
 ---
 
-**Note:** Planning methodology, task breakdown, dependency analysis, wave assignment, TDD detection, and goal-backward derivation are baked into the mario-planner agent. This template only passes context.
+**Note:** Planning methodology, task breakdown, dependency analysis, TDD detection, and goal-backward derivation are baked into the mario-planner agent. This template only passes context.

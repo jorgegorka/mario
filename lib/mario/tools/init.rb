@@ -13,142 +13,107 @@ module Mario
         includes = parse_include_flag(argv)
 
         case workflow
-        when "execute-phase"
-          execute_phase(argv.first, includes, raw: raw)
-        when "plan-phase"
-          plan_phase(argv.first, includes, raw: raw)
+        when "execute"
+          execute(argv.first, includes, raw: raw)
+        when "plan"
+          plan(argv.first, includes, raw: raw)
         when "new-project"
           new_project(raw: raw)
-        when "new-milestone"
-          new_milestone(raw: raw)
         when "quick"
           quick(argv.join(" "), raw: raw)
-        when "resume"
-          resume(raw: raw)
-        when "verify-work"
-          verify_work(argv.first, raw: raw)
-        when "phase-op"
-          phase_op(argv.first, raw: raw)
         when "todos"
           todos(argv.first, raw: raw)
-        when "milestone-op"
-          milestone_op(raw: raw)
-        when "map-codebase"
-          map_codebase(raw: raw)
         when "progress"
           init_progress(includes, raw: raw)
+        when "template"
+          template(argv, raw: raw)
         else
-          Output.error("Unknown init workflow: #{workflow}\nAvailable: execute-phase, plan-phase, new-project, new-milestone, quick, resume, verify-work, phase-op, todos, milestone-op, map-codebase, progress")
+          Output.error("Unknown init workflow: #{workflow}\nAvailable: execute, plan, new-project, quick, todos, progress, template")
         end
       end
 
-      def self.execute_phase(phase, includes, raw: false)
-        Output.error("phase required for init execute-phase") unless phase
+      def self.execute(plan_num, includes, raw: false)
+        Output.error("plan required for init execute") unless plan_num
 
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
-        phase_info = find_phase_internal(cwd, phase)
-        milestone = get_milestone_info(cwd)
-
-        branch_name = if config["branching_strategy"] == "phase" && phase_info
-                        config["phase_branch_template"]
-                          .gsub("{phase}", phase_info[:phase_number])
-                          .gsub("{slug}", phase_info[:phase_slug] || "phase")
-                      elsif config["branching_strategy"] == "milestone"
-                        config["milestone_branch_template"]
-                          .gsub("{milestone}", milestone[:version])
-                          .gsub("{slug}", generate_slug(milestone[:name]) || "milestone")
-                      end
+        plan_info = find_plan_internal(cwd, plan_num)
 
         result = {
           executor_model: resolve_model(cwd, "mario-executor"),
-          verifier_model: resolve_model(cwd, "mario-verifier"),
           commit_docs: config["commit_docs"],
-          parallelization: config["parallelization"],
-          branching_strategy: config["branching_strategy"],
-          phase_branch_template: config["phase_branch_template"],
-          milestone_branch_template: config["milestone_branch_template"],
-          verifier_enabled: config["verifier"],
-          phase_found: !phase_info.nil?,
-          phase_dir: phase_info&.dig(:directory),
-          phase_number: phase_info&.dig(:phase_number),
-          phase_name: phase_info&.dig(:phase_name),
-          phase_slug: phase_info&.dig(:phase_slug),
-          plans: phase_info&.dig(:plans) || [],
-          summaries: phase_info&.dig(:summaries) || [],
-          incomplete_plans: phase_info&.dig(:incomplete_plans) || [],
-          plan_count: phase_info&.dig(:plans)&.length || 0,
-          incomplete_count: phase_info&.dig(:incomplete_plans)&.length || 0,
-          branch_name: branch_name,
-          milestone_version: milestone[:version],
-          milestone_name: milestone[:name],
-          milestone_slug: generate_slug(milestone[:name]),
+          plan_found: !plan_info.nil?,
+          plan_dir: plan_info&.dig(:directory),
+          plan_number: plan_info&.dig(:plan_number),
+          plan_name: plan_info&.dig(:plan_name),
+          plan_slug: plan_info&.dig(:plan_slug),
+          plans: plan_info&.dig(:plans) || [],
+          summaries: plan_info&.dig(:summaries) || [],
+          incomplete_plans: plan_info&.dig(:incomplete_plans) || [],
+          plan_count: plan_info&.dig(:plans)&.length || 0,
+          incomplete_count: plan_info&.dig(:incomplete_plans)&.length || 0,
           state_exists: path_exists?(cwd, ".planning/STATE.md"),
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
+          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
           config_exists: path_exists?(cwd, ".planning/config.json")
         }
 
         result[:state_content] = safe_read_file(File.join(cwd, ".planning", "STATE.md")) if includes.include?("state")
-        result[:config_content] = safe_read_file(File.join(cwd, ".planning", "config.json")) if includes.include?("config")
-        result[:roadmap_content] = safe_read_file(File.join(cwd, ".planning", "ROADMAP.md")) if includes.include?("roadmap")
+        if includes.include?("config")
+          result[:config_content] =
+            safe_read_file(File.join(cwd, ".planning", "config.json"))
+        end
+        if includes.include?("backlog")
+          result[:backlog_content] =
+            safe_read_file(File.join(cwd, ".planning", "BACKLOG.md"))
+        end
 
         Output.json(result, raw: raw)
       end
 
-      def self.plan_phase(phase, includes, raw: false)
-        Output.error("phase required for init plan-phase") unless phase
+      def self.plan(plan_num, includes, raw: false)
+        Output.error("plan required for init plan") unless plan_num
 
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
-        phase_info = find_phase_internal(cwd, phase)
+        plan_info = find_plan_internal(cwd, plan_num)
 
         result = {
           researcher_model: resolve_model(cwd, "mario-phase-researcher"),
           planner_model: resolve_model(cwd, "mario-planner"),
-          checker_model: resolve_model(cwd, "mario-plan-checker"),
           research_enabled: config["research"],
-          plan_checker_enabled: config["plan_checker"],
           commit_docs: config["commit_docs"],
-          phase_found: !phase_info.nil?,
-          phase_dir: phase_info&.dig(:directory),
-          phase_number: phase_info&.dig(:phase_number),
-          phase_name: phase_info&.dig(:phase_name),
-          phase_slug: phase_info&.dig(:phase_slug),
-          padded_phase: phase_info&.dig(:phase_number)&.rjust(2, "0"),
-          has_research: phase_info&.dig(:has_research) || false,
-          has_context: phase_info&.dig(:has_context) || false,
-          has_plans: (phase_info&.dig(:plans)&.length || 0) > 0,
-          plan_count: phase_info&.dig(:plans)&.length || 0,
+          plan_found: !plan_info.nil?,
+          plan_dir: plan_info&.dig(:directory),
+          plan_number: plan_info&.dig(:plan_number),
+          plan_name: plan_info&.dig(:plan_name),
+          plan_slug: plan_info&.dig(:plan_slug),
+          has_research: plan_info&.dig(:has_research) || false,
+          has_plans: (plan_info&.dig(:plans)&.length || 0).positive?,
+          plan_count: plan_info&.dig(:plans)&.length || 0,
           planning_exists: path_exists?(cwd, ".planning"),
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md")
+          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md")
         }
 
         result[:state_content] = safe_read_file(File.join(cwd, ".planning", "STATE.md")) if includes.include?("state")
-        result[:roadmap_content] = safe_read_file(File.join(cwd, ".planning", "ROADMAP.md")) if includes.include?("roadmap")
-        result[:requirements_content] = safe_read_file(File.join(cwd, ".planning", "REQUIREMENTS.md")) if includes.include?("requirements")
-
-        if includes.include?("context") && phase_info&.dig(:directory)
-          phase_dir_full = File.join(cwd, phase_info[:directory])
-          context_file = Dir.children(phase_dir_full).find { |f| f.end_with?("-CONTEXT.md") || f == "CONTEXT.md" } rescue nil
-          result[:context_content] = safe_read_file(File.join(phase_dir_full, context_file)) if context_file
+        if includes.include?("backlog")
+          result[:backlog_content] =
+            safe_read_file(File.join(cwd, ".planning", "BACKLOG.md"))
+        end
+        if includes.include?("requirements")
+          result[:requirements_content] =
+            safe_read_file(File.join(cwd, ".planning", "REQUIREMENTS.md"))
         end
 
-        if includes.include?("research") && phase_info&.dig(:directory)
-          phase_dir_full = File.join(cwd, phase_info[:directory])
-          research_file = Dir.children(phase_dir_full).find { |f| f.end_with?("-RESEARCH.md") || f == "RESEARCH.md" } rescue nil
-          result[:research_content] = safe_read_file(File.join(phase_dir_full, research_file)) if research_file
-        end
-
-        if includes.include?("verification") && phase_info&.dig(:directory)
-          phase_dir_full = File.join(cwd, phase_info[:directory])
-          verification_file = Dir.children(phase_dir_full).find { |f| f.end_with?("-VERIFICATION.md") || f == "VERIFICATION.md" } rescue nil
-          result[:verification_content] = safe_read_file(File.join(phase_dir_full, verification_file)) if verification_file
-        end
-
-        if includes.include?("uat") && phase_info&.dig(:directory)
-          phase_dir_full = File.join(cwd, phase_info[:directory])
-          uat_file = Dir.children(phase_dir_full).find { |f| f.end_with?("-UAT.md") || f == "UAT.md" } rescue nil
-          result[:uat_content] = safe_read_file(File.join(phase_dir_full, uat_file)) if uat_file
+        if includes.include?("research") && plan_info&.dig(:directory)
+          plan_dir_full = File.join(cwd, plan_info[:directory])
+          research_file = begin
+            Dir.children(plan_dir_full).find do |f|
+              f.end_with?("-RESEARCH.md") || f == "RESEARCH.md"
+            end
+          rescue StandardError
+            nil
+          end
+          result[:research_content] = safe_read_file(File.join(plan_dir_full, research_file)) if research_file
         end
 
         Output.json(result, raw: raw)
@@ -174,7 +139,7 @@ module Mario
         result = {
           researcher_model: resolve_model(cwd, "mario-project-researcher"),
           synthesizer_model: resolve_model(cwd, "mario-research-synthesizer"),
-          roadmapper_model: resolve_model(cwd, "mario-roadmapper"),
+          backlog_planner_model: resolve_model(cwd, "mario-backlog-planner"),
           commit_docs: config["commit_docs"],
           project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
           has_codebase_map: path_exists?(cwd, ".planning/codebase"),
@@ -189,120 +154,39 @@ module Mario
         Output.json(result, raw: raw)
       end
 
-      def self.new_milestone(raw: false)
-        cwd = Dir.pwd
-        config = ConfigManager.load_config(cwd)
-        milestone = get_milestone_info(cwd)
-
-        result = {
-          researcher_model: resolve_model(cwd, "mario-project-researcher"),
-          synthesizer_model: resolve_model(cwd, "mario-research-synthesizer"),
-          roadmapper_model: resolve_model(cwd, "mario-roadmapper"),
-          commit_docs: config["commit_docs"],
-          research_enabled: config["research"],
-          current_milestone: milestone[:version],
-          current_milestone_name: milestone[:name],
-          project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
-          state_exists: path_exists?(cwd, ".planning/STATE.md")
-        }
-
-        Output.json(result, raw: raw)
-      end
-
       def self.quick(description, raw: false)
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
         now = Time.now.utc
         slug = description && !description.empty? ? generate_slug(description)&.slice(0, 40) : nil
 
-        quick_dir = File.join(cwd, ".planning", "quick")
+        plans_dir = File.join(cwd, ".planning", "plans")
         next_num = 1
-        if File.directory?(quick_dir)
-          existing = Dir.children(quick_dir)
-                        .filter_map { |f| m = f.match(/\A(\d+)-/); m ? m[1].to_i : nil }
+        if File.directory?(plans_dir)
+          existing = Dir.children(plans_dir)
+                        .select { |d| File.directory?(File.join(plans_dir, d)) }
+                        .filter_map do |d|
+                          m = d.match(/\A(\d+)/)
+                          m ? m[1].to_i : nil
+          end
           next_num = existing.max + 1 if existing.any?
         end
+
+        padded = format("%03d", next_num)
 
         result = {
           planner_model: resolve_model(cwd, "mario-planner"),
           executor_model: resolve_model(cwd, "mario-executor"),
           commit_docs: config["commit_docs"],
           next_num: next_num,
+          padded_num: padded,
           slug: slug,
           description: description && !description.empty? ? description : nil,
           date: now.strftime("%Y-%m-%d"),
           timestamp: now.iso8601,
-          quick_dir: ".planning/quick",
-          task_dir: slug ? ".planning/quick/#{next_num}-#{slug}" : nil,
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
-          planning_exists: path_exists?(cwd, ".planning")
-        }
-
-        Output.json(result, raw: raw)
-      end
-
-      def self.resume(raw: false)
-        cwd = Dir.pwd
-        config = ConfigManager.load_config(cwd)
-
-        interrupted_agent_id = nil
-        agent_file = File.join(cwd, ".planning", "current-agent-id.txt")
-        interrupted_agent_id = File.read(agent_file).strip if File.exist?(agent_file)
-
-        result = {
-          state_exists: path_exists?(cwd, ".planning/STATE.md"),
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
-          project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
-          planning_exists: path_exists?(cwd, ".planning"),
-          has_interrupted_agent: !interrupted_agent_id.nil?,
-          interrupted_agent_id: interrupted_agent_id,
-          commit_docs: config["commit_docs"]
-        }
-
-        Output.json(result, raw: raw)
-      end
-
-      def self.verify_work(phase, raw: false)
-        Output.error("phase required for init verify-work") unless phase
-
-        cwd = Dir.pwd
-        config = ConfigManager.load_config(cwd)
-        phase_info = find_phase_internal(cwd, phase)
-
-        result = {
-          planner_model: resolve_model(cwd, "mario-planner"),
-          checker_model: resolve_model(cwd, "mario-plan-checker"),
-          commit_docs: config["commit_docs"],
-          phase_found: !phase_info.nil?,
-          phase_dir: phase_info&.dig(:directory),
-          phase_number: phase_info&.dig(:phase_number),
-          phase_name: phase_info&.dig(:phase_name),
-          has_verification: phase_info&.dig(:has_verification) || false
-        }
-
-        Output.json(result, raw: raw)
-      end
-
-      def self.phase_op(phase, raw: false)
-        cwd = Dir.pwd
-        config = ConfigManager.load_config(cwd)
-        phase_info = find_phase_internal(cwd, phase)
-
-        result = {
-          commit_docs: config["commit_docs"],
-          phase_found: !phase_info.nil?,
-          phase_dir: phase_info&.dig(:directory),
-          phase_number: phase_info&.dig(:phase_number),
-          phase_name: phase_info&.dig(:phase_name),
-          phase_slug: phase_info&.dig(:phase_slug),
-          padded_phase: phase_info&.dig(:phase_number)&.rjust(2, "0"),
-          has_research: phase_info&.dig(:has_research) || false,
-          has_context: phase_info&.dig(:has_context) || false,
-          has_plans: (phase_info&.dig(:plans)&.length || 0) > 0,
-          has_verification: phase_info&.dig(:has_verification) || false,
-          plan_count: phase_info&.dig(:plans)&.length || 0,
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
+          plans_dir: ".planning/plans",
+          task_dir: slug ? ".planning/plans/#{padded}-#{slug}" : nil,
+          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
           planning_exists: path_exists?(cwd, ".planning")
         }
 
@@ -352,68 +236,38 @@ module Mario
         Output.json(result, raw: raw)
       end
 
-      def self.milestone_op(raw: false)
+      def self.template(argv, raw: false)
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
-        milestone = get_milestone_info(cwd)
 
-        phases_dir = File.join(cwd, ".planning", "phases")
-        phase_count = 0
-        completed_phases = 0
+        require_relative "template_manager"
+        TemplateManager.list(raw: false)
 
-        if File.directory?(phases_dir)
-          dirs = Dir.children(phases_dir).select { |d| File.directory?(File.join(phases_dir, d)) }
-          phase_count = dirs.length
-          dirs.each do |dir|
-            phase_files = Dir.children(File.join(phases_dir, dir))
-            completed_phases += 1 if phase_files.any? { |f| f.end_with?("-SUMMARY.md") || f == "SUMMARY.md" }
+        plans_dir = File.join(cwd, ".planning", "plans")
+        next_num = 1
+        if File.directory?(plans_dir)
+          existing = Dir.children(plans_dir)
+                        .select { |d| File.directory?(File.join(plans_dir, d)) }
+                        .filter_map do |d|
+                          m = d.match(/\A(\d+)/)
+                          m ? m[1].to_i : nil
           end
+          next_num = existing.max + 1 if existing.any?
         end
 
-        archive_dir = File.join(cwd, ".planning", "archive")
-        archived_milestones = []
-        if File.directory?(archive_dir)
-          archived_milestones = Dir.children(archive_dir).select { |e| File.directory?(File.join(archive_dir, e)) }
-        end
+        padded = format("%03d", next_num)
+        template_name = argv.first
 
         result = {
+          planner_model: resolve_model(cwd, "mario-planner"),
+          executor_model: resolve_model(cwd, "mario-executor"),
           commit_docs: config["commit_docs"],
-          milestone_version: milestone[:version],
-          milestone_name: milestone[:name],
-          milestone_slug: generate_slug(milestone[:name]),
-          phase_count: phase_count,
-          completed_phases: completed_phases,
-          all_phases_complete: phase_count > 0 && phase_count == completed_phases,
-          archived_milestones: archived_milestones,
-          archive_count: archived_milestones.length,
-          project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
-          state_exists: path_exists?(cwd, ".planning/STATE.md"),
-          archive_exists: path_exists?(cwd, ".planning/archive"),
-          phases_dir_exists: path_exists?(cwd, ".planning/phases")
-        }
-
-        Output.json(result, raw: raw)
-      end
-
-      def self.map_codebase(raw: false)
-        cwd = Dir.pwd
-        config = ConfigManager.load_config(cwd)
-
-        codebase_dir = File.join(cwd, ".planning", "codebase")
-        existing_maps = []
-        existing_maps = Dir.children(codebase_dir).select { |f| f.end_with?(".md") } if File.directory?(codebase_dir)
-
-        result = {
-          mapper_model: resolve_model(cwd, "mario-codebase-mapper"),
-          commit_docs: config["commit_docs"],
-          search_gitignored: config["search_gitignored"],
-          parallelization: config["parallelization"],
-          codebase_dir: ".planning/codebase",
-          existing_maps: existing_maps,
-          has_maps: existing_maps.any?,
-          planning_exists: path_exists?(cwd, ".planning"),
-          codebase_dir_exists: path_exists?(cwd, ".planning/codebase")
+          template_name: template_name,
+          next_num: next_num,
+          padded_num: padded,
+          plans_dir: ".planning/plans",
+          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
+          planning_exists: path_exists?(cwd, ".planning")
         }
 
         Output.json(result, raw: raw)
@@ -422,33 +276,32 @@ module Mario
       def self.init_progress(includes, raw: false)
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
-        milestone = get_milestone_info(cwd)
 
-        phases_dir = File.join(cwd, ".planning", "phases")
-        phases = []
-        current_phase = nil
-        next_phase = nil
+        plans_dir = File.join(cwd, ".planning", "plans")
+        plans = []
+        current_plan = nil
+        next_plan = nil
 
-        if File.directory?(phases_dir)
-          dirs = Dir.children(phases_dir)
-                    .select { |d| File.directory?(File.join(phases_dir, d)) }
+        if File.directory?(plans_dir)
+          dirs = Dir.children(plans_dir)
+                    .select { |d| File.directory?(File.join(plans_dir, d)) }
                     .sort
 
           dirs.each do |dir|
-            m = dir.match(/\A(\d+(?:\.\d+)?)-?(.*)/)
-            phase_number = m ? m[1] : dir
-            phase_name = m && !m[2].empty? ? m[2] : nil
+            m = dir.match(/\A(\d+)-?(.*)/)
+            plan_number = m ? m[1] : dir
+            plan_name = m && !m[2].empty? ? m[2] : nil
 
-            phase_path = File.join(phases_dir, dir)
-            phase_files = Dir.children(phase_path)
+            plan_path = File.join(plans_dir, dir)
+            plan_files = Dir.children(plan_path)
 
-            plans = phase_files.select { |f| f.end_with?("-PLAN.md") || f == "PLAN.md" }
-            summaries = phase_files.select { |f| f.end_with?("-SUMMARY.md") || f == "SUMMARY.md" }
-            has_research = phase_files.any? { |f| f.end_with?("-RESEARCH.md") || f == "RESEARCH.md" }
+            plan_docs = plan_files.select { |f| f.end_with?("-PLAN.md") || f == "PLAN.md" }
+            summaries = plan_files.select { |f| f.end_with?("-SUMMARY.md") || f == "SUMMARY.md" }
+            has_research = plan_files.any? { |f| f.end_with?("-RESEARCH.md") || f == "RESEARCH.md" }
 
-            status = if summaries.length >= plans.length && plans.any?
+            status = if summaries.length >= plan_docs.length && plan_docs.any?
                        "complete"
-                     elsif plans.any?
+                     elsif plan_docs.any?
                        "in_progress"
                      elsif has_research
                        "researched"
@@ -456,81 +309,77 @@ module Mario
                        "pending"
                      end
 
-            phase_entry = {
-              number: phase_number, name: phase_name,
-              directory: File.join(".planning", "phases", dir),
-              status: status, plan_count: plans.length,
+            plan_entry = {
+              number: plan_number, name: plan_name,
+              directory: File.join(".planning", "plans", dir),
+              status: status, plan_count: plan_docs.length,
               summary_count: summaries.length, has_research: has_research
             }
 
-            phases << phase_entry
-            current_phase ||= phase_entry if status == "in_progress" || status == "researched"
-            next_phase ||= phase_entry if status == "pending"
+            plans << plan_entry
+            current_plan ||= plan_entry if %w[in_progress researched].include?(status)
+            next_plan ||= plan_entry if status == "pending"
           end
-        end
-
-        paused_at = nil
-        state_path = File.join(cwd, ".planning", "STATE.md")
-        if File.exist?(state_path)
-          state_content = File.read(state_path)
-          pause_match = state_content.match(/\*\*Paused At:\*\*\s*(.+)/)
-          paused_at = pause_match[1].strip if pause_match
         end
 
         result = {
           executor_model: resolve_model(cwd, "mario-executor"),
           planner_model: resolve_model(cwd, "mario-planner"),
           commit_docs: config["commit_docs"],
-          milestone_version: milestone[:version],
-          milestone_name: milestone[:name],
-          phases: phases,
-          phase_count: phases.length,
-          completed_count: phases.count { |p| p[:status] == "complete" },
-          in_progress_count: phases.count { |p| p[:status] == "in_progress" },
-          current_phase: current_phase,
-          next_phase: next_phase,
-          paused_at: paused_at,
-          has_work_in_progress: !current_phase.nil?,
+          plans: plans,
+          plan_count: plans.length,
+          completed_count: plans.count { |p| p[:status] == "complete" },
+          in_progress_count: plans.count { |p| p[:status] == "in_progress" },
+          current_plan: current_plan,
+          next_plan: next_plan,
+          has_work_in_progress: !current_plan.nil?,
           project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
-          roadmap_exists: path_exists?(cwd, ".planning/ROADMAP.md"),
+          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
           state_exists: path_exists?(cwd, ".planning/STATE.md")
         }
 
         result[:state_content] = safe_read_file(File.join(cwd, ".planning", "STATE.md")) if includes.include?("state")
-        result[:roadmap_content] = safe_read_file(File.join(cwd, ".planning", "ROADMAP.md")) if includes.include?("roadmap")
-        result[:project_content] = safe_read_file(File.join(cwd, ".planning", "PROJECT.md")) if includes.include?("project")
-        result[:config_content] = safe_read_file(File.join(cwd, ".planning", "config.json")) if includes.include?("config")
+        if includes.include?("backlog")
+          result[:backlog_content] =
+            safe_read_file(File.join(cwd, ".planning", "BACKLOG.md"))
+        end
+        if includes.include?("project")
+          result[:project_content] =
+            safe_read_file(File.join(cwd, ".planning", "PROJECT.md"))
+        end
+        if includes.include?("config")
+          result[:config_content] =
+            safe_read_file(File.join(cwd, ".planning", "config.json"))
+        end
 
         Output.json(result, raw: raw)
       end
 
       # --- Private helpers ---
 
-      def self.find_phase_internal(cwd, phase)
-        return nil unless phase
+      def self.find_plan_internal(cwd, plan_num)
+        return nil unless plan_num
 
-        phases_dir = File.join(cwd, ".planning", "phases")
-        normalized = normalize_phase(phase)
+        plans_dir = File.join(cwd, ".planning", "plans")
+        normalized = normalize_plan_number(plan_num)
 
-        return nil unless File.directory?(phases_dir)
+        return nil unless File.directory?(plans_dir)
 
-        dirs = Dir.children(phases_dir).select { |d| File.directory?(File.join(phases_dir, d)) }.sort
-        match = dirs.find { |d| d.start_with?(normalized) }
+        dirs = Dir.children(plans_dir).select { |d| File.directory?(File.join(plans_dir, d)) }.sort
+        match = dirs.find { |d| d.start_with?("#{normalized}-") || d == normalized }
         return nil unless match
 
-        dir_match = match.match(/\A(\d+(?:\.\d+)?)-?(.*)/)
-        phase_number = dir_match ? dir_match[1] : normalized
-        phase_name = dir_match && !dir_match[2].empty? ? dir_match[2] : nil
-        phase_slug = phase_name ? phase_name.downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-+|-+\z/, "") : nil
+        dir_match = match.match(/\A(\d+)-?(.*)/)
+        plan_number = dir_match ? dir_match[1] : normalized
+        plan_name = dir_match && !dir_match[2].empty? ? dir_match[2] : nil
+        plan_slug = plan_name ? plan_name.downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-+|-+\z/, "") : nil
 
-        phase_dir = File.join(phases_dir, match)
-        phase_files = Dir.children(phase_dir)
+        plan_dir = File.join(plans_dir, match)
+        plan_files = Dir.children(plan_dir)
 
-        plans = phase_files.select { |f| f.end_with?("-PLAN.md") || f == "PLAN.md" }.sort
-        summaries = phase_files.select { |f| f.end_with?("-SUMMARY.md") || f == "SUMMARY.md" }.sort
-        has_research = phase_files.any? { |f| f.end_with?("-RESEARCH.md") || f == "RESEARCH.md" }
-        has_context = phase_files.any? { |f| f.end_with?("-CONTEXT.md") || f == "CONTEXT.md" }
-        has_verification = phase_files.any? { |f| f.end_with?("-VERIFICATION.md") || f == "VERIFICATION.md" }
+        plans = plan_files.select { |f| f.end_with?("-PLAN.md") || f == "PLAN.md" }.sort
+        summaries = plan_files.select { |f| f.end_with?("-SUMMARY.md") || f == "SUMMARY.md" }.sort
+        has_research = plan_files.any? { |f| f.end_with?("-RESEARCH.md") || f == "RESEARCH.md" }
 
         completed_plan_ids = summaries.map { |s| s.sub(/-SUMMARY\.md$/, "").sub(/\ASUMMARY\.md$/, "") }
         incomplete_plans = plans.reject do |p|
@@ -539,31 +388,17 @@ module Mario
         end
 
         {
-          directory: File.join(".planning", "phases", match),
-          phase_number: phase_number,
-          phase_name: phase_name,
-          phase_slug: phase_slug,
+          directory: File.join(".planning", "plans", match),
+          plan_number: plan_number,
+          plan_name: plan_name,
+          plan_slug: plan_slug,
           plans: plans,
           summaries: summaries,
           incomplete_plans: incomplete_plans,
-          has_research: has_research,
-          has_context: has_context,
-          has_verification: has_verification
+          has_research: has_research
         }
       rescue StandardError
         nil
-      end
-
-      def self.get_milestone_info(cwd)
-        roadmap = File.read(File.join(cwd, ".planning", "ROADMAP.md"))
-        version_match = roadmap.match(/v(\d+\.\d+)/)
-        name_match = roadmap.match(/## .*v\d+\.\d+[:\s]+([^\n(]+)/)
-        {
-          version: version_match ? version_match[0] : "v1.0",
-          name: name_match ? name_match[1].strip : "milestone"
-        }
-      rescue Errno::ENOENT
-        { version: "v1.0", name: "milestone" }
       end
 
       def self.resolve_model(cwd, agent_type)
@@ -588,13 +423,11 @@ module Mario
         text.downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-+|-+\z/, "")
       end
 
-      def self.normalize_phase(phase)
-        match = phase.to_s.match(/\A(\d+(?:\.\d+)?)/)
-        return phase.to_s unless match
+      def self.normalize_plan_number(plan_num)
+        match = plan_num.to_s.match(/\A(\d+)/)
+        return plan_num.to_s unless match
 
-        parts = match[1].split(".")
-        padded = parts[0].rjust(2, "0")
-        parts.length > 1 ? "#{padded}.#{parts[1]}" : padded
+        match[1].rjust(3, "0")
       end
 
       def self.parse_include_flag(argv)
@@ -607,9 +440,9 @@ module Mario
         value.split(",").map(&:strip)
       end
 
-      private_class_method :find_phase_internal, :get_milestone_info, :resolve_model,
+      private_class_method :find_plan_internal, :resolve_model,
                            :path_exists?, :safe_read_file, :generate_slug,
-                           :normalize_phase, :parse_include_flag
+                           :normalize_plan_number, :parse_include_flag
     end
   end
 end

@@ -454,7 +454,7 @@ I'll verify: Campaign IDs provided, landing pages load correctly
 
 **Placement:**
 - **After automation completes** - not before Claude does the work
-- **After UI buildout** - before declaring phase complete
+- **After UI buildout** - before declaring plan complete
 - **Before dependent work** - decisions before implementation
 - **At integration points** - after configuring external services
 

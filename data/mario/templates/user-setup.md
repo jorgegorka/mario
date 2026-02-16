@@ -1,6 +1,6 @@
 # User Setup Template
 
-Template for `.planning/phases/XX-name/{phase}-USER-SETUP.md` - human-required configuration that Claude cannot automate.
+Template for `.planning/plans/XX-name/{plan}-USER-SETUP.md` - human-required configuration that Claude cannot automate.
 
 **Purpose:** Document setup tasks that literally require human action - account creation, dashboard configuration, secret retrieval. Claude automates everything possible; this file captures only what remains.
 
@@ -9,10 +9,10 @@ Template for `.planning/phases/XX-name/{phase}-USER-SETUP.md` - human-required c
 ## File Template
 
 ```markdown
-# Phase {X}: User Setup Required
+# Plan {X}: User Setup Required
 
 **Generated:** [YYYY-MM-DD]
-**Phase:** {phase-name}
+**Plan:** {plan-name}
 **Status:** Incomplete
 
 Complete these items for the integration to function. Claude automated everything possible; these items require human access to external dashboards/accounts.
@@ -61,13 +61,13 @@ Expected results:
 
 ## When to Generate
 
-Generate `{phase}-USER-SETUP.md` when plan frontmatter contains `user_setup` field.
+Generate `{plan}-USER-SETUP.md` when plan frontmatter contains `user_setup` field.
 
 **Trigger:** `user_setup` exists in PLAN.md frontmatter and has items.
 
 **Location:** Same directory as PLAN.md and SUMMARY.md.
 
-**Timing:** Generated during execute-plan.md after tasks complete, before SUMMARY.md creation.
+**Timing:** Generated during execute workflow after tasks complete, before SUMMARY.md creation.
 
 ---
 
@@ -118,10 +118,10 @@ user_setup:
 
 <stripe_example>
 ```markdown
-# Phase 10: User Setup Required
+# Plan 10: User Setup Required
 
 **Generated:** 2025-01-14
-**Phase:** 10-monetization
+**Plan:** 10-monetization
 **Status:** Incomplete
 
 Complete these items for Stripe integration to function.
@@ -193,10 +193,10 @@ Expected: Build passes, webhook returns 400 (signature validation working).
 
 <stripe_example>
 ```markdown
-# Phase 2: User Setup Required
+# Plan 2: User Setup Required
 
 **Generated:** 2025-01-14
-**Phase:** 02-authentication
+**Plan:** 02-authentication
 **Status:** Incomplete
 
 Complete these items for Stripe Payments to function.
@@ -246,10 +246,10 @@ bin/rails runner "Stripe::Account.retrieve"
 
 <sendgrid_example>
 ```markdown
-# Phase 5: User Setup Required
+# Plan 5: User Setup Required
 
 **Generated:** 2025-01-14
-**Phase:** 05-notifications
+**Plan:** 05-notifications
 **Status:** Incomplete
 
 Complete these items for SendGrid email to function.
@@ -305,6 +305,6 @@ curl -X POST http://localhost:3000/api/test-email \
 
 **Never include:** Actual secret values. Steps Claude can automate (package installs, code changes).
 
-**Naming:** `{phase}-USER-SETUP.md` matches the phase number pattern.
+**Naming:** `{plan}-USER-SETUP.md` matches the plan number pattern.
 **Status tracking:** User marks checkboxes and updates status line when complete.
-**Searchability:** `grep -r "USER-SETUP" .planning/` finds all phases with user requirements.
+**Searchability:** `grep -r "USER-SETUP" .planning/` finds all plans with user requirements.

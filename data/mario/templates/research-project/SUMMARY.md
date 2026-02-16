@@ -22,9 +22,9 @@ Template for `.planning/research/SUMMARY.md` — executive summary of project re
 
 ## Key Findings
 
-### Recommended Marketing Stack
+### Recommended Marketing Channels
 
-[Summary from STACK.md — 1-2 paragraphs on why this combination of marketing tools and channels fits the project]
+[Summary from CHANNELS.md — 1-2 paragraphs on why this combination of marketing tools and channels fits the project]
 
 **Website & CMS:**
 - [Platform]: [purpose] — [why recommended — e.g., WordPress for content flexibility, Webflow for design control, static site for simplicity]
@@ -53,7 +53,7 @@ Template for `.planning/research/SUMMARY.md` — executive summary of project re
 
 ### Target Audience & Messaging
 
-[Summary from FEATURES.md]
+[Summary from AUDIENCE.md]
 
 **Must have (table stakes):**
 - [Content/asset] — audience expects this
@@ -66,9 +66,9 @@ Template for `.planning/research/SUMMARY.md` — executive summary of project re
 **Defer (v2+):**
 - [Content/asset] — not essential for launch
 
-### Content Architecture Approach
+### Content Strategy Approach
 
-[Summary from ARCHITECTURE.md — 1 paragraph covering the content organization, channel strategy, and any patterns beyond basic marketing]
+[Summary from CONTENT.md — 1 paragraph covering the content organization, channel strategy, and any patterns beyond basic marketing]
 
 **Content structure:**
 1. [Strategy layer] — [approach — e.g., brand positioning, messaging hierarchy, audience personas]
@@ -96,65 +96,65 @@ Template for `.planning/research/SUMMARY.md` — executive summary of project re
 6. **[Email deliverability issues]** — [how to avoid — e.g., domain authentication, list hygiene, warm-up plan]
 7. **[Compliance gaps]** — [how to avoid — e.g., privacy policy, opt-in compliance, claim substantiation]
 
-## Implications for Roadmap
+## Implications for Backlog
 
-Based on research, suggested phase structure for this marketing project:
+Based on research, suggested plan structure for this marketing project:
 
-### Phase 1: Foundation — Audience Research, Brand Positioning & Voice
+### Plan 1: Foundation — Audience Research, Brand Positioning & Voice
 **Rationale:** [why this comes first — e.g., all content depends on knowing the audience and having clear positioning; brand voice consistency requires documentation before content creation]
-**Delivers:** [what this phase produces — e.g., buyer personas, positioning statement, messaging hierarchy, brand voice guide, competitive analysis]
+**Delivers:** [what this plan produces — e.g., buyer personas, positioning statement, messaging hierarchy, brand voice guide, competitive analysis]
 **Addresses:** [assets from research — e.g., audience definition, competitive differentiation]
 **Avoids:** [pitfall from PITFALLS.md — e.g., inconsistent voice by establishing guidelines early, feature-focused copy by completing customer research first]
-**Stack elements:** [from STACK.md — e.g., analytics setup, CRM configuration, brand asset creation]
+**Stack elements:** [from CHANNELS.md — e.g., analytics setup, CRM configuration, brand asset creation]
 
-### Phase 2: Web Content — Homepage, Landing Pages & Conversion Copy
+### Plan 2: Web Content — Homepage, Landing Pages & Conversion Copy
 **Rationale:** [why this order — e.g., website is the hub all other channels drive to; with positioning stable, build the conversion-optimized web presence]
-**Delivers:** [what this phase produces — e.g., homepage copy, landing pages, feature pages, comparison pages, pricing page copy, CTA optimization]
+**Delivers:** [what this plan produces — e.g., homepage copy, landing pages, feature pages, comparison pages, pricing page copy, CTA optimization]
 **Addresses:** [assets from research — e.g., primary conversion paths, key landing pages]
-**Uses:** [stack elements from STACK.md — e.g., CMS, analytics, A/B testing tools]
+**Uses:** [stack elements from CHANNELS.md — e.g., CMS, analytics, A/B testing tools]
 **Implements:** [architecture component — e.g., website content layer, conversion funnel]
 
-### Phase 3: Email Marketing — Sequences, Automation & List Building
+### Plan 3: Email Marketing — Sequences, Automation & List Building
 **Rationale:** [why this order — e.g., web content establishes the conversion points; email captures and nurtures leads from those points]
-**Delivers:** [what this phase produces — e.g., welcome sequence, nurture flows, re-engagement series, lead magnets, list segmentation]
+**Delivers:** [what this plan produces — e.g., welcome sequence, nurture flows, re-engagement series, lead magnets, list segmentation]
 **Addresses:** [assets from research — e.g., subscriber onboarding, lead nurture, retention emails]
-**Uses:** [stack elements from STACK.md — e.g., email service provider, automation platform, lead capture forms]
+**Uses:** [stack elements from CHANNELS.md — e.g., email service provider, automation platform, lead capture forms]
 **Avoids:** [pitfall from PITFALLS.md — e.g., deliverability issues by authenticating domain first, compliance gaps by building opt-in properly]
 
-### Phase 4: Content & Distribution — Blog, SEO, Social & Promotion
+### Plan 4: Content & Distribution — Blog, SEO, Social & Promotion
 **Rationale:** [why this order — e.g., with conversion infrastructure in place, drive traffic through content marketing and social channels]
-**Delivers:** [what this phase produces — e.g., blog content calendar, SEO-optimized articles, social media content, distribution workflows, content repurposing system]
+**Delivers:** [what this plan produces — e.g., blog content calendar, SEO-optimized articles, social media content, distribution workflows, content repurposing system]
 **Addresses:** [assets from research — e.g., organic traffic growth, social presence, content library]
-**Uses:** [stack elements from STACK.md — e.g., SEO tools, social scheduling, content management]
+**Uses:** [stack elements from CHANNELS.md — e.g., SEO tools, social scheduling, content management]
 **Avoids:** [pitfall from PITFALLS.md — e.g., content without distribution by planning promotion alongside creation]
 
-[Continue for additional phases if needed...]
+[Continue for additional plans if needed...]
 
-### Phase Ordering Rationale
+### Plan Ordering Rationale
 
 - [Why audience research and positioning come first — e.g., all content flows from audience understanding and brand positioning; without these, content is guesswork]
 - [Why web content before email — e.g., email drives to the website; website must be ready to convert before driving traffic to it]
 - [Why content and distribution are last — e.g., ongoing content creation benefits from established brand voice, proven messaging, and functioning conversion paths]
-- [How this avoids pitfalls from research — e.g., early brand voice documentation prevents inconsistency; measurement setup in phase 1 means all subsequent phases have data]
+- [How this avoids pitfalls from research — e.g., early brand voice documentation prevents inconsistency; measurement setup in plan 1 means all subsequent plans have data]
 
 ### Research Flags
 
-Phases likely needing deeper research during planning:
-- **Phase [X]:** [reason — e.g., "competitor messaging landscape needs detailed analysis before positioning"]
-- **Phase [Y]:** [reason — e.g., "email automation complexity depends on CRM capabilities and list size"]
-- **Phase [Z]:** [reason — e.g., "SEO keyword landscape research needed before content calendar"]
+Plans likely needing deeper research during planning:
+- **Plan [X]:** [reason — e.g., "competitor messaging landscape needs detailed analysis before positioning"]
+- **Plan [Y]:** [reason — e.g., "email automation complexity depends on CRM capabilities and list size"]
+- **Plan [Z]:** [reason — e.g., "SEO keyword landscape research needed before content calendar"]
 
-Phases with standard marketing patterns (skip research-phase):
-- **Phase [X]:** [reason — e.g., "standard email welcome sequence, well-documented best practices"]
-- **Phase [Y]:** [reason — e.g., "social media content follows established platform playbooks"]
+Plans with standard marketing patterns (skip research):
+- **Plan [X]:** [reason — e.g., "standard email welcome sequence, well-documented best practices"]
+- **Plan [Y]:** [reason — e.g., "social media content follows established platform playbooks"]
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | [HIGH/MEDIUM/LOW] | [reason — e.g., "established tools with clear use cases"] |
+| Channels | [HIGH/MEDIUM/LOW] | [reason — e.g., "established tools with clear use cases"] |
 | Audience | [HIGH/MEDIUM/LOW] | [reason — e.g., "ICP defined but personas need validation with customer interviews"] |
-| Architecture | [HIGH/MEDIUM/LOW] | [reason — e.g., "standard content architecture, but channel priorities need validation"] |
+| Content | [HIGH/MEDIUM/LOW] | [reason — e.g., "standard content architecture, but channel priorities need validation"] |
 | Pitfalls | [HIGH/MEDIUM/LOW] | [reason — e.g., "common marketing pitfalls well-documented, project-specific risks less certain"] |
 
 **Overall confidence:** [HIGH/MEDIUM/LOW]
@@ -198,8 +198,8 @@ Phases with standard marketing patterns (skip research-phase):
 
 **Key Findings:**
 - Summarize, don't duplicate full documents
-- Link to detailed docs (STACK.md, FEATURES.md, etc.)
-- Focus on what matters for roadmap decisions
+- Link to detailed docs (CHANNELS.md, AUDIENCE.md, etc.)
+- Focus on what matters for backlog decisions
 - For the stack section, emphasize tools that integrate well and serve the identified audience
 - Note where the project follows marketing best practices and where it needs custom approaches
 
@@ -215,12 +215,12 @@ Phases with standard marketing patterns (skip research-phase):
 - Note distribution and promotion gaps
 - Reference specific tools or processes that mitigate pitfalls
 
-**Implications for Roadmap:**
+**Implications for Backlog:**
 - This is the most important section
-- Directly informs roadmap creation
+- Directly informs backlog creation
 - Follow the typical marketing build order: research/positioning first, then conversion infrastructure (web, email), then traffic/content
-- Be explicit about phase suggestions and rationale
-- Include research flags for each suggested phase
+- Be explicit about plan suggestions and rationale
+- Include research flags for each suggested plan
 - Note where established marketing playbooks can accelerate execution
 
 **Confidence Assessment:**
@@ -230,10 +230,10 @@ Phases with standard marketing patterns (skip research-phase):
 - MEDIUM = community consensus, multiple sources agree, established patterns
 - LOW = single source, inference, or project-specific assumption
 
-**Integration with roadmap creation:**
-- This file is loaded as context during roadmap creation
-- Phase suggestions here become starting point for roadmap
-- Research flags inform phase planning
+**Integration with backlog creation:**
+- This file is loaded as context during backlog creation
+- Plan suggestions here become starting point for backlog
+- Research flags inform plan creation
 - Marketing best practice alignment should be noted to speed up estimation
 
 </guidelines>

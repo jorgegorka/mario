@@ -27,7 +27,7 @@ Standard format for presenting next steps after completing a command or workflow
 ## Format Rules
 
 1. **Always show what it is** — name + description, never just a command path
-2. **Pull context from source** — ROADMAP.md for phases, PLAN.md `<objective>` for plans
+2. **Pull context from source** — BACKLOG.md for plans, PLAN.md `<objective>` for tasks
 3. **Command in inline code** — backticks, easy to copy-paste, renders as clickable link
 4. **`/clear` explanation** — always include, keeps it concise but explains why
 5. **"Also available" not "Other options"** — sounds more app-like
@@ -42,9 +42,9 @@ Standard format for presenting next steps after completing a command or workflow
 
 ## ▶ Next Up
 
-**02-03: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry
+**002: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry
 
-`/mario:execute-phase 2`
+`/mario:execute 2`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -52,12 +52,11 @@ Standard format for presenting next steps after completing a command or workflow
 
 **Also available:**
 - Review plan before executing
-- `/mario:list-phase-assumptions 2` — check assumptions
 
 ---
 ```
 
-### Execute Final Plan in Phase
+### Execute Final Plan
 
 Add note that this is the last plan and what comes after:
 
@@ -66,70 +65,65 @@ Add note that this is the last plan and what comes after:
 
 ## ▶ Next Up
 
-**02-03: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry
-<sub>Final plan in Phase 2</sub>
+**003: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry
+<sub>Final plan in project</sub>
 
-`/mario:execute-phase 2`
+`/mario:execute 3`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **After this completes:**
-- Phase 2 → Phase 3 transition
-- Next: **Phase 3: Core Features** — User dashboard and settings
+- Project complete
 
 ---
 ```
 
-### Plan a Phase
+### Plan a Plan
 
 ```
 ---
 
 ## ▶ Next Up
 
-**Phase 2: Authentication** — JWT login flow with refresh tokens
+**002: Authentication** — JWT login flow with refresh tokens
 
-`/mario:plan-phase 2`
+`/mario:plan 2`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/mario:discuss-phase 2` — gather context first
-- `/mario:research-phase 2` — investigate unknowns
-- Review roadmap
+- Review backlog
 
 ---
 ```
 
-### Phase Complete, Ready for Next
+### Plan Complete, Ready for Next
 
 Show completion status before next action:
 
 ```
 ---
 
-## ✓ Phase 2 Complete
+## ✓ Plan 002 Complete
 
-3/3 plans executed
+3/3 tasks executed
 
 ## ▶ Next Up
 
-**Phase 3: Core Features** — User dashboard, settings, and data export
+**003: Core Features** — User dashboard, settings, and data export
 
-`/mario:plan-phase 3`
+`/mario:plan 3`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/mario:discuss-phase 3` — gather context first
-- `/mario:research-phase 3` — investigate unknowns
-- Review what Phase 2 built
+- Review what Plan 002 built
 
 ---
 ```
@@ -143,33 +137,11 @@ When there's no clear primary action:
 
 ## ▶ Next Up
 
-**Phase 3: Core Features** — User dashboard, settings, and data export
+**003: Core Features** — User dashboard, settings, and data export
 
-**To plan directly:** `/mario:plan-phase 3`
+**To plan directly:** `/mario:plan 3`
 
-**To discuss context first:** `/mario:discuss-phase 3`
-
-**To research unknowns:** `/mario:research-phase 3`
-
-<sub>`/clear` first → fresh context window</sub>
-
----
-```
-
-### Milestone Complete
-
-```
----
-
-## 🎉 Milestone v1.0 Complete
-
-All 4 phases shipped
-
-## ▶ Next Up
-
-**Start v1.1** — questioning → research → requirements → roadmap
-
-`/mario:new-milestone`
+**To execute directly:** `/mario:execute 3`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -178,23 +150,18 @@ All 4 phases shipped
 
 ## Pulling Context
 
-### For phases (from ROADMAP.md):
+### For plans (from BACKLOG.md):
 
 ```markdown
-### Phase 2: Authentication
+### 002: Authentication
 **Goal**: JWT login flow with refresh tokens
 ```
 
-Extract: `**Phase 2: Authentication** — JWT login flow with refresh tokens`
+Extract: `**002: Authentication** — JWT login flow with refresh tokens`
 
-### For plans (from ROADMAP.md):
+### For tasks (from PLAN.md):
 
-```markdown
-Plans:
-- [ ] 02-03: Add refresh token rotation
-```
-
-Or from PLAN.md `<objective>`:
+From PLAN.md `<objective>`:
 
 ```xml
 <objective>
@@ -204,7 +171,7 @@ Purpose: Extend session lifetime without compromising security.
 </objective>
 ```
 
-Extract: `**02-03: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry`
+Extract: `**002: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry`
 
 ## Anti-Patterns
 
@@ -214,15 +181,15 @@ Extract: `**02-03: Refresh Token Rotation** — Add /api/auth/refresh with slidi
 ## To Continue
 
 Run `/clear`, then paste:
-/mario:execute-phase 2
+/mario:execute 2
 ```
 
-User has no idea what 02-03 is about.
+User has no idea what plan 002 is about.
 
 ### Don't: Missing /clear explanation
 
 ```
-`/mario:plan-phase 3`
+`/mario:plan 3`
 
 Run /clear first.
 ```
@@ -233,7 +200,7 @@ Doesn't explain why. User might skip it.
 
 ```
 Other options:
-- Review roadmap
+- Review backlog
 ```
 
 Sounds like an afterthought. Use "Also available:" instead.
@@ -242,7 +209,7 @@ Sounds like an afterthought. Use "Also available:" instead.
 
 ```
 ```
-/mario:plan-phase 3
+/mario:plan 3
 ```
 ```
 

@@ -1,11 +1,10 @@
 ---
-phase: XX-name
-plan: YY
+plan: NNN-name
 subsystem: [primary category]
 tags: [searchable tech]
 provides:
   - [bullet list of what was built/delivered]
-affects: [list of phase names or keywords]
+affects: [list of plan names or keywords]
 tech-stack:
   added: [libraries/tools]
   patterns: [architectural/code patterns]
@@ -18,7 +17,7 @@ duration: Xmin
 completed: YYYY-MM-DD
 ---
 
-# Phase [X]: [Name] Summary
+# Plan NNN: [Name] Summary
 
 **[Substantive one-liner describing outcome]**
 
@@ -44,5 +43,5 @@ completed: YYYY-MM-DD
 [Key decisions or "None - followed plan as specified"]
 [Minor deviations if any, or "None"]
 
-## Next Phase Readiness
-[What's ready for next phase]
+## Next Steps
+[What's ready for next plan]

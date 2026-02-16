@@ -18,15 +18,8 @@ module Mario
         when "patch"
           patches = parse_patches(argv)
           patch(patches, raw: raw)
-        when "advance-plan"
-          advance_plan(raw: raw)
-        when "record-metric"
-          options = parse_named_args(argv, %w[phase plan duration tasks files])
-          record_metric(options, raw: raw)
-        when "update-progress"
-          update_progress(raw: raw)
         when "add-decision"
-          options = parse_named_args(argv, %w[phase summary rationale])
+          options = parse_named_args(argv, %w[summary rationale])
           add_decision(options, raw: raw)
         when "add-blocker"
           text = extract_flag(argv, "--text") || argv.first
@@ -44,41 +37,42 @@ module Mario
 
       def self.history_digest(_argv, raw: false)
         cwd = Dir.pwd
-        phases_dir = File.join(cwd, ".planning", "phases")
-        digest = { phases: {}, decisions: [], tech_stack: [] }
+        plans_dir = File.join(cwd, ".planning", "plans")
+        digest = { plans: {}, decisions: [], tech_stack: [] }
 
-        unless File.directory?(phases_dir)
+        unless File.directory?(plans_dir)
           Output.json(digest, raw: raw)
           return
         end
 
         tech_stack_set = []
-        Dir.children(phases_dir).sort.each do |dir|
-          dir_path = File.join(phases_dir, dir)
+        Dir.children(plans_dir).sort.each do |dir|
+          dir_path = File.join(plans_dir, dir)
           next unless File.directory?(dir_path)
 
-          summaries = Dir.children(dir_path).select { |f| f.end_with?("-SUMMARY.md", "SUMMARY.md") }
-          summaries.each do |summary|
-            content = File.read(File.join(dir_path, summary))
-            fm = Frontmatter.extract(content)
+          summary_path = File.join(dir_path, "SUMMARY.md")
+          next unless File.exist?(summary_path)
 
-            phase_num = fm["phase"] || dir.split("-").first
-            digest[:phases][phase_num] ||= { name: dir.split("-")[1..].join(" ") || "Unknown", provides: [], affects: [], patterns: [] }
+          content = File.read(summary_path)
+          fm = Frontmatter.extract(content)
 
-            dep_graph = fm["dependency-graph"] || {}
-            (dep_graph["provides"] || fm["provides"] || []).each { |p| digest[:phases][phase_num][:provides] << p }
-            (dep_graph["affects"] || []).each { |a| digest[:phases][phase_num][:affects] << a }
-            (fm["patterns-established"] || []).each { |p| digest[:phases][phase_num][:patterns] << p }
-            (fm["key-decisions"] || []).each { |d| digest[:decisions] << { phase: phase_num, decision: d } }
+          plan_num = dir.split("-").first
+          plan_name = dir.split("-")[1..].join(" ") || "Unknown"
+          digest[:plans][plan_num] ||= { name: plan_name, provides: [], affects: [], patterns: [] }
 
-            tech = fm["tech-stack"]
-            (tech["added"] || []).each { |t| tech_stack_set << (t.is_a?(String) ? t : t["name"]) } if tech.is_a?(Hash)
-          rescue StandardError
-            next
-          end
+          dep_graph = fm["dependency-graph"] || {}
+          (dep_graph["provides"] || fm["provides"] || []).each { |p| digest[:plans][plan_num][:provides] << p }
+          (dep_graph["affects"] || []).each { |a| digest[:plans][plan_num][:affects] << a }
+          (fm["patterns-established"] || []).each { |p| digest[:plans][plan_num][:patterns] << p }
+          (fm["key-decisions"] || []).each { |d| digest[:decisions] << { plan: plan_num, decision: d } }
+
+          tech = fm["tech-stack"]
+          (tech["added"] || []).each { |t| tech_stack_set << (t.is_a?(String) ? t : t["name"]) } if tech.is_a?(Hash)
+        rescue StandardError
+          next
         end
 
-        digest[:phases].each_value do |p|
+        digest[:plans].each_value do |p|
           p[:provides].uniq!
           p[:affects].uniq!
           p[:patterns].uniq!
@@ -134,14 +128,14 @@ module Mario
           config: config,
           state_raw: state_raw,
           state_exists: !state_raw.empty?,
-          roadmap_exists: File.exist?(File.join(planning_dir, "ROADMAP.md")),
+          backlog_exists: File.exist?(File.join(planning_dir, "BACKLOG.md")),
           config_exists: File.exist?(File.join(planning_dir, "config.json"))
         }
 
         if raw
           lines = config.map { |k, v| "#{k}=#{v}" }
           lines << "config_exists=#{result[:config_exists]}"
-          lines << "roadmap_exists=#{result[:roadmap_exists]}"
+          lines << "backlog_exists=#{result[:backlog_exists]}"
           lines << "state_exists=#{result[:state_exists]}"
           $stdout.write(lines.join("\n"))
           exit 0
@@ -219,106 +213,6 @@ module Mario
         Output.error("STATE.md not found")
       end
 
-      def self.advance_plan(raw: false)
-        cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
-        unless File.exist?(state_path)
-          Output.json({ error: "STATE.md not found" }, raw: raw)
-          return
-        end
-
-        content = File.read(state_path)
-        current_plan = extract_field(content, "Current Plan")&.to_i
-        total_plans = extract_field(content, "Total Plans in Phase")&.to_i
-        today = Time.now.utc.strftime("%Y-%m-%d")
-
-        unless current_plan && total_plans
-          Output.json({ error: "Cannot parse Current Plan or Total Plans in Phase from STATE.md" }, raw: raw)
-          return
-        end
-
-        if current_plan >= total_plans
-          content = replace_field(content, "Status", "Phase complete — ready for verification") || content
-          content = replace_field(content, "Last Activity", today) || content
-          File.write(state_path, content)
-          Output.json({ advanced: false, reason: "last_plan", current_plan: current_plan, total_plans: total_plans }, raw: raw, raw_value: "false")
-        else
-          new_plan = current_plan + 1
-          content = replace_field(content, "Current Plan", new_plan.to_s) || content
-          content = replace_field(content, "Status", "Ready to execute") || content
-          content = replace_field(content, "Last Activity", today) || content
-          File.write(state_path, content)
-          Output.json({ advanced: true, previous_plan: current_plan, current_plan: new_plan, total_plans: total_plans }, raw: raw, raw_value: "true")
-        end
-      end
-
-      def self.record_metric(options, raw: false)
-        cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
-        unless File.exist?(state_path)
-          Output.json({ error: "STATE.md not found" }, raw: raw)
-          return
-        end
-
-        phase = options["phase"]
-        plan = options["plan"]
-        duration = options["duration"]
-        Output.error("phase, plan, and duration required") unless phase && plan && duration
-
-        content = File.read(state_path)
-        new_row = "| Phase #{phase} P#{plan} | #{duration} | #{options['tasks'] || '-'} tasks | #{options['files'] || '-'} files |"
-
-        pattern = /(##\s*Performance Metrics[\s\S]*?\n\|[^\n]+\n\|[-|\s]+\n)([\s\S]*?)(?=\n##|\n$|\z)/i
-        if (match = content.match(pattern))
-          body = match[2].rstrip
-          body = body.strip.empty? || body.include?("None yet") ? new_row : "#{body}\n#{new_row}"
-          content = content.sub(pattern, "#{match[1]}#{body}\n")
-          File.write(state_path, content)
-          Output.json({ recorded: true, phase: phase, plan: plan, duration: duration }, raw: raw, raw_value: "true")
-        else
-          Output.json({ recorded: false, reason: "Performance Metrics section not found" }, raw: raw, raw_value: "false")
-        end
-      end
-
-      def self.update_progress(raw: false)
-        cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
-        unless File.exist?(state_path)
-          Output.json({ error: "STATE.md not found" }, raw: raw)
-          return
-        end
-
-        content = File.read(state_path)
-        phases_dir = File.join(cwd, ".planning", "phases")
-        total_plans = 0
-        total_summaries = 0
-
-        if File.directory?(phases_dir)
-          Dir.children(phases_dir).each do |dir|
-            dir_path = File.join(phases_dir, dir)
-            next unless File.directory?(dir_path)
-
-            files = Dir.children(dir_path)
-            total_plans += files.count { |f| f.match?(/-PLAN\.md$/i) }
-            total_summaries += files.count { |f| f.match?(/-SUMMARY\.md$/i) }
-          end
-        end
-
-        percent = total_plans > 0 ? (total_summaries.to_f / total_plans * 100).round : 0
-        bar_width = 10
-        filled = (percent.to_f / 100 * bar_width).round
-        bar = "\u2588" * filled + "\u2591" * (bar_width - filled)
-        progress_str = "[#{bar}] #{percent}%"
-
-        if content.match?(/\*\*Progress:\*\*/i) || content.match?(/^Progress:/i)
-          content = content.sub(/(Progress:\s*).*/i, "\\1#{progress_str}")
-          File.write(state_path, content)
-          Output.json({ updated: true, percent: percent, completed: total_summaries, total: total_plans, bar: progress_str }, raw: raw, raw_value: progress_str)
-        else
-          Output.json({ updated: false, reason: "Progress field not found" }, raw: raw, raw_value: "false")
-        end
-      end
-
       def self.add_decision(options, raw: false)
         cwd = Dir.pwd
         state_path = File.join(cwd, ".planning", "STATE.md")
@@ -330,9 +224,8 @@ module Mario
         summary = options["summary"]
         Output.error("summary required") unless summary
 
-        phase = options["phase"] || "?"
         rationale = options["rationale"]
-        entry = "- [Phase #{phase}]: #{summary}#{rationale ? " — #{rationale}" : ''}"
+        entry = "- #{summary}#{" — #{rationale}" if rationale}"
 
         content = File.read(state_path)
         pattern = /(###?\s*(?:Decisions|Decisions Made|Accumulated.*Decisions)\s*\n)([\s\S]*?)(?=\n###?|\n##[^#]|\z)/i
@@ -359,7 +252,7 @@ module Mario
 
         content = File.read(state_path)
         entry = "- #{text}"
-        pattern = /(###?\s*(?:Blockers|Blockers\/Concerns|Concerns)\s*\n)([\s\S]*?)(?=\n###?|\n##[^#]|\z)/i
+        pattern = %r{(###?\s*(?:Blockers|Blockers/Concerns|Concerns)\s*\n)([\s\S]*?)(?=\n###?|\n##[^#]|\z)}i
 
         if (match = content.match(pattern))
           body = match[2].gsub(/None\.?\s*\n?/i, "").gsub(/None yet\.?\s*\n?/i, "")
@@ -382,7 +275,7 @@ module Mario
         Output.error("text required") unless text
 
         content = File.read(state_path)
-        pattern = /(###?\s*(?:Blockers|Blockers\/Concerns|Concerns)\s*\n)([\s\S]*?)(?=\n###?|\n##[^#]|\z)/i
+        pattern = %r{(###?\s*(?:Blockers|Blockers/Concerns|Concerns)\s*\n)([\s\S]*?)(?=\n###?|\n##[^#]|\z)}i
 
         if (match = content.match(pattern))
           lines = match[2].split("\n")
@@ -418,22 +311,22 @@ module Mario
         if options["stopped-at"]
           %w[Stopped At Stopped at].each do |field|
             new_content = replace_field(content, field, options["stopped-at"])
-            if new_content
-              content = new_content
-              updated << "Stopped At"
-              break
-            end
+            next unless new_content
+
+            content = new_content
+            updated << "Stopped At"
+            break
           end
         end
 
         resume = options["resume-file"] || "None"
-        %w[Resume\ File Resume\ file].each do |field|
+        ["Resume File", "Resume file"].each do |field|
           new_content = replace_field(content, field, resume)
-          if new_content
-            content = new_content
-            updated << "Resume File"
-            break
-          end
+          next unless new_content
+
+          content = new_content
+          updated << "Resume File"
+          break
         end
 
         if updated.any?

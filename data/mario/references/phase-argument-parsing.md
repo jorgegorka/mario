@@ -1,61 +1,58 @@
-# Phase Argument Parsing
+# Plan Argument Parsing
 
-Parse and normalize phase arguments for commands that operate on phases.
+Parse and normalize plan arguments for commands that operate on plans.
 
 ## Extraction
 
 From `$ARGUMENTS`:
-- Extract phase number (first numeric argument)
+- Extract plan number (first numeric argument)
 - Extract flags (prefixed with `--`)
-- Remaining text is description (for insert/add commands)
+- Remaining text is description (for add commands)
 
 ## Using mario-tools
 
-The `find-phase` command handles normalization and validation in one step:
+The `find-plan` command handles normalization and validation in one step:
 
 ```bash
-PHASE_INFO=$(mario-tools find-phase "${PHASE}")
+PLAN_INFO=$(mario-tools find-plan "${PLAN}")
 ```
 
 Returns JSON with:
 - `found`: true/false
-- `directory`: Full path to phase directory
-- `phase_number`: Normalized number (e.g., "06", "06.1")
-- `phase_name`: Name portion (e.g., "foundation")
+- `directory`: Full path to plan directory
+- `plan_number`: Normalized number (e.g., "001")
+- `plan_name`: Name portion (e.g., "foundation")
 - `plans`: Array of PLAN.md files
 - `summaries`: Array of SUMMARY.md files
 
 ## Manual Normalization (Legacy)
 
-Zero-pad integer phases to 2 digits. Preserve decimal suffixes.
+Zero-pad plan numbers to 3 digits.
 
 ```bash
-# Normalize phase number
-if [[ "$PHASE" =~ ^[0-9]+$ ]]; then
-  # Integer: 8 → 08
-  PHASE=$(printf "%02d" "$PHASE")
-elif [[ "$PHASE" =~ ^([0-9]+)\.([0-9]+)$ ]]; then
-  # Decimal: 2.1 → 02.1
-  PHASE=$(printf "%02d.%s" "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}")
+# Normalize plan number
+if [[ "$PLAN" =~ ^[0-9]+$ ]]; then
+  # Integer: 8 → 008
+  PLAN=$(printf "%03d" "$PLAN")
 fi
 ```
 
 ## Validation
 
-Use `roadmap get-phase` to validate phase exists:
+Use `backlog get` to validate plan exists:
 
 ```bash
-PHASE_CHECK=$(mario-tools roadmap get-phase "${PHASE}")
-if [ "$(echo "$PHASE_CHECK" | jq -r '.found')" = "false" ]; then
-  echo "ERROR: Phase ${PHASE} not found in roadmap"
+PLAN_CHECK=$(mario-tools backlog get "${PLAN}")
+if [ "$(echo "$PLAN_CHECK" | jq -r '.found')" = "false" ]; then
+  echo "ERROR: Plan ${PLAN} not found in backlog"
   exit 1
 fi
 ```
 
 ## Directory Lookup
 
-Use `find-phase` for directory lookup:
+Use `find-plan` for directory lookup:
 
 ```bash
-PHASE_DIR=$(mario-tools find-phase "${PHASE}" --raw)
+PLAN_DIR=$(mario-tools find-plan "${PLAN}" --raw)
 ```

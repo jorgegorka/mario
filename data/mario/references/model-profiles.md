@@ -9,7 +9,7 @@ Model profiles control which Claude model each Mario agent uses. This allows bal
 | mario-planner | opus | opus | sonnet |
 | mario-roadmapper | opus | sonnet | sonnet |
 | mario-executor | opus | sonnet | sonnet |
-| mario-phase-researcher | opus | sonnet | haiku |
+| mario-plan-researcher | opus | sonnet | haiku |
 | mario-project-researcher | opus | sonnet | haiku |
 | mario-research-synthesizer | sonnet | sonnet | haiku |
 | mario-debugger | opus | sonnet | sonnet |
@@ -34,7 +34,7 @@ Model profiles control which Claude model each Mario agent uses. This allows bal
 **budget** - Minimal Opus usage
 - Sonnet for anything that writes code
 - Haiku for research and verification
-- Use when: conserving quota, high-volume work, less critical phases
+- Use when: conserving quota, high-volume work, less critical plans
 
 ## Resolution Logic
 
@@ -67,7 +67,7 @@ Planning involves architecture decisions, goal decomposition, and task design. T
 Executors follow explicit PLAN.md instructions. The plan already contains the reasoning; execution is implementation.
 
 **Why Sonnet (not Haiku) for verifiers in balanced?**
-Verification requires goal-backward reasoning - checking if code *delivers* what the phase promised, not just pattern matching. Sonnet handles this well; Haiku may miss subtle gaps.
+Verification requires goal-backward reasoning - checking if code *delivers* what the plan promised, not just pattern matching. Sonnet handles this well; Haiku may miss subtle gaps.
 
 **Why Haiku for mario-codebase-mapper?**
 Read-only exploration and pattern extraction. No reasoning required, just structured output from file contents.

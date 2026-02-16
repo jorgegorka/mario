@@ -1,5 +1,5 @@
 <purpose>
-Execute a phase prompt (PLAN.md) and create the outcome summary (SUMMARY.md).
+Execute a plan (PLAN.md) and create the outcome summary (SUMMARY.md).
 </purpose>
 
 <required_reading>
@@ -12,13 +12,13 @@ Read config.json for planning behavior settings.
 <process>
 
 <step name="init_context" priority="first">
-Load execution context (uses `init execute-phase` for full context, including file contents):
+Load execution context:
 
 ```bash
-INIT=$(mario-tools init execute-phase "${PHASE}" --include state,config)
+INIT=$(mario-tools init execute "${PLAN_NUM}" --include state,config)
 ```
 
-Extract from init JSON: `executor_model`, `commit_docs`, `phase_dir`, `phase_number`, `plans`, `summaries`, `incomplete_plans`.
+Extract from init JSON: `executor_model`, `commit_docs`, `plan_dir`, `plan_number`, `plan_name`, `has_plan`, `has_summary`.
 
 **File contents (from --include):** `state_content`, `config_content`. Access with:
 ```bash
@@ -31,20 +31,15 @@ If `.planning/` missing: error.
 
 <step name="identify_plan">
 ```bash
-# Use plans/summaries from INIT JSON, or list files
-ls .planning/phases/XX-name/*-PLAN.md 2>/dev/null | sort
-ls .planning/phases/XX-name/*-SUMMARY.md 2>/dev/null | sort
+# Find PLAN.md in the plan directory
+ls .planning/plans/NNN-name/PLAN.md 2>/dev/null
+ls .planning/plans/NNN-name/SUMMARY.md 2>/dev/null
 ```
 
-Find first PLAN without matching SUMMARY. Decimal phases supported (`01.1-hotfix/`):
-
-```bash
-PHASE=$(echo "$PLAN_PATH" | grep -oE '[0-9]+(\.[0-9]+)?-[0-9]+')
-# config_content already loaded via --include config in init_context
-```
+Find the PLAN.md. If SUMMARY.md already exists, plan is already executed.
 
 <if mode="yolo">
-Auto-approve: `⚡ Execute {phase}-{plan}-PLAN.md [Plan X of Y for Phase Z]` → parse_segments.
+Auto-approve: `⚡ Execute plan {NNN} [PLAN.md]` → parse_segments.
 </if>
 
 <if mode="interactive" OR="custom with gates.execute_next_plan true">
@@ -61,7 +56,7 @@ PLAN_START_EPOCH=$(date +%s)
 
 <step name="parse_segments">
 ```bash
-grep -n "type=\"checkpoint" .planning/phases/XX-name/{phase}-{plan}-PLAN.md
+grep -n "type=\"checkpoint" .planning/plans/NNN-name/PLAN.md
 ```
 
 **Routing by checkpoint type:**
@@ -95,7 +90,7 @@ fi
 
 If interrupted: ask user to resume (Task `resume` parameter) or start fresh.
 
-**Tracking protocol:** On spawn: write agent_id to `current-agent-id.txt`, append to agent-history.json: `{"agent_id":"[id]","task_description":"[desc]","phase":"[phase]","plan":"[plan]","segment":[num|null],"timestamp":"[ISO]","status":"spawned","completion_timestamp":null}`. On completion: status → "completed", set completion_timestamp, delete current-agent-id.txt. Prune: if entries > max_entries, remove oldest "completed" (never "spawned").
+**Tracking protocol:** On spawn: write agent_id to `current-agent-id.txt`, append to agent-history.json: `{"agent_id":"[id]","task_description":"[desc]","plan":"[plan]","segment":[num|null],"timestamp":"[ISO]","status":"spawned","completion_timestamp":null}`. On completion: status → "completed", set completion_timestamp, delete current-agent-id.txt. Prune: if entries > max_entries, remove oldest "completed" (never "spawned").
 
 Run for Pattern A/B before spawning. Pattern C: skip.
 </step>
@@ -109,28 +104,17 @@ Pattern B only (verify-only checkpoints). Skip for A/C.
    - Main route: execute tasks using standard flow (step name="execute")
 3. After ALL segments: aggregate files/deviations/decisions → create SUMMARY.md → commit → self-check:
    - Verify key-files.created exist on disk with `[ -f ]`
-   - Check `git log --oneline --all --grep="{phase}-{plan}"` returns ≥1 commit
+   - Check `git log --oneline --all --grep="plan-${PLAN_NUM}"` returns ≥1 commit
    - Append `## Self-Check: PASSED` or `## Self-Check: FAILED` to SUMMARY
 
    **Known Claude Code bug (classifyHandoffIfNeeded):** If any segment agent reports "failed" with `classifyHandoffIfNeeded is not defined`, this is a Claude Code runtime bug — not a real failure. Run spot-checks; if they pass, treat as successful.
-
-
-
-
 </step>
 
 <step name="load_prompt">
 ```bash
-cat .planning/phases/XX-name/{phase}-{plan}-PLAN.md
+cat .planning/plans/NNN-name/PLAN.md
 ```
-This IS the execution instructions. Follow exactly. If plan references CONTEXT.md: honor user's vision throughout.
-</step>
-
-<step name="previous_phase_check">
-```bash
-ls .planning/phases/*/SUMMARY.md 2>/dev/null | sort -r | head -2 | tail -1
-```
-If previous SUMMARY has unresolved "Issues Encountered" or "Next Phase Readiness" blockers: AskUserQuestion(header="Previous Issues", options: "Proceed anyway" | "Address first" | "Review previous").
+This IS the execution instructions. Follow exactly.
 </step>
 
 <step name="execute">
@@ -162,8 +146,6 @@ Auth errors during execution are NOT failures — they're expected interaction p
 6. Retry original task
 7. Continue normally
 
-**Example:** `kamal deploy` → "SSH connection refused" → checkpoint asking user to configure SSH key access → verify with `ssh root@server-ip exit` → retry deploy → continue
-
 **In Summary:** Document as normal flow under "## Authentication Gates", not as deviations.
 
 </authentication_gates>
@@ -183,7 +165,7 @@ You WILL discover unplanned work. Apply automatically, track all for Summary.
 
 **Rule 4 format:**
 ```
-⚠️ Architectural Decision Needed
+Architectural Decision Needed
 
 Current task: [task name]
 Discovery: [what prompted this]
@@ -219,9 +201,9 @@ End with: **Total deviations:** N auto-fixed (breakdown). **Impact:** assessment
 For `type: tdd` plans — RED-GREEN-REFACTOR:
 
 1. **Infrastructure** (first TDD plan only): detect project, install framework, config, verify empty suite
-2. **RED:** Read `<behavior>` → failing test(s) → run (MUST fail) → commit: `test({phase}-{plan}): add failing test for [feature]`
-3. **GREEN:** Read `<implementation>` → minimal code → run (MUST pass) → commit: `feat({phase}-{plan}): implement [feature]`
-4. **REFACTOR:** Clean up → tests MUST pass → commit: `refactor({phase}-{plan}): clean up [feature]`
+2. **RED:** Read `<behavior>` → failing test(s) → run (MUST fail) → commit: `test(plan-{NNN}): add failing test for [feature]`
+3. **GREEN:** Read `<implementation>` → minimal code → run (MUST pass) → commit: `feat(plan-{NNN}): implement [feature]`
+4. **REFACTOR:** Clean up → tests MUST pass → commit: `refactor(plan-{NNN}): clean up [feature]`
 
 Errors: RED doesn't fail → investigate test/existing feature. GREEN doesn't pass → debug, iterate. REFACTOR breaks → undo.
 
@@ -245,16 +227,16 @@ git add content/emails/welcome-sequence.md
 
 | Type | When | Example |
 |------|------|---------|
-| `feat` | New functionality | feat(08-02): create homepage landing page copy |
-| `fix` | Bug fix | fix(08-02): correct CTA alignment on pricing page |
-| `test` | Test-only (TDD RED) | test(08-02): add failing test for email template rendering |
-| `refactor` | No behavior change (TDD REFACTOR) | refactor(08-02): restructure content pillar hierarchy |
-| `perf` | Performance | perf(08-02): optimize email sequence delivery timing |
-| `docs` | Documentation | docs(08-02): add brand voice guidelines |
-| `style` | Formatting | style(08-02): format social media content calendar |
-| `chore` | Config/deps | chore(08-02): add email marketing platform config |
+| `feat` | New functionality | feat(plan-003): create homepage landing page copy |
+| `fix` | Bug fix | fix(plan-003): correct CTA alignment on pricing page |
+| `test` | Test-only (TDD RED) | test(plan-003): add failing test for email template rendering |
+| `refactor` | No behavior change (TDD REFACTOR) | refactor(plan-003): restructure content pillar hierarchy |
+| `perf` | Performance | perf(plan-003): optimize email sequence delivery timing |
+| `docs` | Documentation | docs(plan-003): add brand voice guidelines |
+| `style` | Formatting | style(plan-003): format social media content calendar |
+| `chore` | Config/deps | chore(plan-003): add email marketing platform config |
 
-**4. Format:** `{type}({phase}-{plan}): {description}` with bullet points for key changes.
+**4. Format:** `{type}(plan-{NNN}): {description}` with bullet points for key changes.
 
 **5. Record hash:**
 ```bash
@@ -312,39 +294,35 @@ fi
 
 <step name="generate_user_setup">
 ```bash
-grep -A 50 "^user_setup:" .planning/phases/XX-name/{phase}-{plan}-PLAN.md | head -50
+grep -A 50 "^user_setup:" .planning/plans/NNN-name/PLAN.md | head -50
 ```
 
-If user_setup exists: create `{phase}-USER-SETUP.md` using template `~/.claude/mario/templates/user-setup.md`. Per service: env vars table, account setup checklist, dashboard config, local dev notes, verification commands. Status "Incomplete". Set `USER_SETUP_CREATED=true`. If empty/missing: skip.
+If user_setup exists: create `USER-SETUP.md` using template `~/.claude/mario/templates/user-setup.md`. Per service: env vars table, account setup checklist, dashboard config, local dev notes, verification commands. Status "Incomplete". Set `USER_SETUP_CREATED=true`. If empty/missing: skip.
 </step>
 
 <step name="create_summary">
-Create `{phase}-{plan}-SUMMARY.md` at `.planning/phases/XX-name/`. Use `~/.claude/mario/templates/summary.md`.
+Create `SUMMARY.md` at `.planning/plans/NNN-name/`. Use `~/.claude/mario/templates/summary.md`.
 
-**Frontmatter:** phase, plan, subsystem, tags | requires/provides/affects | tech-stack.added/patterns | key-files.created/modified | key-decisions | duration ($DURATION), completed ($PLAN_END_TIME date).
+**Frontmatter:** plan, subsystem, tags | requires/provides/affects | tech-stack.added/patterns | key-files.created/modified | key-decisions | duration ($DURATION), completed ($PLAN_END_TIME date).
 
-Title: `# Phase [X] Plan [Y]: [Name] Summary`
+Title: `# Plan [NNN]: [Name] Summary`
 
 One-liner SUBSTANTIVE: "JWT auth with refresh rotation using jose library" not "Authentication implemented"
 
 Include: duration, start/end times, task count, file count.
 
-Next: more plans → "Ready for {next-plan}" | last → "Phase complete, ready for transition".
+Next: more plans in backlog → "Ready for next plan" | last → "All plans complete".
 </step>
 
 <step name="update_current_position">
 Update STATE.md using mario-tools:
 
 ```bash
-# Advance plan counter (handles last-plan edge case)
 mario-tools state advance-plan
-
-# Recalculate progress bar from disk state
 mario-tools state update-progress
 
-# Record execution metrics
 mario-tools state record-metric \
-  --phase "${PHASE}" --plan "${PLAN}" --duration "${DURATION}" \
+  --plan "${PLAN_NUM}" --duration "${DURATION}" \
   --tasks "${TASK_COUNT}" --files "${FILE_COUNT}"
 ```
 </step>
@@ -353,11 +331,9 @@ mario-tools state record-metric \
 From SUMMARY: Extract decisions and add to STATE.md:
 
 ```bash
-# Add each decision from SUMMARY key-decisions
 mario-tools state add-decision \
-  --phase "${PHASE}" --summary "${DECISION_TEXT}" --rationale "${RATIONALE}"
+  --plan "${PLAN_NUM}" --summary "${DECISION_TEXT}" --rationale "${RATIONALE}"
 
-# Add blockers if any found
 mario-tools state add-blocker "Blocker description"
 ```
 </step>
@@ -367,7 +343,7 @@ Update session info using mario-tools:
 
 ```bash
 mario-tools state record-session \
-  --stopped-at "Completed ${PHASE}-${PLAN}-PLAN.md" \
+  --stopped-at "Completed plan ${PLAN_NUM}" \
   --resume-file "None"
 ```
 
@@ -378,46 +354,25 @@ Keep STATE.md under 150 lines.
 If SUMMARY "Issues Encountered" ≠ "None": yolo → log and continue. Interactive → present issues, wait for acknowledgment.
 </step>
 
-<step name="update_roadmap">
-More plans → update plan count, keep "In progress". Last plan → mark phase "Complete", add date.
-</step>
-
 <step name="git_commit_metadata">
 Task code already committed per-task. Commit plan metadata:
 
 ```bash
-mario-tools commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md
-```
-</step>
-
-<step name="update_codebase_map">
-If .planning/codebase/ doesn't exist: skip.
-
-```bash
-FIRST_TASK=$(git log --oneline --grep="feat({phase}-{plan}):" --grep="fix({phase}-{plan}):" --grep="test({phase}-{plan}):" --reverse | head -1 | cut -d' ' -f1)
-git diff --name-only ${FIRST_TASK}^..HEAD 2>/dev/null
-```
-
-Update only structural changes: new src/ dir → STRUCTURE.md | deps → STACK.md | file pattern → CONVENTIONS.md | API client → INTEGRATIONS.md | config → STACK.md | renamed → update paths. Skip code-only/bugfix/content changes.
-
-```bash
-mario-tools commit "" --files .planning/codebase/*.md --amend
+mario-tools commit "docs(plan-${PLAN_NUM}): complete plan execution" --files .planning/plans/NNN-name/SUMMARY.md .planning/STATE.md .planning/BACKLOG.md
 ```
 </step>
 
 <step name="offer_next">
-If `USER_SETUP_CREATED=true`: display `⚠️ USER SETUP REQUIRED` with path + env/config tasks at TOP.
+If `USER_SETUP_CREATED=true`: display `USER SETUP REQUIRED` with path + env/config tasks at TOP.
 
 ```bash
-ls -1 .planning/phases/[current-phase-dir]/*-PLAN.md 2>/dev/null | wc -l
-ls -1 .planning/phases/[current-phase-dir]/*-SUMMARY.md 2>/dev/null | wc -l
+mario-tools backlog next
 ```
 
 | Condition | Route | Action |
 |-----------|-------|--------|
-| summaries < plans | **A: More plans** | Find next PLAN without SUMMARY. Yolo: auto-continue. Interactive: show next plan, suggest `/mario:execute-phase {phase}` + `/mario:verify-work`. STOP here. |
-| summaries = plans, current < highest phase | **B: Phase done** | Show completion, suggest `/mario:plan-phase {Z+1}` + `/mario:verify-work {Z}` + `/mario:discuss-phase {Z+1}` |
-| summaries = plans, current = highest phase | **C: Milestone done** | Show banner, suggest `/mario:complete-milestone` + `/mario:verify-work` + `/mario:add-phase` |
+| Next plan exists | **A: More plans** | Show next plan, suggest `/mario:execute {NNN}` |
+| No more plans | **B: All complete** | Show completion banner, suggest `/mario:progress` |
 
 All routes: `/clear` first for fresh context.
 </step>
@@ -431,7 +386,6 @@ All routes: `/clear` first for fresh context.
 - USER-SETUP.md generated if user_setup in frontmatter
 - SUMMARY.md created with substantive content
 - STATE.md updated (position, decisions, issues, session)
-- ROADMAP.md updated
-- If codebase map exists: map updated with execution changes (or skipped if no significant changes)
-- If USER-SETUP.md created: prominently surfaced in completion output
+- BACKLOG.md updated (plan marked complete)
 </success_criteria>
+</output>

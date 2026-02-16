@@ -12,7 +12,7 @@ Template for `.planning/REQUIREMENTS.md` — checkable requirements that define 
 
 ## v1 Requirements
 
-Requirements for initial release. Each maps to roadmap phases.
+Requirements for initial release. Each maps to backlog plans.
 
 ### Brand Foundation
 
@@ -34,7 +34,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ## v2 Requirements
 
-Deferred to future release. Tracked but not in current roadmap.
+Deferred to future release. Tracked but not in current backlog.
 
 ### [Category]
 
@@ -52,23 +52,23 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ## Traceability
 
-Which phases cover which requirements. Updated during roadmap creation.
+Which plans cover which requirements. Updated during backlog creation.
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| BRAND-01 | Phase 1 | Pending |
-| BRAND-02 | Phase 1 | Pending |
-| BRAND-03 | Phase 1 | Pending |
-| BRAND-04 | Phase 1 | Pending |
-| WEB-01 | Phase 2 | Pending |
-| WEB-02 | Phase 2 | Pending |
-| WEB-03 | Phase 2 | Pending |
-| EMAIL-01 | Phase 3 | Pending |
-| EMAIL-02 | Phase 3 | Pending |
+| Requirement | Plan | Status |
+|-------------|------|--------|
+| BRAND-01 | Plan 001 | Pending |
+| BRAND-02 | Plan 001 | Pending |
+| BRAND-03 | Plan 001 | Pending |
+| BRAND-04 | Plan 001 | Pending |
+| WEB-01 | Plan 002 | Pending |
+| WEB-02 | Plan 002 | Pending |
+| WEB-03 | Plan 002 | Pending |
+| EMAIL-01 | Plan 003 | Pending |
+| EMAIL-02 | Plan 003 | Pending |
 
 **Coverage:**
 - v1 requirements: [X] total
-- Mapped to phases: [Y]
+- Mapped to plans: [Y]
 - Unmapped: [Z] ⚠️
 
 ---
@@ -86,14 +86,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Checkbox: Only for v1 requirements (v2 are not yet actionable)
 
 **Categories:**
-- Derive from research FEATURES.md categories
+- Derive from research AUDIENCE.md categories
 - Keep consistent with marketing domain conventions
 - Typical: Brand Foundation, Website Copy, Email Marketing, Social Media, SEO Content, Paid Advertising
 
 **v1 vs v2:**
-- v1: Committed scope, will be in roadmap phases
-- v2: Acknowledged but deferred, not in current roadmap
-- Moving v2 → v1 requires roadmap update
+- v1: Committed scope, will be in backlog plans
+- v2: Acknowledged but deferred, not in current backlog
+- Moving v2 → v1 requires backlog update
 
 **Out of Scope:**
 - Explicit exclusions with reasoning
@@ -101,13 +101,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Anti-features from research belong here with warnings
 
 **Traceability:**
-- Empty initially, populated during roadmap creation
-- Each requirement maps to exactly one phase
-- Unmapped requirements = roadmap gap
+- Empty initially, populated during backlog creation
+- Each requirement maps to exactly one plan
+- Unmapped requirements = backlog gap
 
 **Status Values:**
 - Pending: Not started
-- In Progress: Phase is active
+- In Progress: Plan is active
 - Complete: Requirement verified
 - Blocked: Waiting on external factor
 
@@ -115,12 +115,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 <evolution>
 
-**After each phase completes:**
+**After each plan completes:**
 1. Mark covered requirements as Complete
 2. Update traceability status
 3. Note any requirements that changed scope
 
-**After roadmap updates:**
+**After backlog updates:**
 1. Verify all v1 requirements still mapped
 2. Add new requirements if scope expanded
 3. Move requirements to v2/out of scope if descoped
@@ -203,29 +203,29 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| BRAND-01 | Phase 1 | Pending |
-| BRAND-02 | Phase 1 | Pending |
-| BRAND-03 | Phase 1 | Pending |
-| BRAND-04 | Phase 1 | Pending |
-| WEB-01 | Phase 2 | Pending |
-| WEB-02 | Phase 2 | Pending |
-| WEB-03 | Phase 2 | Pending |
-| EMAIL-01 | Phase 3 | Pending |
-| EMAIL-02 | Phase 3 | Pending |
-| EMAIL-03 | Phase 3 | Pending |
-| SOCIAL-01 | Phase 4 | Pending |
-| SOCIAL-02 | Phase 4 | Pending |
-| SOCIAL-03 | Phase 4 | Pending |
-| SEO-01 | Phase 5 | Pending |
-| SEO-02 | Phase 5 | Pending |
-| ADS-01 | Phase 6 | Pending |
-| ADS-02 | Phase 6 | Pending |
+| Requirement | Plan | Status |
+|-------------|------|--------|
+| BRAND-01 | Plan 001 | Pending |
+| BRAND-02 | Plan 001 | Pending |
+| BRAND-03 | Plan 001 | Pending |
+| BRAND-04 | Plan 001 | Pending |
+| WEB-01 | Plan 002 | Pending |
+| WEB-02 | Plan 002 | Pending |
+| WEB-03 | Plan 002 | Pending |
+| EMAIL-01 | Plan 003 | Pending |
+| EMAIL-02 | Plan 003 | Pending |
+| EMAIL-03 | Plan 003 | Pending |
+| SOCIAL-01 | Plan 004 | Pending |
+| SOCIAL-02 | Plan 004 | Pending |
+| SOCIAL-03 | Plan 004 | Pending |
+| SEO-01 | Plan 005 | Pending |
+| SEO-02 | Plan 005 | Pending |
+| ADS-01 | Plan 006 | Pending |
+| ADS-02 | Plan 006 | Pending |
 
 **Coverage:**
 - v1 requirements: 17 total
-- Mapped to phases: 17
+- Mapped to plans: 17
 - Unmapped: 0 ✓
 
 ---

@@ -42,8 +42,8 @@ Good — consistent voice with appropriate tone variation:
   Email:   "Your deployments just got faster. Here's what changed."
 ```
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -70,8 +70,8 @@ Good — outcome-focused (outside-in):
   "See your team's progress at a glance. No more chasing updates."
 ```
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -89,8 +89,8 @@ Good — outcome-focused (outside-in):
 **Warning signs:**
 [How to detect early — e.g., high blog traffic but low conversion, sales team creating their own content because marketing content doesn't help close deals, prospects asking questions that existing content should answer]
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -108,8 +108,8 @@ Good — outcome-focused (outside-in):
 **Warning signs:**
 [How to detect early — e.g., high page views but low click-through, email opens high but clicks low, landing pages with no clear next step]
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -127,8 +127,8 @@ Good — outcome-focused (outside-in):
 **Warning signs:**
 [How to detect early — e.g., "how did that campaign do?" answered with "we're not sure", UTM parameters not used consistently, no conversion tracking on key pages]
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -146,8 +146,8 @@ Good — outcome-focused (outside-in):
 **Warning signs:**
 [How to detect early — e.g., blog posts with single-digit traffic after 30 days, social posts with minimal engagement, email list not growing despite regular content]
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -165,8 +165,8 @@ Good — outcome-focused (outside-in):
 **Warning signs:**
 [How to detect early — e.g., older content with declining traffic that used to rank well, outdated screenshots or statistics, broken links in older posts]
 
-**Phase to address:**
-[Which roadmap phase should prevent this]
+**Plan to address:**
+[Which backlog plan should prevent this]
 
 ---
 
@@ -256,19 +256,19 @@ When pitfalls occur despite prevention, how to recover.
 | Compliance violation | HIGH | [e.g., assess scope, fix immediately, legal review, document remediation, notify affected users if required] |
 | [pitfall] | LOW/MEDIUM/HIGH | [recovery steps] |
 
-## Pitfall-to-Phase Mapping
+## Pitfall-to-Plan Mapping
 
-How roadmap phases should address these pitfalls.
+How backlog plans should address these pitfalls.
 
-| Pitfall | Prevention Phase | Verification |
-|---------|------------------|--------------|
-| Inconsistent voice | Phase [X] | [e.g., brand voice guide published, content review process established] |
-| Feature-focused copy | Phase [X] | [e.g., customer research completed, copy review checklist in use] |
-| Missing buyer journey content | Phase [X] | [e.g., content mapped to funnel stages, gaps identified and planned] |
-| Weak CTAs | Phase [X] | [e.g., every page has clear CTA, click-through rates tracked] |
-| No measurement | Phase [X] | [e.g., KPIs defined, tracking installed, dashboard live] |
-| No distribution plan | Phase [X] | [e.g., distribution checklist per content type, promotion budget allocated] |
-| [pitfall] | Phase [X] | [how to verify prevention worked] |
+| Pitfall | Prevention Plan | Verification |
+|---------|-----------------|--------------|
+| Inconsistent voice | Plan [X] | [e.g., brand voice guide published, content review process established] |
+| Feature-focused copy | Plan [X] | [e.g., customer research completed, copy review checklist in use] |
+| Missing buyer journey content | Plan [X] | [e.g., content mapped to funnel stages, gaps identified and planned] |
+| Weak CTAs | Plan [X] | [e.g., every page has clear CTA, click-through rates tracked] |
+| No measurement | Plan [X] | [e.g., KPIs defined, tracking installed, dashboard live] |
+| No distribution plan | Plan [X] | [e.g., distribution checklist per content type, promotion budget allocated] |
+| [pitfall] | Plan [X] | [how to verify prevention worked] |
 
 ## Sources
 
@@ -293,11 +293,11 @@ How roadmap phases should address these pitfalls.
 - Focus on marketing-specific failure modes, not generic business mistakes
 - Include concrete examples showing the wrong and right approach
 - Include warning signs — early detection prevents wasted budget and effort
-- Link to specific phases — makes pitfalls actionable in the roadmap
+- Link to specific plans — makes pitfalls actionable in the backlog
 - Cover the full marketing stack: content, email, social, ads, SEO, analytics
 
 **Technical Debt:**
-- Be realistic — some shortcuts are acceptable in early phases (MVP, initial launch)
+- Be realistic — some shortcuts are acceptable in early plans (MVP, initial launch)
 - Note when shortcuts are "never acceptable" (e.g., no email opt-in compliance, unsubstantiated claims)
 - Include the long-term cost to inform tradeoff decisions
 - Distinguish between "best practice" shortcuts and "compliance risk" shortcuts
@@ -325,10 +325,10 @@ How roadmap phases should address these pitfalls.
 - Include technical setup items that are easy to miss (deliverability, tracking, forms)
 - Cover compliance readiness items (privacy policy, cookie consent, unsubscribe)
 
-**Pitfall-to-Phase Mapping:**
-- Critical for roadmap creation — each pitfall should map to a phase that prevents it
-- Early phases should address foundational issues (brand voice, audience research, tracking setup)
-- Later phases should address optimization issues (A/B testing, segmentation, advanced analytics)
+**Pitfall-to-Plan Mapping:**
+- Critical for backlog creation — each pitfall should map to a plan that prevents it
+- Early plans should address foundational issues (brand voice, audience research, tracking setup)
+- Later plans should address optimization issues (A/B testing, segmentation, advanced analytics)
 - Verification should be automated where possible (deliverability monitoring, link checking)
 
 </guidelines>

@@ -27,7 +27,7 @@ Todos are captured during work sessions with /mario:add-todo.
 
 Would you like to:
 
-1. Continue with current phase (/mario:progress)
+1. Continue with current plan (/mario:progress)
 2. Add a todo now (/mario:add-todo)
 ```
 
@@ -89,35 +89,35 @@ Read the todo file completely. Display:
 If `files` field has entries, read and briefly summarize each.
 </step>
 
-<step name="check_roadmap">
-Check for roadmap (can use init progress or directly check file existence):
+<step name="check_backlog">
+Check for backlog (can use init progress or directly check file existence):
 
-If `.planning/ROADMAP.md` exists:
-1. Check if todo's area matches an upcoming phase
-2. Check if todo's files overlap with a phase's scope
+If `.planning/BACKLOG.md` exists:
+1. Check if todo's area matches an upcoming plan
+2. Check if todo's files overlap with a plan's scope
 3. Note any match for action options
 </step>
 
 <step name="offer_actions">
-**If todo maps to a roadmap phase:**
+**If todo maps to a backlog plan:**
 
 Use AskUserQuestion:
 - header: "Action"
-- question: "This todo relates to Phase [N]: [name]. What would you like to do?"
+- question: "This todo relates to Plan [NNN]: [name]. What would you like to do?"
 - options:
   - "Work on it now" — move to done, start working
-  - "Add to phase plan" — include when planning Phase [N]
+  - "Add to plan" — include when planning Plan [NNN]
   - "Brainstorm approach" — think through before deciding
   - "Put it back" — return to list
 
-**If no roadmap match:**
+**If no backlog match:**
 
 Use AskUserQuestion:
 - header: "Action"
 - question: "What would you like to do with this todo?"
 - options:
   - "Work on it now" — move to done, start working
-  - "Create a phase" — /mario:add-phase with this scope
+  - "Add to backlog" — add as new plan to BACKLOG.md
   - "Brainstorm approach" — think through before deciding
   - "Put it back" — return to list
 </step>
@@ -129,12 +129,12 @@ mv ".planning/todos/pending/[filename]" ".planning/todos/done/"
 ```
 Update STATE.md todo count. Present problem/solution context. Begin work or ask how to proceed.
 
-**Add to phase plan:**
-Note todo reference in phase planning notes. Keep in pending. Return to list or exit.
+**Add to plan:**
+Note todo reference in plan notes. Keep in pending. Return to list or exit.
 
-**Create a phase:**
-Display: `/mario:add-phase [description from todo]`
-Keep in pending. User runs command in fresh context.
+**Add to backlog:**
+Add as new plan entry in BACKLOG.md under "Upcoming" section.
+Keep in pending. User can plan and execute later.
 
 **Brainstorm approach:**
 Keep in pending. Start discussion about problem and approaches.
@@ -168,7 +168,7 @@ Confirm: "Committed: docs: start work on todo - [title]"
 - [ ] All pending todos listed with title, area, age
 - [ ] Area filter applied if specified
 - [ ] Selected todo's full context loaded
-- [ ] Roadmap context checked for phase match
+- [ ] Backlog context checked for plan match
 - [ ] Appropriate actions offered
 - [ ] Selected action executed
 - [ ] STATE.md updated if todo count changed

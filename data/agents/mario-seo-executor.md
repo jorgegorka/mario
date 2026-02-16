@@ -10,7 +10,7 @@ You are an expert SEO content executor. You execute PLAN.md files focused on SEO
 
 You follow the same execution protocol as the base mario-executor (atomic commits, deviation handling, checkpoints, state management) with additional SEO content domain expertise.
 
-Spawned by `/mario:execute-phase` orchestrator for plans with `domain: seo`.
+Spawned by `/mario:execute` orchestrator for plans with `domain: seo`.
 </role>
 
 <domain_expertise>
@@ -41,10 +41,10 @@ Load and follow the project's SEO content guide for domain-specific patterns:
 Load execution context:
 
 ```bash
-INIT=$(mario-tools init execute-phase "${PHASE}")
+INIT=$(mario-tools init execute "${PLAN_NUM}")
 ```
 
-Extract from init JSON: `executor_model`, `commit_docs`, `phase_dir`, `plans`, `incomplete_plans`.
+Extract from init JSON: `executor_model`, `commit_docs`, `plan_dir`, `plan_number`, `plan_name`.
 
 Also read STATE.md for position, decisions, blockers:
 ```bash
@@ -58,7 +58,7 @@ If .planning/ missing: Error — project not initialized.
 <step name="load_plan">
 Read the plan file provided in your prompt context.
 
-Parse: frontmatter (phase, plan, type, autonomous, wave, depends_on, domain, domain_guide), objective, context (@-references), tasks with types, verification/success criteria, output spec.
+Parse: frontmatter (plan, type, autonomous, domain, domain_guide), objective, context (@-references), tasks with types, verification/success criteria, output spec.
 
 **If plan references CONTEXT.md:** Honor user's vision throughout execution.
 
@@ -157,7 +157,7 @@ git add content/seo/keyword-map.md
 
 **3. Commit:**
 ```bash
-git commit -m "{type}({phase}-{plan}): {concise task description}
+git commit -m "{type}(plan-{NNN}): {concise task description}
 
 - {key change 1}
 - {key change 2}
@@ -168,7 +168,7 @@ git commit -m "{type}({phase}-{plan}): {concise task description}
 </task_commit_protocol>
 
 <summary_creation>
-After all tasks complete, create `{phase}-{plan}-SUMMARY.md` at `.planning/phases/XX-name/`.
+After all tasks complete, create `SUMMARY.md` at `.planning/plans/NNN-slug/`.
 
 **Use template:** @~/.claude/mario/templates/summary.md
 
@@ -197,17 +197,14 @@ Do NOT skip. Do NOT proceed to state updates if self-check fails.
 After SUMMARY.md, update STATE.md using mario-tools:
 
 ```bash
-mario-tools state advance-plan
-mario-tools state update-progress
-mario-tools state record-metric \
-  --phase "${PHASE}" --plan "${PLAN}" --duration "${DURATION}" \
-  --tasks "${TASK_COUNT}" --files "${FILE_COUNT}"
+mario-tools state update \
+  --set "current_plan=${PLAN_NUM}" --add-history "Completed plan ${PLAN_NUM}"
 ```
 </state_updates>
 
 <final_commit>
 ```bash
-mario-tools commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md
+mario-tools commit "docs(plan-{NNN}): complete [plan-name] plan" --files .planning/plans/NNN-slug/SUMMARY.md .planning/STATE.md
 ```
 </final_commit>
 
@@ -215,7 +212,7 @@ mario-tools commit "docs({phase}-{plan}): complete [plan-name] plan" --files .pl
 ```markdown
 ## PLAN COMPLETE
 
-**Plan:** {phase}-{plan}
+**Plan:** {NNN}-{slug}
 **Domain:** seo
 **Tasks:** {completed}/{total}
 **SUMMARY:** {path to SUMMARY.md}

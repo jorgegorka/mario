@@ -16,12 +16,11 @@ Use for major workflow transitions.
 - `QUESTIONING`
 - `RESEARCHING`
 - `DEFINING REQUIREMENTS`
-- `CREATING ROADMAP`
-- `PLANNING PHASE {N}`
+- `CREATING BACKLOG`
+- `PLANNING {N}`
 - `EXECUTING WAVE {N}`
 - `VERIFYING`
-- `PHASE {N} COMPLETE ✓`
-- `MILESTONE COMPLETE 🎉`
+- `PLAN {N} COMPLETE ✓`
 
 ---
 
@@ -57,14 +56,13 @@ User action required. 62-character width.
 ○  Pending
 ⚡ Auto-approved
 ⚠  Warning
-🎉 Milestone complete (only in banner)
 ```
 
 ---
 
 ## Progress Display
 
-**Phase/milestone level:**
+**Overall progress:**
 ```
 Progress: ████████░░ 80%
 ```
@@ -87,12 +85,12 @@ Plans: 3/5 complete
 ◆ Spawning researcher...
 
 ◆ Spawning 4 researchers in parallel...
-  → Stack research
-  → Features research
-  → Architecture research
+  → Channel landscape research
+  → Audience & messaging research
+  → Content strategy research
   → Pitfalls research
 
-✓ Researcher complete: STACK.md written
+✓ Researcher complete: CHANNELS.md written
 ```
 
 ---
@@ -140,11 +138,11 @@ Always at end of major completions.
 ## Tables
 
 ```
-| Phase | Status | Plans | Progress |
-|-------|--------|-------|----------|
-| 1     | ✓      | 3/3   | 100%     |
-| 2     | ◆      | 1/4   | 25%      |
-| 3     | ○      | 0/2   | 0%       |
+| Plan | Status | Tasks | Progress |
+|------|--------|-------|----------|
+| 001  | ✓      | 3/3   | 100%     |
+| 002  | ◆      | 1/4   | 25%      |
+| 003  | ○      | 0/2   | 0%       |
 ```
 
 ---

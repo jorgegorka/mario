@@ -12,9 +12,9 @@ module Mario
         when "resolve-model"
           require_relative "model_profiles"
           ModelProfiles.resolve(argv, raw: raw)
-        when "find-phase"
-          require_relative "phase_manager"
-          PhaseManager.find(argv, raw: raw)
+        when "find-plan"
+          require_relative "plan_manager"
+          PlanManager.find(argv, raw: raw)
         when "commit"
           require_relative "git_integration"
           GitIntegration.commit(argv, raw: raw)
@@ -48,27 +48,21 @@ module Mario
         when "state-snapshot"
           require_relative "state_manager"
           StateManager.snapshot(argv, raw: raw)
-        when "phase-plan-index"
-          require_relative "phase_manager"
-          PhaseManager.plan_index(argv, raw: raw)
-        when "phase"
-          require_relative "phase_manager"
-          PhaseManager.dispatch(argv, raw: raw)
-        when "phases"
-          require_relative "phase_manager"
-          PhaseManager.phases_dispatch(argv, raw: raw)
-        when "roadmap"
-          require_relative "roadmap_analyzer"
-          RoadmapAnalyzer.dispatch(argv, raw: raw)
-        when "milestone"
-          require_relative "phase_manager"
-          PhaseManager.milestone_dispatch(argv, raw: raw)
+        when "plan"
+          require_relative "plan_manager"
+          PlanManager.dispatch(argv, raw: raw)
+        when "plans"
+          require_relative "plan_manager"
+          PlanManager.list(argv, raw: raw)
+        when "backlog"
+          require_relative "backlog_manager"
+          BacklogManager.dispatch(argv, raw: raw)
         when "validate"
           require_relative "verification"
           Verification.validate_dispatch(argv, raw: raw)
         when "progress"
-          require_relative "roadmap_analyzer"
-          RoadmapAnalyzer.progress(argv, raw: raw)
+          require_relative "backlog_manager"
+          BacklogManager.progress(argv, raw: raw)
         when "todo"
           require_relative "utilities"
           Utilities.todo_dispatch(argv, raw: raw)
@@ -78,6 +72,9 @@ module Mario
         when "template"
           require_relative "template_filler"
           TemplateFiller.dispatch(argv, raw: raw)
+        when "template-manager"
+          require_relative "template_manager"
+          TemplateManager.dispatch(argv, raw: raw)
         when "frontmatter"
           require_relative "frontmatter"
           Frontmatter.dispatch(argv, raw: raw)

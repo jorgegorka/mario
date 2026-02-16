@@ -1,65 +1,67 @@
-# Decimal Phase Calculation
+# Plan Numbering
 
-Calculate the next decimal phase number for urgent insertions.
+Plans use 3-digit sequential numbering (001, 002, 003).
 
-## Using mario-tools
+## Numbering Scheme
+
+Plans are numbered sequentially starting from 001. The numbering is automatic and handled by `mario-tools plan add`.
+
+| Plan | Directory |
+|------|-----------|
+| 1st plan | `.planning/plans/001-foundation/` |
+| 2nd plan | `.planning/plans/002-authentication/` |
+| 3rd plan | `.planning/plans/003-core-features/` |
+
+## Adding Plans
 
 ```bash
-# Get next decimal phase after phase 6
-mario-tools phase next-decimal 6
+# Add a new plan (numbering is automatic)
+mario-tools plan add "Foundation"
 ```
 
 Output:
 ```json
 {
-  "found": true,
-  "base_phase": "06",
-  "next": "06.1",
-  "existing": []
+  "created": true,
+  "plan_number": "001",
+  "directory": ".planning/plans/001-foundation/"
 }
 ```
 
-With existing decimals:
-```json
-{
-  "found": true,
-  "base_phase": "06",
-  "next": "06.3",
-  "existing": ["06.1", "06.2"]
-}
-```
-
-## Extract Values
+## Looking Up Plans
 
 ```bash
-DECIMAL_INFO=$(mario-tools phase next-decimal "${AFTER_PHASE}")
-DECIMAL_PHASE=$(echo "$DECIMAL_INFO" | jq -r '.next')
-BASE_PHASE=$(echo "$DECIMAL_INFO" | jq -r '.base_phase')
+# Find a plan by number
+PLAN_INFO=$(mario-tools find-plan "1")
 ```
 
-Or with --raw flag:
-```bash
-DECIMAL_PHASE=$(mario-tools phase next-decimal "${AFTER_PHASE}" --raw)
-# Returns just: 06.1
-```
+Returns JSON with:
+- `found`: true/false
+- `directory`: Full path to plan directory
+- `plan_number`: Normalized 3-digit number (e.g., "001")
+- `plan_name`: Name portion (e.g., "foundation")
+- `plans`: Array of PLAN.md files
+- `summaries`: Array of SUMMARY.md files
 
-## Examples
+## Normalization
 
-| Existing Phases | Next Phase |
-|-----------------|------------|
-| 06 only | 06.1 |
-| 06, 06.1 | 06.2 |
-| 06, 06.1, 06.2 | 06.3 |
-| 06, 06.1, 06.3 (gap) | 06.4 |
+User input is normalized to 3-digit padding:
+
+| Input | Normalized |
+|-------|------------|
+| `1` | `001` |
+| `12` | `012` |
+| `100` | `100` |
 
 ## Directory Naming
 
-Decimal phase directories use the full decimal number:
+Plan directories use the 3-digit number and a slug:
 
-```bash
-SLUG=$(mario-tools generate-slug "$DESCRIPTION" --raw)
-PHASE_DIR=".planning/phases/${DECIMAL_PHASE}-${SLUG}"
-mkdir -p "$PHASE_DIR"
+```
+.planning/plans/{NNN}-{slug}/
 ```
 
-Example: `.planning/phases/06.1-fix-critical-auth-bug/`
+Examples:
+- `.planning/plans/001-foundation/`
+- `.planning/plans/002-authentication/`
+- `.planning/plans/003-core-features/`

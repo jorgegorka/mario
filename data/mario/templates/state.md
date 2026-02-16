@@ -14,35 +14,15 @@ Template for `.planning/STATE.md` — the project's living memory.
 See: .planning/PROJECT.md (updated [date])
 
 **Core value:** [One-liner from PROJECT.md Core Value section]
-**Current focus:** [Current phase name]
+**Current focus:** [Current plan name]
 
 ## Current Position
 
-Phase: [X] of [Y] ([Phase name])
-Plan: [A] of [B] in current phase
-Status: [Ready to plan / Planning / Ready to execute / In progress / Phase complete]
+Plan: [current] of [total]
+Status: [Ready to plan / Planning / Ready to execute / In progress / Done]
 Last activity: [YYYY-MM-DD] — [What happened]
 
 Progress: [░░░░░░░░░░] 0%
-
-## Performance Metrics
-
-**Velocity:**
-- Total plans completed: [N]
-- Average duration: [X] min
-- Total execution time: [X.X] hours
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| - | - | - | - |
-
-**Recent Trend:**
-- Last 5 plans: [durations]
-- Trend: [Improving / Stable / Degrading]
-
-*Updated after each plan completion*
 
 ## Accumulated Context
 
@@ -51,8 +31,8 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [Phase X]: [Decision summary]
-- [Phase Y]: [Decision summary]
+- [Plan NNN]: [Decision summary]
+- [Plan NNN]: [Decision summary]
 
 ### Pending Todos
 
@@ -75,7 +55,7 @@ Resume file: [Path to .continue-here*.md if exists, otherwise "None"]
 
 <purpose>
 
-STATE.md is the project's short-term memory spanning all phases and sessions.
+STATE.md is the project's short-term memory spanning all plans and sessions.
 
 **Problem it solves:** Information is captured in summaries, issues, and decisions but not systematically consumed. Sessions start without context.
 
@@ -89,23 +69,22 @@ STATE.md is the project's short-term memory spanning all phases and sessions.
 
 <lifecycle>
 
-**Creation:** After ROADMAP.md is created (during init)
+**Creation:** After BACKLOG.md is created (during init)
 - Reference PROJECT.md (read it for current context)
 - Initialize empty accumulated context sections
-- Set position to "Phase 1 ready to plan"
+- Set position to "Plan 001 ready to plan"
 
 **Reading:** First step of every workflow
 - progress: Present status to user
 - plan: Inform planning decisions
 - execute: Know current position
-- transition: Know what's complete
 
 **Writing:** After every significant action
 - execute: After SUMMARY.md created
-  - Update position (phase, plan, status)
+  - Update position (plan, status)
   - Note new decisions (detail in PROJECT.md)
   - Add blockers/concerns
-- transition: After phase marked complete
+- After plan marked complete
   - Update progress bar
   - Clear resolved blockers
   - Refresh Project Reference date
@@ -117,29 +96,19 @@ STATE.md is the project's short-term memory spanning all phases and sessions.
 ### Project Reference
 Points to PROJECT.md for full context. Includes:
 - Core value (the ONE thing that matters)
-- Current focus (which phase)
+- Current focus (which plan)
 - Last update date (triggers re-read if stale)
 
 Claude reads PROJECT.md directly for requirements, constraints, and decisions.
 
 ### Current Position
 Where we are right now:
-- Phase X of Y — which phase
-- Plan A of B — which plan within phase
+- Plan [current] of [total] — which plan
 - Status — current state
 - Last activity — what happened most recently
 - Progress bar — visual indicator of overall completion
 
-Progress calculation: (completed plans) / (total plans across all phases) × 100%
-
-### Performance Metrics
-Track velocity to understand execution patterns:
-- Total plans completed
-- Average duration per plan
-- Per-phase breakdown
-- Recent trend (improving/stable/degrading)
-
-Updated after each plan completion.
+Progress calculation: (completed plans) / (total plans in BACKLOG.md) × 100%
 
 ### Accumulated Context
 
@@ -150,9 +119,8 @@ Updated after each plan completion.
 - Reference to .planning/todos/pending/
 - Brief list if few, count if many (e.g., "5 pending todos — see /mario:check-todos")
 
-**Blockers/Concerns:** From "Next Phase Readiness" sections
-- Issues that affect future work
-- Prefix with originating phase
+**Blockers/Concerns:** Issues that affect future work
+- Prefix with originating plan
 - Cleared when addressed
 
 ### Session Continuity

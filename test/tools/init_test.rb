@@ -5,11 +5,10 @@ class InitTest < Minitest::Test
   def setup
     @dir = Dir.mktmpdir
     @planning_dir = File.join(@dir, ".planning")
-    @phases_dir = File.join(@planning_dir, "phases")
-    FileUtils.mkdir_p(@phases_dir)
+    @plans_dir = File.join(@planning_dir, "plans")
+    FileUtils.mkdir_p(@plans_dir)
 
-    # Create minimal ROADMAP.md for milestone info
-    File.write(File.join(@planning_dir, "ROADMAP.md"), "# ROADMAP\n\n## v1.0: MVP Release\n\n### Phase 1: Setup\n\n**Goal:** TBD\n")
+    File.write(File.join(@planning_dir, "BACKLOG.md"), "# BACKLOG\n\n**001: Setup**\n\nGoal: TBD\n")
     File.write(File.join(@planning_dir, "config.json"), '{"model_profile":"balanced"}')
   end
 
@@ -17,41 +16,39 @@ class InitTest < Minitest::Test
     FileUtils.rm_rf(@dir)
   end
 
-  def test_init_execute_phase
-    phase_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase_dir)
-    File.write(File.join(phase_dir, "01-01-PLAN.md"), "---\nphase: 1\nplan: 01\n---\n")
+  def test_init_execute
+    plan_dir = File.join(@plans_dir, "001-setup")
+    FileUtils.mkdir_p(plan_dir)
+    File.write(File.join(plan_dir, "PLAN.md"), "---\nplan: 001-setup\ntype: execute\n---\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["execute-phase", "1"]) }
-      assert result[:phase_found]
-      assert_equal "01", result[:phase_number]
-      assert_equal "setup", result[:phase_name]
-      assert_equal 1, result[:plan_count]
-      assert_equal "v1.0", result[:milestone_version]
+      result = capture_json { Mario::Tools::Init.dispatch(["execute", "1"]) }
+      assert result[:plan_found]
+      assert_equal "001", result[:plan_number]
+      assert_equal "setup", result[:plan_name]
       assert_includes result[:executor_model], "sonnet"
     end
   end
 
-  def test_init_execute_phase_with_includes
-    phase_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase_dir)
+  def test_init_execute_with_includes
+    plan_dir = File.join(@plans_dir, "001-setup")
+    FileUtils.mkdir_p(plan_dir)
     File.write(File.join(@planning_dir, "STATE.md"), "**Status:** Active\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["execute-phase", "1", "--include", "state,roadmap"]) }
+      result = capture_json { Mario::Tools::Init.dispatch(["execute", "1", "--include", "state,backlog"]) }
       assert result[:state_content]
-      assert result[:roadmap_content]
+      assert result[:backlog_content]
     end
   end
 
-  def test_init_plan_phase
-    phase_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase_dir)
+  def test_init_plan
+    plan_dir = File.join(@plans_dir, "001-setup")
+    FileUtils.mkdir_p(plan_dir)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["plan-phase", "1"]) }
-      assert result[:phase_found]
+      result = capture_json { Mario::Tools::Init.dispatch(["plan", "1"]) }
+      assert result[:plan_found]
       assert_includes result.keys, :researcher_model
       assert_includes result.keys, :planner_model
       assert_includes result.keys, :research_enabled
@@ -62,18 +59,9 @@ class InitTest < Minitest::Test
     Dir.chdir(@dir) do
       result = capture_json { Mario::Tools::Init.dispatch(["new-project"]) }
       assert_includes result.keys, :researcher_model
+      assert_includes result.keys, :backlog_planner_model
       assert_includes result.keys, :is_brownfield
       assert_includes result.keys, :has_git
-      assert result[:roadmap_exists] || !result[:roadmap_exists] # just check key exists
-    end
-  end
-
-  def test_init_new_milestone
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["new-milestone"]) }
-      assert_equal "v1.0", result[:current_milestone]
-      assert_includes result.keys, :researcher_model
-      assert_includes result.keys, :roadmapper_model
     end
   end
 
@@ -81,14 +69,14 @@ class InitTest < Minitest::Test
     Dir.chdir(@dir) do
       result = capture_json { Mario::Tools::Init.dispatch(["quick", "fix", "login", "bug"]) }
       assert_equal 1, result[:next_num]
+      assert_equal "001", result[:padded_num]
       assert_equal "fix-login-bug", result[:slug]
-      assert_includes result[:task_dir], "1-fix-login-bug"
+      assert_includes result[:task_dir], "001-fix-login-bug"
     end
   end
 
   def test_init_quick_increments_number
-    quick_dir = File.join(@planning_dir, "quick")
-    FileUtils.mkdir_p(File.join(quick_dir, "1-first-task"))
+    FileUtils.mkdir_p(File.join(@plans_dir, "001-first-task"))
 
     Dir.chdir(@dir) do
       result = capture_json { Mario::Tools::Init.dispatch(["quick", "second", "task"]) }
@@ -96,53 +84,32 @@ class InitTest < Minitest::Test
     end
   end
 
-  def test_init_resume
-    File.write(File.join(@planning_dir, "STATE.md"), "state content")
-    File.write(File.join(@planning_dir, "PROJECT.md"), "project content")
+  def test_init_progress
+    plan1_dir = File.join(@plans_dir, "001-setup")
+    FileUtils.mkdir_p(plan1_dir)
+    File.write(File.join(plan1_dir, "PLAN.md"), "plan")
+    File.write(File.join(plan1_dir, "SUMMARY.md"), "summary")
+
+    plan2_dir = File.join(@plans_dir, "002-auth")
+    FileUtils.mkdir_p(plan2_dir)
+    File.write(File.join(plan2_dir, "PLAN.md"), "plan")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["resume"]) }
-      assert result[:state_exists]
-      assert result[:project_exists]
-      assert result[:planning_exists]
-      refute result[:has_interrupted_agent]
+      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
+      assert_equal 2, result[:plan_count]
+      assert_equal 1, result[:completed_count]
+      assert_equal 1, result[:in_progress_count]
+      assert result[:has_work_in_progress]
+      assert_includes result.keys, :backlog_exists
     end
   end
 
-  def test_init_resume_with_interrupted_agent
-    File.write(File.join(@planning_dir, "current-agent-id.txt"), "agent-123")
+  def test_init_progress_detects_paused
+    File.write(File.join(@planning_dir, "STATE.md"), "**Paused At:** Task 3 of Plan 02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["resume"]) }
-      assert result[:has_interrupted_agent]
-      assert_equal "agent-123", result[:interrupted_agent_id]
-    end
-  end
-
-  def test_init_verify_work
-    phase_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase_dir)
-    File.write(File.join(phase_dir, "01-VERIFICATION.md"), "verification")
-
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["verify-work", "1"]) }
-      assert result[:phase_found]
-      assert result[:has_verification]
-    end
-  end
-
-  def test_init_phase_op
-    phase_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase_dir)
-    File.write(File.join(phase_dir, "01-RESEARCH.md"), "research")
-    File.write(File.join(phase_dir, "01-01-PLAN.md"), "plan")
-
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["phase-op", "1"]) }
-      assert result[:phase_found]
-      assert result[:has_research]
-      assert result[:has_plans]
-      assert_equal 1, result[:plan_count]
+      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
+      assert_includes result.keys, :state_exists
     end
   end
 
@@ -169,62 +136,6 @@ class InitTest < Minitest::Test
       result = capture_json { Mario::Tools::Init.dispatch(["todos", "code"]) }
       assert_equal 1, result[:todo_count]
       assert_equal "code", result[:todos].first[:area]
-    end
-  end
-
-  def test_init_milestone_op
-    phase_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase_dir)
-    File.write(File.join(phase_dir, "01-01-SUMMARY.md"), "summary")
-
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["milestone-op"]) }
-      assert_equal "v1.0", result[:milestone_version]
-      assert_equal 1, result[:phase_count]
-      assert_equal 1, result[:completed_phases]
-      assert result[:all_phases_complete]
-    end
-  end
-
-  def test_init_map_codebase
-    codebase_dir = File.join(@planning_dir, "codebase")
-    FileUtils.mkdir_p(codebase_dir)
-    File.write(File.join(codebase_dir, "architecture.md"), "arch")
-
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["map-codebase"]) }
-      assert result[:has_maps]
-      assert_equal ["architecture.md"], result[:existing_maps]
-      assert result[:codebase_dir_exists]
-    end
-  end
-
-  def test_init_progress
-    phase1_dir = File.join(@phases_dir, "01-setup")
-    FileUtils.mkdir_p(phase1_dir)
-    File.write(File.join(phase1_dir, "01-01-PLAN.md"), "plan")
-    File.write(File.join(phase1_dir, "01-01-SUMMARY.md"), "summary")
-
-    phase2_dir = File.join(@phases_dir, "02-auth")
-    FileUtils.mkdir_p(phase2_dir)
-    File.write(File.join(phase2_dir, "02-01-PLAN.md"), "plan")
-
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
-      assert_equal 2, result[:phase_count]
-      assert_equal 1, result[:completed_count]
-      assert_equal 1, result[:in_progress_count]
-      assert result[:has_work_in_progress]
-      assert_equal "v1.0", result[:milestone_version]
-    end
-  end
-
-  def test_init_progress_detects_paused
-    File.write(File.join(@planning_dir, "STATE.md"), "**Paused At:** Task 3 of Plan 02\n")
-
-    Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
-      assert_equal "Task 3 of Plan 02", result[:paused_at]
     end
   end
 

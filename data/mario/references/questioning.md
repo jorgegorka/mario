@@ -14,15 +14,15 @@ Don't interrogate. Collaborate. Don't follow a script. Follow the thread.
 
 <the_goal>
 
-By the end of questioning, you need enough clarity to write a PROJECT.md that downstream phases can act on:
+By the end of questioning, you need enough clarity to write a PROJECT.md that downstream plans can act on:
 
 - **Research** needs: what market/audience to research, what the user already knows, what unknowns exist
 - **Requirements** needs: clear enough vision to scope v1 marketing deliverables
-- **Roadmap** needs: clear enough vision to decompose into phases, what "done" looks like
-- **plan-phase** needs: specific requirements to break into tasks, context for channel and content choices
-- **execute-phase** needs: success criteria to verify against, the "why" behind requirements
+- **Backlog** needs: clear enough vision to decompose into plans, what "done" looks like
+- **plan** needs: specific requirements to break into tasks, context for channel and content choices
+- **execute** needs: success criteria to verify against, the "why" behind requirements
 
-A vague PROJECT.md forces every downstream phase to guess. The cost compounds.
+A vague PROJECT.md forces every downstream plan to guess. The cost compounds.
 
 </the_goal>
 

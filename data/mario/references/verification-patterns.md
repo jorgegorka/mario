@@ -185,7 +185,7 @@ Verify that all required elements are present for each content type.
 
 ## Consistency Checks
 
-Verify alignment across all deliverables in a phase or campaign.
+Verify alignment across all deliverables in a plan or campaign.
 
 ### Voice Consistency
 - Does every deliverable sound like it comes from the same brand?
@@ -389,7 +389,7 @@ For each deliverable type, run through this checklist:
 For the verification agent, use this pattern:
 
 **1. Check existence:**
-- Confirm all expected deliverables for the phase are present
+- Confirm all expected deliverables for the plan are present
 - Verify all required sections within each deliverable exist
 - Check that metadata fields are populated
 

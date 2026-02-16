@@ -21,7 +21,7 @@ class InstallerTest < Minitest::Test
     cmd_dir = File.join(@tmpdir, "commands", "mario")
     assert File.directory?(cmd_dir), "commands/mario/ should exist"
     assert File.exist?(File.join(cmd_dir, "new-project.md")), "new-project.md should exist"
-    assert File.exist?(File.join(cmd_dir, "execute-phase.md")), "execute-phase.md should exist"
+    assert File.exist?(File.join(cmd_dir, "execute.md")), "execute.md should exist"
   end
 
   def test_fresh_install_creates_agents

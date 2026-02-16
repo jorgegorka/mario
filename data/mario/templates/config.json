@@ -20,8 +20,8 @@
   },
   "gates": {
     "confirm_project": true,
-    "confirm_phases": true,
-    "confirm_roadmap": true,
+    "confirm_plans": true,
+    "confirm_backlog": true,
     "confirm_breakdown": true,
     "confirm_plan": true,
     "execute_next_plan": true,
