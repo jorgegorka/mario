@@ -1,5 +1,5 @@
 <purpose>
-Initialize a new project through unified flow: questioning, research (optional), requirements, backlog. This is the most leveraged moment in any project — deep questioning here means better plans, better execution, better outcomes. One workflow takes you from idea to ready-for-planning.
+Initialize a new project through unified flow: questioning, research, brand foundations. This is the most leveraged moment in any project — deep questioning here means better foundations, better content, better outcomes. One workflow takes you from idea to ready-for-content-creation.
 </purpose>
 
 <required_reading>
@@ -13,18 +13,18 @@ Check if `--auto` flag is present in $ARGUMENTS.
 
 **If auto mode:**
 - Skip deep questioning (extract context from provided document)
-- Config questions still required (Step 5)
-- After config: run Steps 6-8 automatically with smart defaults:
-  - Research: Always yes
-  - Requirements: Include all table stakes + features from provided document
-  - Requirements approval: Auto-approve
-  - Backlog approval: Auto-approve
+- Config questions still required (Step 4)
+- After config: run research automatically with smart defaults
 
 **Document requirement:**
 Auto mode requires an idea document via @ reference (e.g., `/mario:new-project --auto @prd.md`). If no document provided, error:
 
 ```
-Error: --auto requires an idea document via @ reference.
+╔══════════════════════════════════════════════════════════════╗
+║  ERROR                                                       ║
+╚══════════════════════════════════════════════════════════════╝
+
+--auto requires an idea document via @ reference.
 
 Usage: /mario:new-project --auto @your-idea.md
 
@@ -42,7 +42,7 @@ The document should describe the product or business you want to market.
 INIT=$(mario-tools init new-project)
 ```
 
-Parse JSON for: `researcher_model`, `synthesizer_model`, `backlog_planner_model`, `commit_docs`, `project_exists`, `planning_exists`, `has_git`.
+Parse JSON for: `researcher_model`, `synthesizer_model`, `commit_docs`, `project_exists`, `planning_exists`, `has_git`.
 
 **If `project_exists` is true:** Error — project already initialized. Use `/mario:progress`.
 
@@ -79,10 +79,15 @@ Keep following threads. Each answer opens new threads to explore. Ask about:
 - Business context: What problem does the product solve? Who pays?
 - Target audience: Who are the ideal customers? What do they care about?
 - Value proposition: Why should someone choose this over alternatives?
+- Brand personality: How should this brand feel? Professional, casual, edgy, warm?
+- Voice preferences: Any existing tone guidelines or content examples?
+- Key personas: Who are the main people you're trying to reach?
+- Core messages: What's the one thing you want people to remember?
 - Channel goals: Which marketing channels matter most?
 - Current state: What marketing exists today? What's working/not?
 - Success metrics: What does success look like? Revenue? Leads? Brand awareness?
 - Competitive landscape: Who are the competitors? How are they positioned?
+- Product details: What are the key features? What's the pricing model?
 
 Consult `questioning.md` for techniques:
 - Challenge vagueness
@@ -168,7 +173,7 @@ mario-tools commit "docs: initialize project" --files .planning/PROJECT.md
 
 ## 4. Workflow Preferences
 
-**Round 1 — Core workflow settings (3 questions):**
+**Core workflow settings (2 questions):**
 
 ```
 questions: [
@@ -179,16 +184,6 @@ questions: [
     options: [
       { label: "YOLO (Recommended)", description: "Auto-approve, just execute" },
       { label: "Interactive", description: "Confirm at each step" }
-    ]
-  },
-  {
-    header: "Depth",
-    question: "How thorough should planning be?",
-    multiSelect: false,
-    options: [
-      { label: "Quick", description: "Ship fast (3-5 plans)" },
-      { label: "Standard", description: "Balanced scope and speed (5-10 plans)" },
-      { label: "Comprehensive", description: "Thorough coverage (10-20 plans)" }
     ]
   },
   {
@@ -203,32 +198,17 @@ questions: [
 ]
 ```
 
-**Round 2 — Workflow agents:**
-
-These spawn additional agents during planning/execution. They add tokens and time but improve quality.
-
-| Agent | When it runs | What it does |
-|-------|--------------|--------------|
-| **Researcher** | Before planning each plan | Investigates domain, finds patterns, surfaces gotchas |
+**Model profile:**
 
 ```
 questions: [
   {
-    header: "Research",
-    question: "Research before planning? (adds tokens/time)",
-    multiSelect: false,
-    options: [
-      { label: "Yes (Recommended)", description: "Investigate domain, find patterns, surface gotchas" },
-      { label: "No", description: "Plan directly from requirements" }
-    ]
-  },
-  {
     header: "Model Profile",
-    question: "Which AI models for planning agents?",
+    question: "Which AI models for research agents?",
     multiSelect: false,
     options: [
       { label: "Balanced (Recommended)", description: "Sonnet for most agents — good quality/cost ratio" },
-      { label: "Quality", description: "Opus for research/planning — higher cost, deeper analysis" },
+      { label: "Quality", description: "Opus for research — higher cost, deeper analysis" },
       { label: "Budget", description: "Haiku where possible — fastest, lowest cost" }
     ]
   }
@@ -240,12 +220,8 @@ Create `.planning/config.json` with all settings:
 ```json
 {
   "mode": "yolo|interactive",
-  "depth": "quick|standard|comprehensive",
   "commit_docs": true|false,
-  "model_profile": "quality|balanced|budget",
-  "workflow": {
-    "research": true|false
-  }
+  "model_profile": "quality|balanced|budget"
 }
 ```
 
@@ -266,460 +242,311 @@ mario-tools commit "chore: add project config" --files .planning/config.json
 
 ## 4.5. Resolve Model Profile
 
-Use models from init: `researcher_model`, `synthesizer_model`, `backlog_planner_model`.
+Use models from init: `researcher_model`, `synthesizer_model`.
 
-## 5. Research Decision
+## 5. Foundation Research
 
-**If auto mode:** Default to "Research first" without asking.
+**If auto mode:** Proceed directly without asking.
 
 Use AskUserQuestion:
 - header: "Research"
-- question: "Research the domain ecosystem before defining requirements?"
+- question: "Research your brand foundations? This creates permanent reference documents for all content."
 - options:
-  - "Research first (Recommended)" — Discover standard stacks, expected features, architecture patterns
-  - "Skip research" — I know this domain well, go straight to requirements
+  - "Research foundations (Recommended)" — Deep research into brand, audience, competitors, messaging, product, channels
+  - "Skip research" — I'll create foundation documents manually later
 
-**If "Research first":**
+**If "Research foundations":**
 
 Display stage banner:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Mario ► RESEARCHING
+ Mario ► RESEARCHING FOUNDATIONS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Researching [domain] ecosystem...
+Researching brand foundations for [project name]...
 ```
 
-Create research directory:
+Create foundations directory:
 ```bash
-mkdir -p .planning/research
+mkdir -p .planning/foundations
 ```
-
-**Determine project context:**
-
-Check if this is greenfield or has existing materials:
-- If no "Validated" requirements in PROJECT.md → Greenfield (building from scratch)
-- If "Validated" requirements exist → Building on existing work
 
 Display spawning indicator:
 ```
-◆ Spawning 4 researchers in parallel...
-  → Channel landscape research
-  → Audience & messaging research
-  → Content strategy research
-  → Marketing pitfalls research
+◆ Spawning 7 foundation researchers in parallel...
+  → Brand identity research
+  → Voice & tone research
+  → Audience & personas research
+  → Competitive landscape research
+  → Messaging framework research
+  → Product/service research
+  → Channels & distribution research
 ```
 
-Spawn 4 parallel mario-project-researcher agents with rich context:
+Spawn 7 parallel mario-project-researcher agents with rich context:
 
 ```
 Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
 
 <research_type>
-Project Research — Channel landscape dimension for [domain].
+Foundation Research — Brand Identity dimension for [project name].
 </research_type>
 
 <question>
-What channels are competitors using? What's the standard marketing stack for this type of business?
+What is this brand's story, mission, values, positioning, and personality? How is it differentiated from competitors?
 </question>
 
 <project_context>
-[PROJECT.md summary - core message, constraints, what they're marketing]
+[PROJECT.md summary - what they're marketing, core message, target audience, competitive context, website URL]
 </project_context>
 
 <downstream_consumer>
-Your CHANNELS.md feeds into backlog creation. Be prescriptive:
-- Specific channels with priority ranking
-- Recommended tools and platforms
-- What channels to avoid and why
+Your BRAND-IDENTITY.md is a permanent brand reference loaded by every content session. Be comprehensive and opinionated:
+- Company story (origin, current state, vision)
+- Mission, vision, values (observable, not aspirational)
+- Value proposition (specific, differentiated, customer-outcome focused)
+- Competitive positioning (unique space occupied, positioning map)
+- Brand personality (3-5 attributes with means/does not mean)
+- Brand proof points (evidence for claims)
 </downstream_consumer>
 
 <output>
-Write to: .planning/research/CHANNELS.md
-Use template: ~/.claude/mario/templates/research-project/CHANNELS.md
+Write to: .planning/foundations/BRAND-IDENTITY.md
+Use template: ~/.claude/mario/templates/foundations/BRAND-IDENTITY.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Channel landscape research")
+", subagent_type="general-purpose", model="{researcher_model}", description="Brand identity research")
 
 Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
 
 <research_type>
-Project Research — Audience & messaging dimension for [domain].
+Foundation Research — Voice & Tone dimension for [project name].
 </research_type>
 
 <question>
-What messaging resonates with the target audience? What are table-stakes marketing assets for this business type?
+How should this brand sound? What are the voice attributes, tone variations, language preferences, and writing conventions?
 </question>
 
 <project_context>
-[PROJECT.md summary]
+[PROJECT.md summary - brand personality notes, existing content examples, voice preferences mentioned]
 </project_context>
 
 <downstream_consumer>
-Your AUDIENCE.md feeds into requirements definition. Categorize clearly:
-- Table stakes (must-have marketing assets or prospects leave)
-- Differentiators (messaging that creates competitive advantage)
-- Anti-patterns (messaging approaches to deliberately avoid)
+Your VOICE-TONE.md is a permanent brand reference loaded by every content session. Be specific and actionable:
+- Voice attributes (3-5 with means/does not mean/do/don't examples)
+- Tone spectrum and tone by context (website, blog, email, social, ads, support)
+- Language preferences (preferred terms, product terminology, words to avoid)
+- Style conventions (capitalization, punctuation, formatting)
+- Do/don't examples across content types
 </downstream_consumer>
 
 <output>
-Write to: .planning/research/AUDIENCE.md
-Use template: ~/.claude/mario/templates/research-project/AUDIENCE.md
+Write to: .planning/foundations/VOICE-TONE.md
+Use template: ~/.claude/mario/templates/foundations/VOICE-TONE.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Audience & messaging research")
+", subagent_type="general-purpose", model="{researcher_model}", description="Voice & tone research")
 
 Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
 
 <research_type>
-Project Research — Content strategy dimension for [domain].
+Foundation Research — Audience & Personas dimension for [project name].
 </research_type>
 
 <question>
-How should content be structured? What are the right content pillars, funnel stages, and distribution plan?
+Who is this brand talking to? What are the ideal customer profile, buyer personas, jobs to be done, and buyer journey stages?
 </question>
 
 <project_context>
-[PROJECT.md summary]
+[PROJECT.md summary - target audience, customer descriptions, segments mentioned]
 </project_context>
 
 <downstream_consumer>
-Your CONTENT.md informs plan structure in backlog. Include:
-- Content pillars and their relationships
-- Funnel stages (awareness → consideration → decision → retention)
-- Suggested build order (what content depends on what)
+Your AUDIENCE-PERSONAS.md is a permanent brand reference loaded by every content session. Create actionable profiles:
+- ICP with qualifying/disqualifying signals
+- 2-4 buyer personas (goals, pains, objections, triggers, decision factors, representative quotes)
+- JTBD (functional, emotional, social jobs)
+- Awareness levels with content needed at each level
+- Buyer journey stages (awareness → consideration → decision → retention)
 </downstream_consumer>
 
 <output>
-Write to: .planning/research/CONTENT.md
-Use template: ~/.claude/mario/templates/research-project/CONTENT.md
+Write to: .planning/foundations/AUDIENCE-PERSONAS.md
+Use template: ~/.claude/mario/templates/foundations/AUDIENCE-PERSONAS.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Content strategy research")
+", subagent_type="general-purpose", model="{researcher_model}", description="Audience & personas research")
 
 Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
 
 <research_type>
-Project Research — Marketing pitfalls dimension for [domain].
+Foundation Research — Competitive Landscape dimension for [project name].
 </research_type>
 
 <question>
-What do businesses in this space commonly get wrong with marketing? Critical mistakes?
+Who are the competitors? How do they position and message? Where are the gaps and differentiation opportunities?
 </question>
 
 <project_context>
-[PROJECT.md summary]
+[PROJECT.md summary - competitors mentioned, competitive context, differentiation notes]
 </project_context>
 
 <downstream_consumer>
-Your PITFALLS.md prevents mistakes in planning. For each pitfall:
-- Warning signs (how to detect early)
-- Prevention strategy (how to avoid)
-- Which plan should address it
+Your COMPETITIVE-LANDSCAPE.md is a permanent brand reference loaded by every content session. Be thorough and strategic:
+- 5-10 competitors (direct, indirect, substitute) with profiles
+- Positioning matrix across 2-3 key dimensions
+- Messaging analysis (common themes, unique angles, proof point comparison)
+- Content & SEO landscape (volume, quality, keyword overlap)
+- Gaps & opportunities (weaknesses, underserved audiences, messaging white space, content gaps)
 </downstream_consumer>
 
 <output>
-Write to: .planning/research/PITFALLS.md
-Use template: ~/.claude/mario/templates/research-project/PITFALLS.md
+Write to: .planning/foundations/COMPETITIVE-LANDSCAPE.md
+Use template: ~/.claude/mario/templates/foundations/COMPETITIVE-LANDSCAPE.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Marketing pitfalls research")
+", subagent_type="general-purpose", model="{researcher_model}", description="Competitive landscape research")
+
+Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
+
+<research_type>
+Foundation Research — Messaging Framework dimension for [project name].
+</research_type>
+
+<question>
+What are the core messages for each audience? What proof points, objection handling, and elevator pitches should this brand use?
+</question>
+
+<project_context>
+[PROJECT.md summary - core message, value proposition, audience notes, competitive context]
+</project_context>
+
+<downstream_consumer>
+Your MESSAGING-FRAMEWORK.md is a permanent brand reference loaded by every content session. Create a complete messaging playbook:
+- Core message, tagline, boilerplate
+- Messaging hierarchy (core → pillars → proof points)
+- Messages per persona (primary message, supporting messages, language cues, emotional trigger)
+- Proof points organized by type (metrics, testimonials, case studies, awards)
+- Objection handling (acknowledge/reframe/prove framework, 4-6 key objections)
+- Elevator pitches (10-second, 30-second, 60-second)
+- Message-to-channel mapping
+</downstream_consumer>
+
+<output>
+Write to: .planning/foundations/MESSAGING-FRAMEWORK.md
+Use template: ~/.claude/mario/templates/foundations/MESSAGING-FRAMEWORK.md
+</output>
+", subagent_type="general-purpose", model="{researcher_model}", description="Messaging framework research")
+
+Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
+
+<research_type>
+Foundation Research — Product/Service dimension for [project name].
+</research_type>
+
+<question>
+What does this product/service do and why should anyone care? What are the features, benefits, use cases, and pricing?
+</question>
+
+<project_context>
+[PROJECT.md summary - include the Website URL if available, product details mentioned]
+</project_context>
+
+<source_instructions>
+Primary: If a website URL is available in PROJECT.md, use WebFetch to crawl the features page, pricing page, product pages, and homepage. Extract features as they are presented to customers.
+
+Secondary: If no URL is available, use WebSearch to find the company website based on the project context, then crawl it.
+
+Document: If a customer document was provided via @ reference during project setup, extract features from it as well.
+</source_instructions>
+
+<downstream_consumer>
+Your PRODUCT-SERVICE.md is a permanent brand reference loaded by every content session. Be comprehensive:
+- Product overview (customer perspective, not internal)
+- Features-to-benefits mapping (feature → what it does → customer benefit → persona → content context)
+- Use cases (4-6 specific scenarios with persona, situation, problem, solution, outcome)
+- Social proof themes (positive themes with quotes, negative themes with handling approach)
+- Pricing positioning (model, tiers, narrative, anchor, objection preemption)
+</downstream_consumer>
+
+<output>
+Write to: .planning/foundations/PRODUCT-SERVICE.md
+Use template: ~/.claude/mario/templates/foundations/PRODUCT-SERVICE.md
+</output>
+", subagent_type="general-purpose", model="{researcher_model}", description="Product/service research")
+
+Task(prompt="First, read ~/.claude/agents/mario-project-researcher.md for your role and instructions.
+
+<research_type>
+Foundation Research — Channels & Distribution dimension for [project name].
+</research_type>
+
+<question>
+Where should this brand show up? What channels, content types, cadence, and distribution approach should it use?
+</question>
+
+<project_context>
+[PROJECT.md summary - channel goals, current marketing state, audience channels mentioned]
+</project_context>
+
+<downstream_consumer>
+Your CHANNELS-DISTRIBUTION.md is a permanent brand reference loaded by every content session. Be strategic and actionable:
+- Channel strategy overview (growth model, primary channel, philosophy)
+- Channel inventory (active, planned, rejected — with rationale)
+- Channel-specific considerations (purpose, audience, tone, content types, cadence, metrics, tools)
+- Content repurposing flow (how pillar content feeds other channels)
+- Channel priority ranking (investment level, expected impact, rationale)
+</downstream_consumer>
+
+<output>
+Write to: .planning/foundations/CHANNELS-DISTRIBUTION.md
+Use template: ~/.claude/mario/templates/foundations/CHANNELS-DISTRIBUTION.md
+</output>
+", subagent_type="general-purpose", model="{researcher_model}", description="Channels & distribution research")
 ```
 
-After all 4 agents complete, spawn synthesizer to create SUMMARY.md:
+After all 7 agents complete, spawn synthesizer to create BRAND-BIBLE.md:
 
 ```
 Task(prompt="
 <task>
-Synthesize research outputs into SUMMARY.md.
+Synthesize 7 foundation research files into BRAND-BIBLE.md.
 </task>
 
 <research_files>
 Read these files:
-- .planning/research/CHANNELS.md
-- .planning/research/AUDIENCE.md
-- .planning/research/CONTENT.md
-- .planning/research/PITFALLS.md
+- .planning/foundations/BRAND-IDENTITY.md
+- .planning/foundations/VOICE-TONE.md
+- .planning/foundations/AUDIENCE-PERSONAS.md
+- .planning/foundations/COMPETITIVE-LANDSCAPE.md
+- .planning/foundations/MESSAGING-FRAMEWORK.md
+- .planning/foundations/PRODUCT-SERVICE.md
+- .planning/foundations/CHANNELS-DISTRIBUTION.md
 </research_files>
 
 <output>
-Write to: .planning/research/SUMMARY.md
-Use template: ~/.claude/mario/templates/research-project/SUMMARY.md
-Commit after writing.
+Write to: .planning/foundations/BRAND-BIBLE.md
+Use template: ~/.claude/mario/templates/foundations/BRAND-BIBLE.md
+Commit ALL foundation files after writing BRAND-BIBLE.md.
 </output>
-", subagent_type="mario-research-synthesizer", model="{synthesizer_model}", description="Synthesize research")
+", subagent_type="mario-research-synthesizer", model="{synthesizer_model}", description="Synthesize brand bible")
 ```
 
 Display research complete banner and key findings:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Mario ► RESEARCH COMPLETE ✓
+ Mario ► FOUNDATIONS COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ## Key Findings
 
-**Channels:** [from SUMMARY.md]
-**Table Stakes:** [from SUMMARY.md]
-**Watch Out For:** [from SUMMARY.md]
+**Voice:** [from BRAND-BIBLE.md voice card]
+**Personas:** [from BRAND-BIBLE.md persona summaries]
+**Core Message:** [from BRAND-BIBLE.md]
+**Positioning:** [from BRAND-BIBLE.md competitive positioning]
 
-Files: `.planning/research/`
+Files: `.planning/foundations/`
 ```
 
 **If "Skip research":** Continue to Step 6.
 
-## 6. Define Requirements
-
-Display stage banner:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Mario ► DEFINING REQUIREMENTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-**Load context:**
-
-Read PROJECT.md and extract:
-- Core message (the ONE thing that must resonate)
-- Stated constraints (budget, timeline, tech limitations)
-- Any explicit scope boundaries
-
-**If research exists:** Read research/AUDIENCE.md and extract feature categories.
-
-**If auto mode:**
-- Auto-include all table stakes features (users expect these)
-- Include features explicitly mentioned in provided document
-- Auto-defer differentiators not mentioned in document
-- Skip per-category AskUserQuestion loops
-- Skip "Any additions?" question
-- Skip requirements approval gate
-- Generate REQUIREMENTS.md and commit directly
-
-**Present features by category (interactive mode only):**
-
-```
-Here are the marketing assets for [domain]:
-
-## Brand Foundation
-**Table stakes:**
-- Brand voice guide documented
-- Buyer personas created
-- Core messaging framework
-- Visual identity guidelines
-
-**Differentiators:**
-- Competitive positioning matrix
-- Brand story narrative
-- Tone variations by channel
-
-**Research notes:** [any relevant notes]
-
----
-
-## [Next Category: Website Copy, Email Marketing, Social Media, SEO Content, Paid Advertising]
-...
-```
-
-**If no research:** Gather requirements through conversation instead.
-
-Ask: "What are the main things users need to be able to do?"
-
-For each capability mentioned:
-- Ask clarifying questions to make it specific
-- Probe for related capabilities
-- Group into categories
-
-**Scope each category:**
-
-For each category, use AskUserQuestion:
-
-- header: "[Category name]"
-- question: "Which [category] features are in v1?"
-- multiSelect: true
-- options:
-  - "[Feature 1]" — [brief description]
-  - "[Feature 2]" — [brief description]
-  - "[Feature 3]" — [brief description]
-  - "None for v1" — Defer entire category
-
-Track responses:
-- Selected features → v1 requirements
-- Unselected table stakes → v2 (users expect these)
-- Unselected differentiators → out of scope
-
-**Identify gaps:**
-
-Use AskUserQuestion:
-- header: "Additions"
-- question: "Any requirements research missed? (Features specific to your vision)"
-- options:
-  - "No, research covered it" — Proceed
-  - "Yes, let me add some" — Capture additions
-
-**Validate core message:**
-
-Cross-check requirements against Core Message from PROJECT.md. If gaps detected, surface them.
-
-**Generate REQUIREMENTS.md:**
-
-Create `.planning/REQUIREMENTS.md` with:
-- v1 Requirements grouped by category (checkboxes, REQ-IDs)
-- v2 Requirements (deferred)
-- Out of Scope (explicit exclusions with reasoning)
-
-**REQ-ID format:** `[CATEGORY]-[NUMBER]` (BRAND-01, WEB-02, EMAIL-01, SOCIAL-02, SEO-01, ADS-01)
-
-**Requirement quality criteria:**
-
-Good requirements are:
-- **Specific and testable:** "Homepage copy with hero section, 3 benefit blocks, and CTA" (not "Write homepage")
-- **Outcome-oriented:** "Welcome sequence converts 15% of signups to active users" (not "System sends emails")
-- **Atomic:** One deliverable per requirement (not "Create all email sequences and social posts")
-- **Independent:** Minimal dependencies on other requirements
-
-Reject vague requirements. Push for specificity.
-
-**Present full requirements list (interactive mode only):**
-
-Show every requirement (not counts) for user confirmation:
-
-```
-## v1 Requirements
-
-### Brand Foundation
-- [ ] **BRAND-01**: Brand voice guide documented
-- [ ] **BRAND-02**: 3 detailed buyer personas created
-- [ ] **BRAND-03**: Core messaging framework defined
-
-### Website Copy
-- [ ] **WEB-01**: Homepage copy written
-- [ ] **WEB-02**: Landing page for primary offering
-
-[... full list ...]
-
----
-
-Does this capture what you're marketing? (yes / adjust)
-```
-
-If "adjust": Return to scoping.
-
-**Commit requirements:**
-
-```bash
-mario-tools commit "docs: define v1 requirements" --files .planning/REQUIREMENTS.md
-```
-
-## 7. Create Backlog
-
-Display stage banner:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Mario ► CREATING BACKLOG
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-◆ Spawning backlog planner...
-```
-
-Spawn mario-backlog-planner agent with context:
-
-```
-Task(prompt="
-<planning_context>
-
-**Project:**
-@.planning/PROJECT.md
-
-**Requirements:**
-@.planning/REQUIREMENTS.md
-
-**Research (if exists):**
-@.planning/research/SUMMARY.md
-
-**Config:**
-@.planning/config.json
-
-</planning_context>
-
-<instructions>
-Create backlog:
-1. Derive plans from requirements (each plan = one deliverable)
-2. Map every v1 requirement to exactly one plan
-3. Order plans by dependency and priority
-4. Validate 100% coverage
-5. Write files immediately (BACKLOG.md, STATE.md, update REQUIREMENTS.md traceability)
-6. Return BACKLOG CREATED with summary
-
-Write files first, then return. This ensures artifacts persist even if context is lost.
-</instructions>
-", subagent_type="mario-backlog-planner", model="{backlog_planner_model}", description="Create backlog")
-```
-
-**Handle backlog planner return:**
-
-**If `## BACKLOG BLOCKED`:**
-- Present blocker information
-- Work with user to resolve
-- Re-spawn when resolved
-
-**If `## BACKLOG CREATED`:**
-
-Read the created BACKLOG.md and present it nicely inline:
-
-```
----
-
-## Proposed Backlog
-
-**[N] plans** | **[X] requirements mapped** | All v1 requirements covered ✓
-
-| # | Plan | Description | Requirements |
-|---|------|-------------|--------------|
-| 001 | [Name] | [Description] | [REQ-IDs] |
-| 002 | [Name] | [Description] | [REQ-IDs] |
-| 003 | [Name] | [Description] | [REQ-IDs] |
-...
-
----
-```
-
-**If auto mode:** Skip approval gate — auto-approve and commit directly.
-
-**CRITICAL: Ask for approval before committing (interactive mode only):**
-
-Use AskUserQuestion:
-- header: "Backlog"
-- question: "Does this backlog structure work for you?"
-- options:
-  - "Approve" — Commit and continue
-  - "Adjust plans" — Tell me what to change
-  - "Review full file" — Show raw BACKLOG.md
-
-**If "Approve":** Continue to commit.
-
-**If "Adjust plans":**
-- Get user's adjustment notes
-- Re-spawn backlog planner with revision context:
-  ```
-  Task(prompt="
-  <revision>
-  User feedback on backlog:
-  [user's notes]
-
-  Current BACKLOG.md: @.planning/BACKLOG.md
-
-  Update the backlog based on feedback. Edit files in place.
-  Return BACKLOG REVISED with changes made.
-  </revision>
-  ", subagent_type="mario-backlog-planner", model="{backlog_planner_model}", description="Revise backlog")
-  ```
-- Present revised backlog
-- Loop until user approves
-
-**If "Review full file":** Display raw `cat .planning/BACKLOG.md`, then re-ask.
-
-**Commit backlog (after approval or auto mode):**
-
-```bash
-mario-tools commit "docs: create backlog ([N] plans)" --files .planning/BACKLOG.md .planning/STATE.md .planning/REQUIREMENTS.md
-```
-
-## 8. Done
+## 6. Done
 
 Present completion with next steps:
 
@@ -730,30 +557,36 @@ Present completion with next steps:
 
 **[Project Name]**
 
-| Artifact       | Location                    |
-|----------------|-----------------------------|
-| Project        | `.planning/PROJECT.md`      |
-| Config         | `.planning/config.json`     |
-| Research       | `.planning/research/`       |
-| Requirements   | `.planning/REQUIREMENTS.md` |
-| Backlog        | `.planning/BACKLOG.md`      |
+| Artifact        | Location                                    |
+|-----------------|---------------------------------------------|
+| Project         | `.planning/PROJECT.md`                      |
+| Config          | `.planning/config.json`                     |
+| Brand Identity  | `.planning/foundations/BRAND-IDENTITY.md`    |
+| Voice & Tone    | `.planning/foundations/VOICE-TONE.md`        |
+| Audience        | `.planning/foundations/AUDIENCE-PERSONAS.md`  |
+| Competitors     | `.planning/foundations/COMPETITIVE-LANDSCAPE.md` |
+| Messaging       | `.planning/foundations/MESSAGING-FRAMEWORK.md` |
+| Product         | `.planning/foundations/PRODUCT-SERVICE.md`    |
+| Channels        | `.planning/foundations/CHANNELS-DISTRIBUTION.md` |
+| Brand Bible     | `.planning/foundations/BRAND-BIBLE.md`       |
 
-**[N] plans** | **[X] requirements** | Ready to build ✓
+**8 foundation documents** | Ready for content creation ✓
 
 ───────────────────────────────────────────────────────────────
 
 ## ▶ Next Up
 
-**Plan 001: [Plan Name]** — [Description]
+**Create content** — Tell Mario what to write.
 
-/mario:plan 001
+`/mario:create "Write a blog post about [topic]"`
 
 <sub>/clear first → fresh context window</sub>
 
----
+───────────────────────────────────────────────────────────────
 
 **Also available:**
-- /mario:execute 001 — skip planning, execute directly
+- `/mario:create "Write a landing page for [product]"` — any content type
+- `/mario:help` — see all commands
 
 ───────────────────────────────────────────────────────────────
 ```
@@ -764,15 +597,15 @@ Present completion with next steps:
 
 - `.planning/PROJECT.md`
 - `.planning/config.json`
-- `.planning/research/` (if research selected)
-  - `CHANNELS.md`
-  - `AUDIENCE.md`
-  - `CONTENT.md`
-  - `PITFALLS.md`
-  - `SUMMARY.md`
-- `.planning/REQUIREMENTS.md`
-- `.planning/BACKLOG.md`
-- `.planning/STATE.md`
+- `.planning/foundations/` (if research selected)
+  - `BRAND-IDENTITY.md`
+  - `VOICE-TONE.md`
+  - `AUDIENCE-PERSONAS.md`
+  - `COMPETITIVE-LANDSCAPE.md`
+  - `MESSAGING-FRAMEWORK.md`
+  - `PRODUCT-SERVICE.md`
+  - `CHANNELS-DISTRIBUTION.md`
+  - `BRAND-BIBLE.md`
 
 </output>
 
@@ -782,20 +615,12 @@ Present completion with next steps:
 - [ ] Git repo initialized
 - [ ] Deep questioning completed (threads followed, not rushed)
 - [ ] PROJECT.md captures full context → **committed**
-- [ ] config.json has workflow mode, depth → **committed**
-- [ ] Research completed (if selected) — 4 parallel agents spawned → **committed**
-- [ ] Requirements gathered (from research or conversation)
-- [ ] User scoped each category (v1/v2/out of scope)
-- [ ] REQUIREMENTS.md created with REQ-IDs → **committed**
-- [ ] mario-backlog-planner spawned with context
-- [ ] Backlog files written immediately (not draft)
-- [ ] User feedback incorporated (if any)
-- [ ] BACKLOG.md created with plans mapped to requirements
-- [ ] STATE.md initialized
-- [ ] REQUIREMENTS.md traceability updated
-- [ ] User knows next step is `/mario:plan 001`
+- [ ] config.json has workflow mode → **committed**
+- [ ] Foundation research completed (if selected) — 7 parallel agents spawned
+- [ ] BRAND-BIBLE.md synthesized from 7 foundation files
+- [ ] All foundation files → **committed**
+- [ ] User knows next step is `/mario:create`
 
 **Atomic commits:** Each step commits its artifacts immediately. If context is lost, artifacts persist.
 
 </success_criteria>
-</output>

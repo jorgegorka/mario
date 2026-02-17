@@ -12,6 +12,7 @@ module Mario
         "mario-phase-researcher" =>     { "quality" => "opus", "balanced" => "sonnet", "budget" => "haiku" },
         "mario-project-researcher" =>   { "quality" => "opus", "balanced" => "sonnet", "budget" => "haiku" },
         "mario-research-synthesizer" => { "quality" => "sonnet", "balanced" => "sonnet", "budget" => "haiku" },
+        "mario-topic-researcher" =>     { "quality" => "opus", "balanced" => "sonnet", "budget" => "haiku" },
         "mario-debugger" =>             { "quality" => "opus", "balanced" => "sonnet", "budget" => "sonnet" },
         "mario-codebase-mapper" =>      { "quality" => "sonnet", "balanced" => "haiku", "budget" => "haiku" },
         "mario-verifier" =>             { "quality" => "sonnet", "balanced" => "sonnet", "budget" => "haiku" },

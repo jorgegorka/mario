@@ -14,15 +14,12 @@ Don't interrogate. Collaborate. Don't follow a script. Follow the thread.
 
 <the_goal>
 
-By the end of questioning, you need enough clarity to write a PROJECT.md that downstream plans can act on:
+By the end of questioning, you need enough clarity to write a PROJECT.md that downstream foundation research can act on:
 
-- **Research** needs: what market/audience to research, what the user already knows, what unknowns exist
-- **Requirements** needs: clear enough vision to scope v1 marketing deliverables
-- **Backlog** needs: clear enough vision to decompose into plans, what "done" looks like
-- **plan** needs: specific requirements to break into tasks, context for channel and content choices
-- **execute** needs: success criteria to verify against, the "why" behind requirements
+- **Foundation research** needs: enough context about brand, audience, voice, competitors, product, and channels to produce comprehensive foundation documents
+- **Content creation** needs: clear enough vision that `/mario:create` sessions can produce on-brand content
 
-A vague PROJECT.md forces every downstream plan to guess. The cost compounds.
+A vague PROJECT.md forces every foundation researcher to guess. The cost compounds across all future content creation.
 
 </the_goal>
 
@@ -101,13 +98,19 @@ User mentions "frustrated with current tools"
 Use this as a **background checklist**, not a conversation structure. Check these mentally as you go. If gaps remain, weave questions naturally.
 
 - [ ] What they're marketing (product/business, concrete enough to explain to a stranger)
-- [ ] Who the target audience is (ideal customers, what they care about)
+- [ ] Who the target audience is (ideal customers, segments, what they care about)
 - [ ] What the value proposition is (why someone should choose this over alternatives)
+- [ ] What the brand personality is (how the brand should feel — authoritative, friendly, playful, etc.)
+- [ ] What voice preferences exist (formal/casual, any existing guidelines, content they admire)
+- [ ] Who the key personas are (2-3 distinct buyer types, their pain points, what triggers action)
+- [ ] What the core messages are (the things they always want to communicate, elevator pitch)
+- [ ] What the product/service details are (key features, pricing model, what makes it special)
 - [ ] Which channels matter most (where the audience is, what's working/not)
 - [ ] What the competitive landscape looks like (who else is in the space, how they're positioned)
 - [ ] What success looks like (revenue, leads, brand awareness, specific metrics)
+- [ ] Company/product website URL (for product/feature research)
 
-Six things. If they volunteer more, capture it.
+Twelve things. If they volunteer more, capture it. The extra dimensions (brand personality, voice, personas, messages, product details) feed the foundation research that powers all future content creation.
 
 </context_checklist>
 

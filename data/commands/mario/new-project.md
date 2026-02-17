@@ -1,6 +1,6 @@
 ---
 name: mario:new-project
-description: Initialize a new project with deep context gathering
+description: Establish brand foundations with deep context gathering
 argument-hint: "[--auto]"
 allowed-tools:
   - Read
@@ -11,21 +11,25 @@ allowed-tools:
 ---
 <context>
 **Flags:**
-- `--auto` — Automatic mode. After config questions, runs research -> requirements -> backlog without further interaction. Expects idea document via @ reference.
+- `--auto` — Automatic mode. After config questions, runs foundation research automatically. Expects idea document via @ reference.
 </context>
 
 <objective>
-Initialize a new project through unified flow: questioning -> research (optional) -> requirements -> backlog.
+Establish brand foundations through unified flow: questioning -> foundation research -> brand bible synthesis.
 
 **Creates:**
-- `.planning/PROJECT.md` — project context
+- `.planning/PROJECT.md` — project context and initial notes
 - `.planning/config.json` — workflow preferences
-- `.planning/research/` — domain research (optional)
-- `.planning/REQUIREMENTS.md` — scoped requirements
-- `.planning/BACKLOG.md` — plan list
-- `.planning/STATE.md` — project memory
+- `.planning/foundations/BRAND-IDENTITY.md` — company story, mission, values, positioning
+- `.planning/foundations/VOICE-TONE.md` — voice attributes, tone spectrum, do/don't examples
+- `.planning/foundations/AUDIENCE-PERSONAS.md` — ICP, buyer personas, pain points, JTBD
+- `.planning/foundations/COMPETITIVE-LANDSCAPE.md` — competitors, positioning matrix, gaps
+- `.planning/foundations/MESSAGING-FRAMEWORK.md` — core messages, proof points, elevator pitches
+- `.planning/foundations/PRODUCT-SERVICE.md` — features→benefits, use cases, pricing
+- `.planning/foundations/CHANNELS-DISTRIBUTION.md` — channel strategy, content types
+- `.planning/foundations/BRAND-BIBLE.md` — synthesized quick-reference for all content creation
 
-**After this command:** Run `/mario:plan 1` to start planning.
+**After this command:** Run `/mario:create` to start creating content.
 </objective>
 
 <execution_context>
@@ -33,7 +37,6 @@ Initialize a new project through unified flow: questioning -> research (optional
 @~/.claude/mario/references/questioning.md
 @~/.claude/mario/references/ui-brand.md
 @~/.claude/mario/templates/project.md
-@~/.claude/mario/templates/requirements.md
 </execution_context>
 
 <process>

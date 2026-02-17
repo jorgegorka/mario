@@ -5,13 +5,12 @@ Display the complete Mario command reference. Output ONLY the reference content.
 <reference>
 # Mario Command Reference
 
-**Mario** creates structured project plans optimized for solo agentic development with Claude Code.
+**Mario** creates structured marketing content powered by brand foundations and competitive research.
 
 ## Quick Start
 
-1. `/mario:new-project` - Initialize project (includes research, requirements, backlog)
-2. `/mario:plan 001` - Create detailed plan for first item
-3. `/mario:execute 001` - Execute the plan
+1. `/mario:new-project` - Establish brand foundations (includes research across 7 dimensions)
+2. `/mario:create "Write a blog post about X"` - Create content using your foundations
 
 ## Staying Updated
 
@@ -24,51 +23,52 @@ gem update mario && mario install --global
 ## Core Workflow
 
 ```
-/mario:new-project → /mario:plan → /mario:execute → repeat
+/mario:new-project → /mario:create → repeat
 ```
 
 ### Project Initialization
 
 **`/mario:new-project`**
-Initialize new project through unified flow.
+Establish brand foundations through unified flow.
 
-One command takes you from idea to ready-for-planning:
-- Deep questioning to understand what you're building
-- Optional domain research (spawns 4 parallel researcher agents)
-- Requirements definition with v1/v2/out-of-scope scoping
-- Backlog creation with plan breakdown
+One command takes you from idea to content-ready:
+- Deep questioning to understand your brand and market
+- Spawns 7 parallel foundation researcher agents
+- Produces comprehensive brand foundation documents
+- Synthesizes everything into BRAND-BIBLE.md
 
 Creates all `.planning/` artifacts:
-- `PROJECT.md` — vision and requirements
-- `config.json` — workflow mode (interactive/yolo)
-- `research/` — domain research (if selected)
-- `REQUIREMENTS.md` — scoped requirements with REQ-IDs
-- `BACKLOG.md` — plans mapped to requirements
-- `STATE.md` — project memory
+- `PROJECT.md` — project context and initial notes
+- `config.json` — workflow preferences
+- `foundations/` — 7 foundation documents + BRAND-BIBLE.md
 
 Usage: `/mario:new-project`
 
-### Planning
+### Content Creation
+
+**`/mario:create <content description>`**
+Create content using your brand foundations.
+
+- Loads BRAND-BIBLE.md and PROJECT.md as context
+- Spawns topic researcher to analyze competing content
+- Presents research brief with recommended angle for approval
+- Generates content aligned with brand voice and positioning
+- Conversational iteration until you're happy
+
+Usage: `/mario:create "Write a blog post about NPS surveys"`
+Usage: `/mario:create "Landing page for our new feature"`
+
+### Planning & Execution (Legacy)
+
+These commands remain available for structured plan-based projects:
 
 **`/mario:plan <number>`**
 Create detailed execution plan for a specific backlog item.
 
-- Generates `.planning/plans/NNN-plan-name/PLAN.md`
-- Breaks plan into concrete, actionable tasks
-- Includes verification criteria and success measures
-- Optional research before planning (if configured)
-
 Usage: `/mario:plan 001`
-Result: Creates `.planning/plans/001-foundation/PLAN.md`
-
-### Execution
 
 **`/mario:execute <number>`**
 Execute a plan.
-
-- Spawns executor agent with full 200k context
-- Verifies plan completion after execution
-- Updates BACKLOG.md and STATE.md
 
 Usage: `/mario:execute 001`
 
@@ -77,13 +77,6 @@ Usage: `/mario:execute 001`
 **`/mario:quick`**
 Execute small, ad-hoc tasks with Mario guarantees but skip optional agents.
 
-Quick mode uses the same system with a shorter path:
-- Spawns planner + executor (skips researcher)
-- Creates plan in `.planning/plans/` and updates BACKLOG.md
-- Updates STATE.md tracking
-
-Use when you know exactly what to do and the task is small enough to not need research.
-
 Usage: `/mario:quick`
 
 ### Templates
@@ -91,18 +84,10 @@ Usage: `/mario:quick`
 **`/mario:new-from-template [template-name]`**
 Create a new plan from a reusable template.
 
-- Lists available templates if no name given
-- Collects variable values from user
-- Creates plan directory with filled template
-- Updates BACKLOG.md
-
 Usage: `/mario:new-from-template email-sequence`
 
 **`/mario:save-template <plan-number> [template-name]`**
 Save a completed plan's structure as a reusable template.
-
-- Extracts plan structure with variable placeholders
-- Saves for future reuse with `/mario:new-from-template`
 
 Usage: `/mario:save-template 003 email-sequence`
 
@@ -111,24 +96,12 @@ Usage: `/mario:save-template 003 email-sequence`
 **`/mario:progress`**
 Check project status and intelligently route to next action.
 
-- Shows visual progress bar and completion percentage
-- Summarizes recent work from SUMMARY files
-- Displays current position and what's next
-- Lists key decisions and open issues
-- Offers to execute next plan or create it if missing
-
 Usage: `/mario:progress`
 
 ### Debugging
 
 **`/mario:debug [issue description]`**
 Systematic debugging with persistent state across context resets.
-
-- Gathers symptoms through adaptive questioning
-- Creates `.planning/debug/[slug].md` to track investigation
-- Investigates using scientific method (evidence → hypothesis → test)
-- Survives `/clear` — run `/mario:debug` with no args to resume
-- Archives resolved issues to `.planning/debug/resolved/`
 
 Usage: `/mario:debug "login button doesn't work"`
 Usage: `/mario:debug` (resume active session)
@@ -138,19 +111,11 @@ Usage: `/mario:debug` (resume active session)
 **`/mario:add-todo [description]`**
 Capture idea or task as todo from current conversation.
 
-- Extracts context from conversation (or uses provided description)
-- Creates structured todo file in `.planning/todos/pending/`
-- Updates STATE.md todo count
-
 Usage: `/mario:add-todo` (infers from conversation)
 Usage: `/mario:add-todo Add auth token refresh`
 
 **`/mario:check-todos [area]`**
 List pending todos and select one to work on.
-
-- Lists all pending todos with title, area, age
-- Optional area filter
-- Routes to appropriate action (work now, add to backlog, brainstorm)
 
 Usage: `/mario:check-todos`
 Usage: `/mario:check-todos api`
@@ -159,11 +124,6 @@ Usage: `/mario:check-todos api`
 
 **`/mario:settings [profile]`**
 Configure workflow toggles and model profile interactively.
-
-- Toggle researcher agent
-- Select model profile (quality/balanced/budget)
-- Updates `.planning/config.json`
-- Pass a profile name directly to quick-switch: `/mario:settings budget`
 
 Usage: `/mario:settings`
 Usage: `/mario:settings quality`
@@ -182,17 +142,23 @@ Usage: `/mario:update`
 
 ```
 .planning/
-├── PROJECT.md            # Project vision
-├── BACKLOG.md            # Plan list and status
-├── REQUIREMENTS.md       # Scoped requirements with REQ-IDs
-├── STATE.md              # Project memory & context
+├── PROJECT.md            # Project vision & initial notes
 ├── config.json           # Workflow mode & settings
+├── foundations/           # Brand foundation documents
+│   ├── BRAND-IDENTITY.md
+│   ├── VOICE-TONE.md
+│   ├── AUDIENCE-PERSONAS.md
+│   ├── COMPETITIVE-LANDSCAPE.md
+│   ├── MESSAGING-FRAMEWORK.md
+│   ├── PRODUCT-SERVICE.md
+│   ├── CHANNELS-DISTRIBUTION.md
+│   └── BRAND-BIBLE.md   # Synthesized quick-reference
 ├── todos/                # Captured ideas and tasks
 │   ├── pending/          # Todos waiting to be worked on
 │   └── done/             # Completed todos
 ├── debug/                # Active debug sessions
 │   └── resolved/         # Archived resolved issues
-└── plans/
+└── plans/                # Legacy plan-based execution
     ├── 001-foundation/
     │   ├── PLAN.md
     │   └── SUMMARY.md
@@ -224,11 +190,17 @@ Change anytime by editing `.planning/config.json`
 **Starting a new project:**
 
 ```
-/mario:new-project        # Unified flow: questioning → research → requirements → backlog
+/mario:new-project        # Establish brand foundations
 /clear
-/mario:plan 001           # Create plan for first item
+/mario:create "Blog post about customer onboarding best practices"
+```
+
+**Creating more content:**
+
+```
+/mario:create "Email welcome sequence for new signups"
 /clear
-/mario:execute 001        # Execute the plan
+/mario:create "Landing page for our enterprise plan"
 ```
 
 **Resuming work after a break:**
@@ -257,8 +229,6 @@ Change anytime by editing `.planning/config.json`
 ## Getting Help
 
 - Read `.planning/PROJECT.md` for project vision
-- Read `.planning/STATE.md` for current context
-- Check `.planning/BACKLOG.md` for plan status
+- Read `.planning/foundations/BRAND-BIBLE.md` for brand reference
 - Run `/mario:progress` to check where you're up to
 </reference>
-</output>

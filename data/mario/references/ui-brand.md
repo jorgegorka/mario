@@ -14,9 +14,10 @@ Use for major workflow transitions.
 
 **Stage names (uppercase):**
 - `QUESTIONING`
-- `RESEARCHING`
-- `DEFINING REQUIREMENTS`
-- `CREATING BACKLOG`
+- `RESEARCHING FOUNDATIONS`
+- `SYNTHESIZING BRAND BIBLE`
+- `TOPIC RESEARCH`
+- `CONTENT CREATION`
 - `PLANNING {N}`
 - `EXECUTING WAVE {N}`
 - `VERIFYING`
@@ -84,11 +85,12 @@ Plans: 3/5 complete
 ```
 ◆ Spawning researcher...
 
-◆ Spawning 4 researchers in parallel...
+◆ Spawning 5 researchers in parallel...
   → Channel landscape research
   → Audience & messaging research
   → Content strategy research
   → Pitfalls research
+  → Product features research
 
 ✓ Researcher complete: CHANNELS.md written
 ```

@@ -12,6 +12,8 @@ Template for `.planning/PROJECT.md` — the living project context document.
 [Current accurate description — 2-3 sentences. What does this product do and who is it for?
 Use the user's language and framing. Update whenever reality drifts from this description.]
 
+**Website:** [company/product URL if provided]
+
 ## Core Message / Value Proposition
 
 [The ONE thing that matters most. If everything else fails, this must resonate.
@@ -39,6 +41,32 @@ One sentence that drives prioritization when tradeoffs arise.]
 
 - [Exclusion 1] — [why]
 - [Exclusion 2] — [why]
+
+## Voice & Tone (Initial Notes)
+
+[Captured during questioning — gives foundation researchers richer context.
+- Brand personality traits (e.g., authoritative, friendly, playful, technical)
+- Existing brand guidelines or style references
+- Preferred tone (formal/casual, serious/lighthearted)
+- Examples of content they admire or want to emulate
+- Words/phrases they love or hate]
+
+## Target Audience (Initial Notes)
+
+[Captured during questioning — gives foundation researchers richer context.
+- Customer descriptions in their own words
+- Key segments or personas they recognize
+- Language their customers use
+- Where their customers spend time online
+- What their customers care about most]
+
+## Competitive Context (Initial Notes)
+
+[Captured during questioning — gives foundation researchers richer context.
+- Competitors mentioned and how they're positioned
+- What differentiates this brand from competitors
+- Competitor content or messaging they admire or dislike
+- Market gaps they see]
 
 ## Context
 
@@ -97,6 +125,29 @@ Common types: Budget, Timeline, Brand guidelines, Regulatory constraints, Channe
 - Explicit boundaries on what we're not building
 - Always include reasoning (prevents re-adding later)
 - Includes: considered and rejected, deferred to future, explicitly excluded
+
+**Website:**
+- The company or product website URL
+- Used by the feature researcher to crawl and extract product features
+- Optional — research can also use WebSearch or customer-provided documents
+
+**Voice & Tone (Initial Notes):**
+- Captured during questioning to give foundation researchers richer context
+- Brand personality, existing guidelines, preferred tone
+- Examples they admire, words they love/hate
+- Feeds into VOICE-TONE.md foundation research
+
+**Target Audience (Initial Notes):**
+- Captured during questioning to give foundation researchers richer context
+- Customer descriptions, segments, language
+- Where customers spend time, what they care about
+- Feeds into AUDIENCE-PERSONAS.md foundation research
+
+**Competitive Context (Initial Notes):**
+- Captured during questioning to give foundation researchers richer context
+- Competitors mentioned, positioning, differentiation
+- Content they admire or dislike from competitors
+- Feeds into COMPETITIVE-LANDSCAPE.md foundation research
 
 **Context:**
 - Background that informs marketing decisions
