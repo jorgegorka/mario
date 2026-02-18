@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/template_manager"
+require "marketing_mario/tools/template_manager"
 
 class TemplateManagerTest < Minitest::Test
   def setup
@@ -9,7 +9,7 @@ class TemplateManagerTest < Minitest::Test
     FileUtils.mkdir_p(@templates_dir)
 
     @global_dir = File.join(@dir, "global_templates")
-    Mario::Tools::TemplateManager.define_method(:global_dir) { @global_dir } rescue nil
+    MarketingMario::Tools::TemplateManager.define_method(:global_dir) { @global_dir } rescue nil
   end
 
   def teardown
@@ -22,7 +22,7 @@ class TemplateManagerTest < Minitest::Test
       tmpdir = Dir.mktmpdir
       Dir.chdir(tmpdir) do
         stub_global_dir(tmpdir) do
-          result = capture_json { Mario::Tools::TemplateManager.dispatch(["list"]) }
+          result = capture_json { MarketingMario::Tools::TemplateManager.dispatch(["list"]) }
           assert_empty result
         end
       end
@@ -44,7 +44,7 @@ class TemplateManagerTest < Minitest::Test
 
     Dir.chdir(@dir) do
       stub_global_dir(@global_dir) do
-        result = capture_json { Mario::Tools::TemplateManager.dispatch(["list"]) }
+        result = capture_json { MarketingMario::Tools::TemplateManager.dispatch(["list"]) }
         assert_equal 1, result.length
         assert_equal "Weekly Report", result[0][:name]
         assert_equal "global", result[0][:source]
@@ -65,7 +65,7 @@ class TemplateManagerTest < Minitest::Test
 
     Dir.chdir(@dir) do
       stub_global_dir(File.join(@dir, "nonexistent")) do
-        result = capture_json { Mario::Tools::TemplateManager.dispatch(["list"]) }
+        result = capture_json { MarketingMario::Tools::TemplateManager.dispatch(["list"]) }
         assert_equal 1, result.length
         assert_equal "Campaign Brief", result[0][:name]
         assert_equal "project", result[0][:source]
@@ -88,7 +88,7 @@ class TemplateManagerTest < Minitest::Test
 
     Dir.chdir(@dir) do
       stub_global_dir(File.join(@dir, "nonexistent")) do
-        result = capture_json { Mario::Tools::TemplateManager.dispatch(["get", "blog-post"]) }
+        result = capture_json { MarketingMario::Tools::TemplateManager.dispatch(["get", "blog-post"]) }
         assert_equal "Blog Post", result[:name]
         assert_equal 2, result[:variables].length
         assert_equal "title", result[:variables][0][:name]
@@ -103,7 +103,7 @@ class TemplateManagerTest < Minitest::Test
     Dir.chdir(@dir) do
       stub_global_dir(File.join(@dir, "nonexistent")) do
         output = capture_stderr do
-          capture_output { Mario::Tools::TemplateManager.dispatch(["get", "nonexistent"]) }
+          capture_output { MarketingMario::Tools::TemplateManager.dispatch(["get", "nonexistent"]) }
         end
         assert_includes output, "Template not found"
       end
@@ -126,7 +126,7 @@ class TemplateManagerTest < Minitest::Test
     Dir.chdir(@dir) do
       stub_global_dir(File.join(@dir, "nonexistent")) do
         vars = '{"title":"My Great Post","author":"Jane"}'
-        result = capture_json { Mario::Tools::TemplateManager.dispatch(["fill", "blog-post", vars]) }
+        result = capture_json { MarketingMario::Tools::TemplateManager.dispatch(["fill", "blog-post", vars]) }
         assert_equal "Blog Post", result[:name]
         assert_includes result[:filled], "# My Great Post"
         assert_includes result[:filled], "By Jane"
@@ -148,7 +148,7 @@ class TemplateManagerTest < Minitest::Test
     Dir.chdir(@dir) do
       stub_global_dir(File.join(@dir, "nonexistent")) do
         output = capture_stderr do
-          capture_output { Mario::Tools::TemplateManager.dispatch(["fill", "blog-post", "{}"]) }
+          capture_output { MarketingMario::Tools::TemplateManager.dispatch(["fill", "blog-post", "{}"]) }
         end
         assert_includes output, "Missing required variables"
         assert_includes output, "title"
@@ -170,7 +170,7 @@ class TemplateManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::TemplateManager.dispatch(["save", plan_path, "Setup Template"]) }
+      result = capture_json { MarketingMario::Tools::TemplateManager.dispatch(["save", plan_path, "Setup Template"]) }
       assert result[:saved]
       assert_equal "Setup Template", result[:name]
       assert_includes result[:path], "setup-template.md"
@@ -184,11 +184,11 @@ class TemplateManagerTest < Minitest::Test
   private
 
   def stub_global_dir(dir)
-    old = Mario::Tools::TemplateManager.send(:global_dir)
-    Mario::Tools::TemplateManager.define_singleton_method(:global_dir) { dir }
+    old = MarketingMario::Tools::TemplateManager.send(:global_dir)
+    MarketingMario::Tools::TemplateManager.define_singleton_method(:global_dir) { dir }
     yield
   ensure
-    Mario::Tools::TemplateManager.define_singleton_method(:global_dir) { old }
+    MarketingMario::Tools::TemplateManager.define_singleton_method(:global_dir) { old }
   end
 
   def capture_json(&block)

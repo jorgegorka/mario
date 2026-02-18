@@ -1,6 +1,6 @@
 require "json"
 
-module Mario
+module MarketingMario
   module Tools
     module Output
       def self.json(result, raw: false, raw_value: nil)

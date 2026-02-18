@@ -23,7 +23,7 @@ bundle exec rubocop -a         # Auto-fix
 
 **Build:**
 ```bash
-gem build mario.gemspec
+gem build marketing_mario.gemspec
 ```
 
 **Install locally:**
@@ -38,7 +38,7 @@ mario install --local        # Install to ./.claude/
 ### Two-Binary System
 
 - **`exe/mario`** — User-facing CLI for install/uninstall/version
-- **`exe/mario-tools`** — Internal tool CLI dispatched by workflows during Claude Code sessions. Routes to `Mario::Tools::CLI.run(ARGV)` which dispatches to subcommands: `state`, `resolve-model`, `find-phase`, `phase`, `phases`, `roadmap`, `milestone`, `validate`, `progress`, `todo`, `template`, `frontmatter`, `verify`, `init`, `commit`
+- **`exe/mario-tools`** — Internal tool CLI dispatched by workflows during Claude Code sessions. Routes to `MarketingMario::Tools::CLI.run(ARGV)` which dispatches to subcommands: `state`, `resolve-model`, `find-phase`, `phase`, `phases`, `roadmap`, `milestone`, `validate`, `progress`, `todo`, `template`, `frontmatter`, `verify`, `init`, `commit`
 
 ### Hierarchy Model
 
@@ -58,9 +58,9 @@ Content installed into user's `.claude/` directory:
 - **`mario/templates/`** — 26 templates for plans, state, reports, etc.
 - **`mario/references/`** — 13 reference documents for agent context
 
-### Tool Modules (`lib/mario/tools/`)
+### Tool Modules (`lib/marketing_mario/tools/`)
 
-Each module follows the pattern: `Mario::Tools::ModuleName` with a `dispatch(args, raw:)` method handling subcommands. Key modules:
+Each module follows the pattern: `MarketingMario::Tools::ModuleName` with a `dispatch(args, raw:)` method handling subcommands. Key modules:
 
 - **`StateManager`** — Load/update `.planning/STATE.md`, history digest, metrics, decisions, blockers
 - **`PhaseManager`** — Phase directory operations, plan listing, milestone operations

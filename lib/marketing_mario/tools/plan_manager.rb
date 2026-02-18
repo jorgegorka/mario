@@ -2,7 +2,7 @@ require "json"
 require "fileutils"
 require_relative "output"
 
-module Mario
+module MarketingMario
   module Tools
     module PlanManager
       def self.dispatch(argv, raw: false)

@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/verification"
+require "marketing_mario/tools/verification"
 
 class VerificationTest < Minitest::Test
   def setup
@@ -27,7 +27,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@planning_dir, "test-SUMMARY.md"), summary)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_summary([".planning/test-SUMMARY.md"]) }
+      result = capture_json { MarketingMario::Tools::Verification.verify_summary([".planning/test-SUMMARY.md"]) }
       assert result[:passed]
       assert result[:checks][:summary_exists]
     end
@@ -35,7 +35,7 @@ class VerificationTest < Minitest::Test
 
   def test_verify_summary_fails_for_missing_file
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_summary([".planning/missing-SUMMARY.md"]) }
+      result = capture_json { MarketingMario::Tools::Verification.verify_summary([".planning/missing-SUMMARY.md"]) }
       refute result[:passed]
       refute result[:checks][:summary_exists]
     end
@@ -46,7 +46,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@planning_dir, "bad-SUMMARY.md"), summary)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_summary([".planning/bad-SUMMARY.md"]) }
+      result = capture_json { MarketingMario::Tools::Verification.verify_summary([".planning/bad-SUMMARY.md"]) }
       refute result[:passed]
       assert_equal "failed", result[:checks][:self_check]
     end
@@ -79,7 +79,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@dir, "test-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_plan_structure("test-PLAN.md") }
+      result = capture_json { MarketingMario::Tools::Verification.verify_plan_structure("test-PLAN.md") }
       assert result[:valid]
       assert_equal 1, result[:task_count]
       assert_empty result[:errors]
@@ -91,7 +91,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@dir, "bad-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_plan_structure("bad-PLAN.md") }
+      result = capture_json { MarketingMario::Tools::Verification.verify_plan_structure("bad-PLAN.md") }
       refute result[:valid]
       assert result[:errors].any? { |e| e.include?("Missing required frontmatter") }
     end
@@ -105,7 +105,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@dir, "test.md"), content)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_references("test.md") }
+      result = capture_json { MarketingMario::Tools::Verification.verify_references("test.md") }
       assert result[:valid]
       assert_equal 0, result[:missing].length
     end
@@ -116,7 +116,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@dir, "test.md"), content)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.verify_references("test.md") }
+      result = capture_json { MarketingMario::Tools::Verification.verify_references("test.md") }
       refute result[:valid]
       assert_includes result[:missing], "nonexistent/file.rb"
     end
@@ -132,7 +132,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@plans_dir, "002-auth", "PLAN.md"), "plan")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.validate_consistency }
+      result = capture_json { MarketingMario::Tools::Verification.validate_consistency }
       assert result[:passed]
       assert_empty result[:errors]
     end
@@ -146,7 +146,7 @@ class VerificationTest < Minitest::Test
     FileUtils.mkdir_p(File.join(@plans_dir, "003-deploy"))
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.validate_consistency }
+      result = capture_json { MarketingMario::Tools::Verification.validate_consistency }
       assert result[:passed] # gaps are warnings, not errors
       assert result[:warnings].any? { |w| w.include?("Gap in plan numbering") }
     end
@@ -154,7 +154,7 @@ class VerificationTest < Minitest::Test
 
   def test_validate_consistency_no_backlog
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Verification.validate_consistency }
+      result = capture_json { MarketingMario::Tools::Verification.validate_consistency }
       refute result[:passed]
       assert_includes result[:errors], "BACKLOG.md not found"
     end

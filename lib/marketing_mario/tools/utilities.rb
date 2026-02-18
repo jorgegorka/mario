@@ -1,7 +1,7 @@
 require "json"
 require_relative "output"
 
-module Mario
+module MarketingMario
   module Tools
     module Utilities
       def self.generate_slug(argv, raw: false)

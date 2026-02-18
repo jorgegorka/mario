@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require "mario"
-require "mario/installer"
+require "marketing_mario"
+require "marketing_mario/installer"
 
 command = ARGV.shift
 
@@ -16,9 +16,9 @@ when "install"
     exit 1
   end
 
-  Mario::Installer.new(local: local).install
+  MarketingMario::Installer.new(local: local).install
 when "uninstall"
-  require "mario/uninstaller"
+  require "marketing_mario/uninstaller"
   global = ARGV.include?("--global") || ARGV.include?("-g")
   local = ARGV.include?("--local") || ARGV.include?("-l")
 
@@ -28,12 +28,12 @@ when "uninstall"
     exit 1
   end
 
-  Mario::Uninstaller.new(local: local).uninstall
+  MarketingMario::Uninstaller.new(local: local).uninstall
 when "version", "--version", "-v"
-  puts "mario #{Mario::VERSION}"
+  puts "mario #{MarketingMario::VERSION}"
 else
   puts <<~HELP
-    Mario v#{Mario::VERSION} — Context engineering for Claude Code
+    Mario v#{MarketingMario::VERSION} — Context engineering for Claude Code
 
     Usage:
       mario install --global    Install to ~/.claude/

@@ -193,6 +193,10 @@ Based on the content type, identify which domain guide to load (if available):
 **If domain guide exists:** Read and use as additional context.
 **If no domain guide:** Proceed without — the brand bible provides sufficient context.
 
+**Design guide:** If content type is `landing-page`, `feature page`, `homepage`, or `web copy`,
+also load `~/.claude/guides/design.md` for visual design principles (layout, hero sections,
+micro interactions, accessibility). This is complementary to the web copy guide.
+
 Display generation banner:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

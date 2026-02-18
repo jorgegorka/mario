@@ -1,4 +1,4 @@
-module Mario
+module MarketingMario
   module Tools
     module CLI
       def self.run(argv)

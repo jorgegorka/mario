@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/utilities"
+require "marketing_mario/tools/utilities"
 
 class UtilitiesTest < Minitest::Test
   def test_generate_slug_basic

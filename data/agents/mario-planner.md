@@ -229,6 +229,7 @@ autonomous: true            # false if plan has checkpoints
 user_setup: []              # Human-required setup (omit if empty)
 domain: general             # Optional: strategy, web, email, social, seo, ads, general
 domain_guide: ~             # Optional: guide filename (e.g., strategy.md)
+design_guide: ~             # Optional: set to design.md for visual/layout work
 
 must_haves:
   truths: []                # Observable behaviors
@@ -292,7 +293,13 @@ After completion, create SUMMARY.md in the plan directory.
 | `user_setup` | No | Human-required setup items |
 | `domain` | No | Domain assignment: `strategy`, `web`, `email`, `social`, `seo`, `ads`, `general` |
 | `domain_guide` | No | Guide filename for domain executor (e.g., `strategy.md`) |
+| `design_guide` | No | Complementary design guide filename (e.g., `design.md`) — set when plan involves visual/design work |
 | `must_haves` | Yes | Goal-backward verification criteria |
+
+**Design guide routing:** Set `design_guide: design.md` when the plan involves visual
+aspects of pages — landing page layout, hero sections, page redesigns, homepage design,
+marketing page visuals. Do NOT set for pure content writing (blog posts, email copy,
+social posts, ad copy, content briefs, strategy documents).
 
 ## Context Section Rules
 

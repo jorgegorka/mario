@@ -2,7 +2,7 @@
 
 Prompts, agents, and workflows that make [Claude Code](https://docs.anthropic.com/en/docs/claude-code) work like a marketing team with perfect brand memory.
 
-[![Gem Version](https://badge.fury.io/rb/mario.svg)](https://rubygems.org/gems/mario)
+[![Gem Version](https://badge.fury.io/rb/marketing_mario.svg)](https://rubygems.org/gems/marketing_mario)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Mario turns Claude Code into a brand-aware marketing content engine. It builds deep brand foundations once, then uses them as persistent context for every piece of content you create — blog posts, landing pages, emails, social, ads. Specialized executor agents handle each marketing domain with frameworks and best practices baked in.
@@ -35,7 +35,7 @@ Mario turns Claude Code into a brand-aware marketing content engine. It builds d
 ### Installation
 
 ```bash
-gem install mario
+gem install marketing_mario
 ```
 
 Install commands and agents globally (recommended):

@@ -1,6 +1,6 @@
-require_relative "mario/version"
+require_relative "marketing_mario/version"
 
-module Mario
+module MarketingMario
   class Error < StandardError; end
 
   def self.gem_root

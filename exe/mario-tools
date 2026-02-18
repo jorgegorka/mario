@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "mario"
-require "mario/tools/cli"
+require "marketing_mario"
+require "marketing_mario/tools/cli"
 
-Mario::Tools::CLI.run(ARGV)
+MarketingMario::Tools::CLI.run(ARGV)

@@ -3,7 +3,7 @@ require "fileutils"
 require_relative "output"
 require_relative "frontmatter"
 
-module Mario
+module MarketingMario
   module Tools
     module TemplateFiller
       def self.dispatch(argv, raw: false)

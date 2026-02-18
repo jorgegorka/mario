@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/template_filler"
+require "marketing_mario/tools/template_filler"
 
 class TemplateFillerTest < Minitest::Test
   def setup
@@ -19,7 +19,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@dir, "test-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::TemplateFiller.select("test-PLAN.md") }
+      result = capture_json { MarketingMario::Tools::TemplateFiller.select("test-PLAN.md") }
       assert_equal "minimal", result[:type]
       assert_includes result[:template], "minimal"
     end
@@ -31,7 +31,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@dir, "complex-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::TemplateFiller.select("complex-PLAN.md") }
+      result = capture_json { MarketingMario::Tools::TemplateFiller.select("complex-PLAN.md") }
       assert_equal "complex", result[:type]
     end
   end
@@ -42,7 +42,7 @@ class TemplateFillerTest < Minitest::Test
     File.write(File.join(@dir, "std-PLAN.md"), plan)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::TemplateFiller.select("std-PLAN.md") }
+      result = capture_json { MarketingMario::Tools::TemplateFiller.select("std-PLAN.md") }
       assert_equal "standard", result[:type]
     end
   end
@@ -50,7 +50,7 @@ class TemplateFillerTest < Minitest::Test
   def test_fill_summary_template
     Dir.chdir(@dir) do
       result = capture_json do
-        Mario::Tools::TemplateFiller.fill("summary", { plan: "1", name: "Setup" })
+        MarketingMario::Tools::TemplateFiller.fill("summary", { plan: "1", name: "Setup" })
       end
       assert result[:created]
       assert_includes result[:path], "SUMMARY.md"
@@ -61,7 +61,7 @@ class TemplateFillerTest < Minitest::Test
   def test_fill_plan_template
     Dir.chdir(@dir) do
       result = capture_json do
-        Mario::Tools::TemplateFiller.fill("plan", { plan: "1", type: "execute" })
+        MarketingMario::Tools::TemplateFiller.fill("plan", { plan: "1", type: "execute" })
       end
       assert result[:created]
       assert_includes result[:path], "PLAN.md"
@@ -77,7 +77,7 @@ class TemplateFillerTest < Minitest::Test
 
     Dir.chdir(@dir) do
       result = capture_json do
-        Mario::Tools::TemplateFiller.fill("summary", { plan: "1" })
+        MarketingMario::Tools::TemplateFiller.fill("summary", { plan: "1" })
       end
       assert result[:error]
       assert_includes result[:error], "already exists"

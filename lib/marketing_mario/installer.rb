@@ -2,7 +2,7 @@ require "fileutils"
 require "json"
 require "digest"
 
-module Mario
+module MarketingMario
   class Installer
     MANIFEST_NAME = "mario-manifest.json"
     PATCHES_DIR = "mario-local-patches"
@@ -43,7 +43,7 @@ module Mario
     end
 
     def source_dir
-      Mario.data_dir
+      MarketingMario.data_dir
     end
 
     # --- Upgrade: local patch backup ---

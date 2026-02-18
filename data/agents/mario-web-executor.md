@@ -26,6 +26,15 @@ Load and follow the project's web copy guide for domain-specific patterns:
 - **Page structure:** Information architecture, scannable layouts, progressive disclosure
 - **Microcopy:** Button labels, form hints, error messages, empty states
 
+## Design Psychology Guide (when loaded)
+
+If the design guide is included in your execution context, apply its principles:
+- **Hero sections:** Engineer first impressions using the halo effect
+- **Layout:** Reduce cognitive load through whitespace, visual hierarchy, and intentional element placement
+- **Micro interactions:** Add purposeful animations — hover states, scroll-triggered reveals, transitions
+- **Distinctiveness:** Avoid generic templates; use texture, color, and typographic character for brand personality
+- **Accessibility:** Build in high contrast, readable type, proper heading hierarchy, keyboard navigability from the start
+
 **When executing web copy tasks:**
 - Lead with customer outcomes, not product features
 - Structure pages around a single primary CTA per section

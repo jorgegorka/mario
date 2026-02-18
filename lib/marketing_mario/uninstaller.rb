@@ -1,7 +1,7 @@
 require "fileutils"
 require "json"
 
-module Mario
+module MarketingMario
   class Uninstaller
     def initialize(target_dir: nil, local: false)
       @local = local

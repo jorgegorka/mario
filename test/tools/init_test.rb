@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/init"
+require "marketing_mario/tools/init"
 
 class InitTest < Minitest::Test
   def setup
@@ -22,7 +22,7 @@ class InitTest < Minitest::Test
     File.write(File.join(plan_dir, "PLAN.md"), "---\nplan: 001-setup\ntype: execute\n---\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["execute", "1"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["execute", "1"]) }
       assert result[:plan_found]
       assert_equal "001", result[:plan_number]
       assert_equal "setup", result[:plan_name]
@@ -36,7 +36,7 @@ class InitTest < Minitest::Test
     File.write(File.join(@planning_dir, "STATE.md"), "**Status:** Active\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["execute", "1", "--include", "state,backlog"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["execute", "1", "--include", "state,backlog"]) }
       assert result[:state_content]
       assert result[:backlog_content]
     end
@@ -47,7 +47,7 @@ class InitTest < Minitest::Test
     FileUtils.mkdir_p(plan_dir)
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["plan", "1"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["plan", "1"]) }
       assert result[:plan_found]
       assert_includes result.keys, :researcher_model
       assert_includes result.keys, :planner_model
@@ -57,7 +57,7 @@ class InitTest < Minitest::Test
 
   def test_init_new_project
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["new-project"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["new-project"]) }
       assert_includes result.keys, :researcher_model
       assert_includes result.keys, :backlog_planner_model
       assert_includes result.keys, :is_brownfield
@@ -67,7 +67,7 @@ class InitTest < Minitest::Test
 
   def test_init_quick
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["quick", "fix", "login", "bug"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["quick", "fix", "login", "bug"]) }
       assert_equal 1, result[:next_num]
       assert_equal "001", result[:padded_num]
       assert_equal "fix-login-bug", result[:slug]
@@ -79,7 +79,7 @@ class InitTest < Minitest::Test
     FileUtils.mkdir_p(File.join(@plans_dir, "001-first-task"))
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["quick", "second", "task"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["quick", "second", "task"]) }
       assert_equal 2, result[:next_num]
     end
   end
@@ -95,7 +95,7 @@ class InitTest < Minitest::Test
     File.write(File.join(plan2_dir, "PLAN.md"), "plan")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["progress"]) }
       assert_equal 2, result[:plan_count]
       assert_equal 1, result[:completed_count]
       assert_equal 1, result[:in_progress_count]
@@ -108,7 +108,7 @@ class InitTest < Minitest::Test
     File.write(File.join(@planning_dir, "STATE.md"), "**Paused At:** Task 3 of Plan 02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["progress"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["progress"]) }
       assert_includes result.keys, :state_exists
     end
   end
@@ -120,7 +120,7 @@ class InitTest < Minitest::Test
     File.write(File.join(pending_dir, "todo2.md"), "title: Write docs\narea: docs\ncreated: 2024-01-02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["todos"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["todos"]) }
       assert_equal 2, result[:todo_count]
       assert_equal 2, result[:todos].length
     end
@@ -133,7 +133,7 @@ class InitTest < Minitest::Test
     File.write(File.join(pending_dir, "todo2.md"), "title: Write docs\narea: docs\ncreated: 2024-01-02\n")
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::Init.dispatch(["todos", "code"]) }
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["todos", "code"]) }
       assert_equal 1, result[:todo_count]
       assert_equal "code", result[:todos].first[:area]
     end

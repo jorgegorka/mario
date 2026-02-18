@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/config_manager"
+require "marketing_mario/tools/config_manager"
 
 class ConfigManagerTest < Minitest::Test
   def setup
@@ -13,7 +13,7 @@ class ConfigManagerTest < Minitest::Test
   end
 
   def test_load_defaults_when_no_config
-    config = Mario::Tools::ConfigManager.load_config(@dir)
+    config = MarketingMario::Tools::ConfigManager.load_config(@dir)
     assert_equal "balanced", config["model_profile"]
     assert_equal true, config["commit_docs"]
     assert_equal true, config["research"]
@@ -28,19 +28,19 @@ class ConfigManagerTest < Minitest::Test
     }
     File.write(File.join(@planning_dir, "config.json"), JSON.pretty_generate(config_data))
 
-    config = Mario::Tools::ConfigManager.load_config(@dir)
+    config = MarketingMario::Tools::ConfigManager.load_config(@dir)
     assert_equal "quality", config["model_profile"]
     assert_equal false, config["commit_docs"]
   end
 
   def test_load_malformed_json_returns_defaults
     File.write(File.join(@planning_dir, "config.json"), "not json")
-    config = Mario::Tools::ConfigManager.load_config(@dir)
+    config = MarketingMario::Tools::ConfigManager.load_config(@dir)
     assert_equal "balanced", config["model_profile"]
   end
 
   def test_load_defaults_include_execution_mode
-    config = Mario::Tools::ConfigManager.load_config(@dir)
+    config = MarketingMario::Tools::ConfigManager.load_config(@dir)
     assert_equal "vertical", config["execution_mode"]
     assert_equal false, config["team_execution"]
   end
@@ -52,7 +52,7 @@ class ConfigManagerTest < Minitest::Test
     }
     File.write(File.join(@planning_dir, "config.json"), JSON.pretty_generate(config_data))
 
-    config = Mario::Tools::ConfigManager.load_config(@dir)
+    config = MarketingMario::Tools::ConfigManager.load_config(@dir)
     assert_equal "domain-split", config["execution_mode"]
     assert_equal true, config["team_execution"]
   end

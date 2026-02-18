@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/backlog_manager"
+require "marketing_mario/tools/backlog_manager"
 
 class BacklogManagerTest < Minitest::Test
   def setup
@@ -33,7 +33,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["analyze"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["analyze"]) }
       assert_equal 2, result[:plan_count]
       assert_equal 1, result[:completed_plans]
       assert_equal 50, result[:progress_percent]
@@ -54,7 +54,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["analyze"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["analyze"]) }
       assert_equal 0, result[:plan_count]
       assert_equal 0, result[:completed_plans]
       assert_equal 0, result[:progress_percent]
@@ -64,7 +64,7 @@ class BacklogManagerTest < Minitest::Test
 
   def test_analyze_no_backlog
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["analyze"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["analyze"]) }
       assert_equal "BACKLOG.md not found", result[:error]
       assert_empty result[:plans]
       assert_nil result[:current_plan]
@@ -82,7 +82,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["get", "1"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["get", "1"]) }
       assert result[:found]
       assert_equal "001", result[:number]
       assert_equal "Brand Positioning", result[:name]
@@ -100,7 +100,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["get", "99"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["get", "99"]) }
       refute result[:found]
       assert_equal "099", result[:plan_number]
     end
@@ -120,7 +120,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["add", "Blog Strategy"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["add", "Blog Strategy"]) }
       assert result[:added]
       assert_equal "002", result[:plan]
       assert_equal "Blog Strategy", result[:description]
@@ -143,7 +143,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["add", "Third Plan"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["add", "Third Plan"]) }
       assert result[:added]
       assert_equal "003", result[:plan]
     end
@@ -164,7 +164,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.dispatch(["complete", "1", "--commit", "abc1234"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.dispatch(["complete", "1", "--commit", "abc1234"]) }
       assert result[:completed]
       assert_equal "001", result[:plan]
       assert_equal "abc1234", result[:commit]
@@ -186,7 +186,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.progress(["json"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.progress(["json"]) }
       assert_equal 2, result[:total_plans]
       assert_equal 1, result[:completed_plans]
       assert_equal 50, result[:percent]
@@ -205,7 +205,7 @@ class BacklogManagerTest < Minitest::Test
     MD
 
     Dir.chdir(@dir) do
-      result = capture_json { Mario::Tools::BacklogManager.progress(["bar"]) }
+      result = capture_json { MarketingMario::Tools::BacklogManager.progress(["bar"]) }
       assert_equal 50, result[:percent]
       assert_includes result[:bar], "1/2 plans"
     end

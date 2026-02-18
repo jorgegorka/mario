@@ -3,7 +3,7 @@ require_relative "output"
 require_relative "config_manager"
 require_relative "frontmatter"
 
-module Mario
+module MarketingMario
   module Tools
     module StateManager
       def self.dispatch(argv, raw: false)

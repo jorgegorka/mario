@@ -5,7 +5,7 @@ require_relative "config_manager"
 require_relative "model_profiles"
 require_relative "frontmatter"
 
-module Mario
+module MarketingMario
   module Tools
     module Init
       def self.dispatch(argv, raw: false)

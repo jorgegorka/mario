@@ -2,7 +2,7 @@ require "fileutils"
 require "json"
 require_relative "output"
 
-module Mario
+module MarketingMario
   module Tools
     module ConfigManager
       DEFAULTS = {

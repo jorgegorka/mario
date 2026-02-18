@@ -61,6 +61,7 @@ Spawning executor...
 ```bash
 DOMAIN=$(mario-tools frontmatter get "${PLAN_DIR}/PLAN.md" --field domain)
 DOMAIN_GUIDE=$(mario-tools frontmatter get "${PLAN_DIR}/PLAN.md" --field domain_guide)
+DESIGN_GUIDE=$(mario-tools frontmatter get "${PLAN_DIR}/PLAN.md" --field design_guide)
 ```
 
 | Domain | Executor Agent | Guide |
@@ -90,6 +91,8 @@ Task(
     @~/.claude/mario/references/tdd.md
     {If domain_guide is set:}
     @~/.claude/guides/{domain_guide}
+    {If design_guide is set:}
+    @~/.claude/guides/{design_guide}
     </execution_context>
 
     <files_to_read>

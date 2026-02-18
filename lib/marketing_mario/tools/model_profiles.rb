@@ -2,7 +2,7 @@ require "json"
 require_relative "output"
 require_relative "config_manager"
 
-module Mario
+module MarketingMario
   module Tools
     module ModelProfiles
       PROFILES = {

@@ -3,7 +3,7 @@ require "json"
 require_relative "output"
 require_relative "frontmatter"
 
-module Mario
+module MarketingMario
   module Tools
     module Verification
       def self.dispatch(argv, raw: false)

@@ -3,7 +3,7 @@ require "fileutils"
 require_relative "output"
 require_relative "frontmatter"
 
-module Mario
+module MarketingMario
   module Tools
     module TemplateManager
       PROJECT_DIR = ".planning/templates".freeze

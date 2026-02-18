@@ -1,5 +1,5 @@
 require "test_helper"
-require "mario/tools/state_manager"
+require "marketing_mario/tools/state_manager"
 
 class StateManagerTest < Minitest::Test
   def setup
@@ -23,21 +23,21 @@ class StateManagerTest < Minitest::Test
   def test_extract_field
     content = "**Phase:** 2 of 5 (Auth)\n**Status:** In progress"
     # Use send to test private method
-    assert_equal "2 of 5 (Auth)", Mario::Tools::StateManager.send(:extract_field, content, "Phase")
-    assert_equal "In progress", Mario::Tools::StateManager.send(:extract_field, content, "Status")
-    assert_nil Mario::Tools::StateManager.send(:extract_field, content, "Missing")
+    assert_equal "2 of 5 (Auth)", MarketingMario::Tools::StateManager.send(:extract_field, content, "Phase")
+    assert_equal "In progress", MarketingMario::Tools::StateManager.send(:extract_field, content, "Status")
+    assert_nil MarketingMario::Tools::StateManager.send(:extract_field, content, "Missing")
   end
 
   def test_replace_field
     content = "**Status:** Planning\n**Phase:** 1"
-    result = Mario::Tools::StateManager.send(:replace_field, content, "Status", "In progress")
+    result = MarketingMario::Tools::StateManager.send(:replace_field, content, "Status", "In progress")
     assert_includes result, "**Status:** In progress"
     assert_includes result, "**Phase:** 1"
   end
 
   def test_replace_field_not_found
     content = "**Status:** Planning"
-    result = Mario::Tools::StateManager.send(:replace_field, content, "Missing", "value")
+    result = MarketingMario::Tools::StateManager.send(:replace_field, content, "Missing", "value")
     assert_nil result
   end
 
@@ -50,7 +50,7 @@ class StateManagerTest < Minitest::Test
 
       results = { updated: [], failed: [] }
       patches.each do |field, value|
-        new_content = Mario::Tools::StateManager.send(:replace_field, content, field, value)
+        new_content = MarketingMario::Tools::StateManager.send(:replace_field, content, field, value)
         if new_content
           content = new_content
           results[:updated] << field

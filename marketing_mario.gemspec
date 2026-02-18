@@ -1,8 +1,8 @@
-require_relative "lib/mario/version"
+require_relative "lib/marketing_mario/version"
 
 Gem::Specification.new do |s|
-  s.name        = "mario"
-  s.version     = Mario::VERSION
+  s.name        = "marketing_mario"
+  s.version     = MarketingMario::VERSION
   s.summary     = "A marketing meta-prompting and context engineering system for Claude Code"
   s.description = "Mario generates and executes marketing plans via structured " \
                   "planning, multi-agent orchestration, and verification workflows via Claude Code " \
