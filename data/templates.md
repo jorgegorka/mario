@@ -2,7 +2,7 @@
 
 ## Context
 
-The templates in `data/mario/templates/codebase/` are used by Mario's marketing presence mapping agents to generate `.planning/codebase/` documents when analyzing a brand's existing marketing. These templates use marketing-specific terminology, examples, tools, and patterns.
+The templates in `data/mario/templates/codebase/` are used by Mario's marketing presence mapping agents to generate `.mario_planning/codebase/` documents when analyzing a brand's existing marketing. These templates use marketing-specific terminology, examples, tools, and patterns.
 
 ## Templates
 

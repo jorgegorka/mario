@@ -1,5 +1,5 @@
 <purpose>
-Interactive configuration of Mario workflow settings and model profile selection via multi-question prompt. Updates .planning/config.json with user preferences. Also handles direct profile switching (e.g., `/mario:settings quality`).
+Interactive configuration of Mario workflow settings and model profile selection via multi-question prompt. Updates .mario_planning/config.json with user preferences. Also handles direct profile switching (e.g., `/mario:settings quality`).
 </purpose>
 
 <required_reading>
@@ -17,7 +17,7 @@ Quick-switch model profile without interactive menu:
 mario-tools config-ensure-section
 ```
 
-Update `model_profile` field in `.planning/config.json` to the provided value.
+Update `model_profile` field in `.mario_planning/config.json` to the provided value.
 
 Display confirmation with model table:
 ```
@@ -45,12 +45,12 @@ mario-tools config-ensure-section
 INIT=$(mario-tools state load)
 ```
 
-Creates `.planning/config.json` with defaults if missing and loads current config values.
+Creates `.mario_planning/config.json` with defaults if missing and loads current config values.
 </step>
 
 <step name="read_current">
 ```bash
-cat .planning/config.json
+cat .mario_planning/config.json
 ```
 
 Parse current values (default to `true` if not present):
@@ -99,7 +99,7 @@ Merge new settings into existing config.json:
 }
 ```
 
-Write updated config to `.planning/config.json`.
+Write updated config to `.mario_planning/config.json`.
 </step>
 
 <step name="confirm">

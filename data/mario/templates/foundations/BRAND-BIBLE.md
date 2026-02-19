@@ -6,7 +6,7 @@ type: template
 
 # Brand Bible Template
 
-Template for `.planning/foundations/BRAND-BIBLE.md` — the executive synthesis of all foundation research. This document is loaded as context for every `/mario:create` content session. It must be compact, actionable, and self-contained.
+Template for `.mario_planning/foundations/BRAND-BIBLE.md` — the executive synthesis of all foundation research. This document is loaded as context for every `/mario:create` content session. It must be compact, actionable, and self-contained.
 
 <template>
 
@@ -17,7 +17,7 @@ Template for `.planning/foundations/BRAND-BIBLE.md` — the executive synthesis 
 **Created:** [date]
 **Foundation documents:** 7 (BRAND-IDENTITY, VOICE-TONE, AUDIENCE-PERSONAS, COMPETITIVE-LANDSCAPE, MESSAGING-FRAMEWORK, PRODUCT-SERVICE, CHANNELS-DISTRIBUTION)
 
-> This document is the quick-reference guide for all content creation. For deep dives, see the individual foundation documents in `.planning/foundations/`.
+> This document is the quick-reference guide for all content creation. For deep dives, see the individual foundation documents in `.mario_planning/foundations/`.
 
 ## Executive Summary
 
@@ -157,7 +157,7 @@ Before publishing any content, verify:
 ---
 *Brand Bible for: [company name]*
 *Created: [date]*
-*For detailed research, see individual foundation documents in `.planning/foundations/`.*
+*For detailed research, see individual foundation documents in `.mario_planning/foundations/`.*
 *This is a permanent reference document. Update when any foundation document changes significantly.*
 ```
 

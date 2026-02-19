@@ -4,7 +4,7 @@ require "marketing_mario/tools/plan_manager"
 class PlanManagerTest < Minitest::Test
   def setup
     @dir = Dir.mktmpdir
-    @plans_dir = File.join(@dir, ".planning", "plans")
+    @plans_dir = File.join(@dir, MarketingMario::PLANNING_DIR, "plans")
     FileUtils.mkdir_p(@plans_dir)
   end
 
@@ -27,7 +27,7 @@ class PlanManagerTest < Minitest::Test
       assert result[:found]
       assert_equal "001", result[:plan_number]
       assert_equal "setup", result[:plan_name]
-      assert_equal ".planning/plans/001-setup", result[:directory]
+      assert_equal "#{MarketingMario::PLANNING_DIR}/plans/001-setup", result[:directory]
     end
   end
 
@@ -89,7 +89,7 @@ class PlanManagerTest < Minitest::Test
   end
 
   def test_complete_plan
-    backlog_path = File.join(@dir, ".planning", "BACKLOG.md")
+    backlog_path = File.join(@dir, MarketingMario::PLANNING_DIR, "BACKLOG.md")
     File.write(backlog_path, "## Plans\n\n- [ ] **001: Setup** — Initial setup\n")
 
     Dir.chdir(@dir) do

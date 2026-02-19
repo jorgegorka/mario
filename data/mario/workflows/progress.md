@@ -19,7 +19,7 @@ Extract from init JSON: `project_exists`, `backlog_exists`, `state_exists`.
 
 **File contents (from --include):** `state_content`, `backlog_content`, `project_content`, `config_content`. These are null if files don't exist.
 
-If `project_exists` is false (no `.planning/` directory):
+If `project_exists` is false (no `.mario_planning/` directory):
 
 ```
 No planning structure found.
@@ -62,7 +62,7 @@ This returns structured JSON with:
 <step name="recent">
 **Gather recent work context:**
 
-- Find the 2-3 most recent SUMMARY.md files in `.planning/plans/`
+- Find the 2-3 most recent SUMMARY.md files in `.mario_planning/plans/`
 - Use `summary-extract` for efficient parsing:
   ```bash
   mario-tools summary-extract <path> --fields one_liner
@@ -75,7 +75,7 @@ This returns structured JSON with:
 
 - Use backlog for next incomplete plan
 - Count pending todos: use `init todos` or `list-todos`
-- Check for active debug sessions: `ls .planning/debug/*.md 2>/dev/null | grep -v resolved | wc -l`
+- Check for active debug sessions: `ls .mario_planning/debug/*.md 2>/dev/null | grep -v resolved | wc -l`
 </step>
 
 <step name="report">

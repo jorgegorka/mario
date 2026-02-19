@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <objective>
-Extract a plan's structure and create a reusable template in `.planning/templates/`.
+Extract a plan's structure and create a reusable template in `.mario_planning/templates/`.
 
 **Flow:** Load plan -> extract structure -> parameterize -> save template.
 </objective>

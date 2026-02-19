@@ -6,7 +6,7 @@ type: template
 
 # Product / Service Template
 
-Template for `.planning/foundations/PRODUCT-SERVICE.md` — what the company sells, translated into marketing language. This is a permanent brand reference document loaded by every content creation session.
+Template for `.mario_planning/foundations/PRODUCT-SERVICE.md` — what the company sells, translated into marketing language. This is a permanent brand reference document loaded by every content creation session.
 
 <template>
 

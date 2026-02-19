@@ -1,6 +1,6 @@
 # Marketing Gaps Template
 
-Template for `.planning/codebase/MARKETING-GAPS.md` - captures issues and opportunities in existing marketing.
+Template for `.mario_planning/codebase/MARKETING-GAPS.md` - captures issues and opportunities in existing marketing.
 
 **Purpose:** Surface actionable gaps and problems in the current marketing operation. Focused on "what needs fixing or is missing?"
 

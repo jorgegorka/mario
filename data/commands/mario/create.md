@@ -27,8 +27,8 @@ Example usage:
 Create on-demand content backed by brand foundations and topic research.
 
 **Loads:**
-- `.planning/foundations/BRAND-BIBLE.md` — brand voice, personas, messages, positioning
-- `.planning/PROJECT.md` — project context
+- `.mario_planning/foundations/BRAND-BIBLE.md` — brand voice, personas, messages, positioning
+- `.mario_planning/PROJECT.md` — project context
 
 **Flow:** Research topic → Checkpoint (approve angle) → Generate → Iterate → Finalize
 
@@ -38,8 +38,8 @@ Create on-demand content backed by brand foundations and topic research.
 <execution_context>
 @~/.claude/mario/workflows/create.md
 @~/.claude/mario/references/ui-brand.md
-@.planning/foundations/BRAND-BIBLE.md
-@.planning/PROJECT.md
+@.mario_planning/foundations/BRAND-BIBLE.md
+@.mario_planning/PROJECT.md
 </execution_context>
 
 <process>

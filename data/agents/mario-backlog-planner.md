@@ -440,11 +440,11 @@ When files are written and returning to orchestrator:
 ## BACKLOG CREATED
 
 **Files written:**
-- .planning/BACKLOG.md
-- .planning/STATE.md
+- .mario_planning/BACKLOG.md
+- .mario_planning/STATE.md
 
 **Updated:**
-- .planning/REQUIREMENTS.md (traceability section)
+- .mario_planning/REQUIREMENTS.md (traceability section)
 
 ### Summary
 
@@ -470,8 +470,8 @@ When files are written and returning to orchestrator:
 ### Files Ready for Review
 
 User can review actual files:
-- `cat .planning/BACKLOG.md`
-- `cat .planning/STATE.md`
+- `cat .mario_planning/BACKLOG.md`
+- `cat .mario_planning/STATE.md`
 
 {If gaps found during creation:}
 
@@ -494,9 +494,9 @@ After incorporating user feedback and updating files:
 - {change 2}
 
 **Files updated:**
-- .planning/BACKLOG.md
-- .planning/STATE.md (if needed)
-- .planning/REQUIREMENTS.md (if traceability changed)
+- .mario_planning/BACKLOG.md
+- .mario_planning/STATE.md (if needed)
+- .mario_planning/REQUIREMENTS.md (if traceability changed)
 
 ### Updated Summary
 

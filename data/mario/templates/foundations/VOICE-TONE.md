@@ -6,7 +6,7 @@ type: template
 
 # Voice & Tone Template
 
-Template for `.planning/foundations/VOICE-TONE.md` — how the brand sounds across every channel and context. This is a permanent brand reference document loaded by every content creation session.
+Template for `.mario_planning/foundations/VOICE-TONE.md` — how the brand sounds across every channel and context. This is a permanent brand reference document loaded by every content creation session.
 
 <template>
 

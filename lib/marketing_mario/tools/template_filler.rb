@@ -122,7 +122,7 @@ module MarketingMario
             "- **Why:** [Why it matters for the project goal]",
             "- **Output:** [Concrete deliverable]", "",
             "## Context",
-            "@.planning/PROJECT.md", "@.planning/BACKLOG.md", "@.planning/STATE.md", "",
+            "@#{PLANNING_DIR}/PROJECT.md", "@#{PLANNING_DIR}/BACKLOG.md", "@#{PLANNING_DIR}/STATE.md", "",
             "## Tasks", "",
             "<task type=\"code\">",
             "  <name>[Task name]</name>",
@@ -158,7 +158,7 @@ module MarketingMario
       # --- Private helpers ---
 
       def self.find_plan_internal(cwd, plan)
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         normalized = normalize_plan(plan)
 
         return nil unless File.directory?(plans_dir)
@@ -172,7 +172,7 @@ module MarketingMario
         plan_name = dir_match && !dir_match[2].empty? ? dir_match[2] : nil
         plan_slug = plan_name ? plan_name.downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-+|-+\z/, "") : nil
 
-        { directory: File.join(".planning", "plans", match), plan_number: plan_number, plan_name: plan_name,
+        { directory: File.join(PLANNING_DIR, "plans", match), plan_number: plan_number, plan_name: plan_name,
           plan_slug: plan_slug }
       rescue StandardError
         nil

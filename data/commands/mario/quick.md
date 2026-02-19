@@ -18,7 +18,7 @@ Execute small, ad-hoc tasks with Mario guarantees (atomic commits, STATE.md trac
 Quick mode is the same system with a shorter path:
 - Spawns mario-planner (quick mode) + mario-executor(s)
 - Skips mario-plan-checker, mario-verifier
-- Quick tasks become regular plans in `.planning/plans/`
+- Quick tasks become regular plans in `.mario_planning/plans/`
 - Updates STATE.md and BACKLOG.md
 
 Use when: You know exactly what to do and the task is small enough to not need research or verification.
@@ -29,8 +29,8 @@ Use when: You know exactly what to do and the task is small enough to not need r
 </execution_context>
 
 <context>
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 </context>
 
 <process>

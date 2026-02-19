@@ -85,7 +85,7 @@ Parse result for: `content` (the filled template content), `plan_name`.
 ## 6. Create Plan Directory
 
 ```bash
-PLAN_DIR=".planning/plans/${next_num}-${slug}"
+PLAN_DIR=".mario_planning/plans/${next_num}-${slug}"
 mkdir -p "${PLAN_DIR}"
 ```
 
@@ -112,7 +112,7 @@ mario-tools state update-progress
 ## 9. Commit
 
 ```bash
-mario-tools commit "docs(plan-${next_num}): create plan from template ${TEMPLATE_NAME}" --files "${PLAN_DIR}/PLAN.md" .planning/BACKLOG.md .planning/STATE.md
+mario-tools commit "docs(plan-${next_num}): create plan from template ${TEMPLATE_NAME}" --files "${PLAN_DIR}/PLAN.md" .mario_planning/BACKLOG.md .mario_planning/STATE.md
 ```
 
 ## 10. Present Result
@@ -150,7 +150,7 @@ Template: {TEMPLATE_NAME}
 - [ ] Template listed and selected
 - [ ] Variables collected from user
 - [ ] Template filled with variable values
-- [ ] Plan directory created in `.planning/plans/`
+- [ ] Plan directory created in `.mario_planning/plans/`
 - [ ] PLAN.md written with filled template
 - [ ] BACKLOG.md updated with new plan
 - [ ] STATE.md updated

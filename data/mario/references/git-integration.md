@@ -51,7 +51,7 @@ Plans:
 What to commit:
 
 ```bash
-mario-tools commit "docs: initialize [project-name] ([N] plans)" --files .planning/
+mario-tools commit "docs: initialize [project-name] ([N] plans)" --files .mario_planning/
 ```
 
 </format>
@@ -123,13 +123,13 @@ Tasks completed: [N]/[N]
 - [Task 2 name]
 - [Task 3 name]
 
-SUMMARY: .planning/plans/NNN-name/SUMMARY.md
+SUMMARY: .mario_planning/plans/NNN-name/SUMMARY.md
 ```
 
 What to commit:
 
 ```bash
-mario-tools commit "docs(plan-{NNN}): complete [plan-name] plan" --files .planning/plans/NNN-name/PLAN.md .planning/plans/NNN-name/SUMMARY.md .planning/STATE.md .planning/BACKLOG.md
+mario-tools commit "docs(plan-{NNN}): complete [plan-name] plan" --files .mario_planning/plans/NNN-name/PLAN.md .mario_planning/plans/NNN-name/SUMMARY.md .mario_planning/STATE.md .mario_planning/BACKLOG.md
 ```
 
 **Note:** Code files NOT included - already committed per-task.
@@ -149,7 +149,7 @@ Current: [task name]
 What to commit:
 
 ```bash
-mario-tools commit "wip: [plan-name] paused at task [X]/[Y]" --files .planning/
+mario-tools commit "wip: [plan-name] paused at task [X]/[Y]" --files .mario_planning/
 ```
 
 </format>

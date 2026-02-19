@@ -6,7 +6,7 @@ type: template
 
 # Brand Identity Template
 
-Template for `.planning/foundations/BRAND-IDENTITY.md` — the company's core identity, positioning, and personality. This is a permanent brand reference document loaded by every content creation session.
+Template for `.mario_planning/foundations/BRAND-IDENTITY.md` — the company's core identity, positioning, and personality. This is a permanent brand reference document loaded by every content creation session.
 
 <template>
 

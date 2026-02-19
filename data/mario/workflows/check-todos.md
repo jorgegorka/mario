@@ -92,7 +92,7 @@ If `files` field has entries, read and briefly summarize each.
 <step name="check_backlog">
 Check for backlog (can use init progress or directly check file existence):
 
-If `.planning/BACKLOG.md` exists:
+If `.mario_planning/BACKLOG.md` exists:
 1. Check if todo's area matches an upcoming plan
 2. Check if todo's files overlap with a plan's scope
 3. Note any match for action options
@@ -125,7 +125,7 @@ Use AskUserQuestion:
 <step name="execute_action">
 **Work on it now:**
 ```bash
-mv ".planning/todos/pending/[filename]" ".planning/todos/done/"
+mv ".mario_planning/todos/pending/[filename]" ".mario_planning/todos/done/"
 ```
 Update STATE.md todo count. Present problem/solution context. Begin work or ask how to proceed.
 
@@ -153,8 +153,8 @@ Re-run `init todos` to get updated count, then update STATE.md "### Pending Todo
 If todo was moved to done/, commit the change:
 
 ```bash
-git rm --cached .planning/todos/pending/[filename] 2>/dev/null || true
-mario-tools commit "docs: start work on todo - [title]" --files .planning/todos/done/[filename] .planning/STATE.md
+git rm --cached .mario_planning/todos/pending/[filename] 2>/dev/null || true
+mario-tools commit "docs: start work on todo - [title]" --files .mario_planning/todos/done/[filename] .mario_planning/STATE.md
 ```
 
 Tool respects `commit_docs` config and gitignore automatically.

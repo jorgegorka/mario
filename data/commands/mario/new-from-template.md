@@ -12,7 +12,7 @@ allowed-tools:
 ---
 
 <objective>
-Fill a template's variables and create a new plan in `.planning/plans/`, then update BACKLOG.md.
+Fill a template's variables and create a new plan in `.mario_planning/plans/`, then update BACKLOG.md.
 
 **Flow:** Load template -> prompt for variables -> fill template -> create plan -> update backlog.
 </objective>
@@ -24,8 +24,8 @@ Fill a template's variables and create a new plan in `.planning/plans/`, then up
 <context>
 Template name and variables: $ARGUMENTS
 
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 </context>
 
 <process>

@@ -1,6 +1,6 @@
 # Research Template
 
-Template for `.planning/plans/XX-name/{plan}-RESEARCH.md` - comprehensive ecosystem research before planning.
+Template for `.mario_planning/plans/XX-name/{plan}-RESEARCH.md` - comprehensive ecosystem research before planning.
 
 **Purpose:** Document what Claude needs to know to implement a plan well - not just "which library" but "how do experts build this."
 
@@ -524,6 +524,6 @@ content/
 - Code examples can be referenced in task actions
 
 **After creation:**
-- File lives in plan directory: `.planning/plans/XX-name/{plan}-RESEARCH.md`
+- File lives in plan directory: `.mario_planning/plans/XX-name/{plan}-RESEARCH.md`
 - Referenced during planning workflow
 - plan loads it automatically when present

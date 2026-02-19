@@ -18,16 +18,16 @@ allowed-tools:
 Establish brand foundations through unified flow: questioning -> foundation research -> brand bible synthesis.
 
 **Creates:**
-- `.planning/PROJECT.md` — project context and initial notes
-- `.planning/config.json` — workflow preferences
-- `.planning/foundations/BRAND-IDENTITY.md` — company story, mission, values, positioning
-- `.planning/foundations/VOICE-TONE.md` — voice attributes, tone spectrum, do/don't examples
-- `.planning/foundations/AUDIENCE-PERSONAS.md` — ICP, buyer personas, pain points, JTBD
-- `.planning/foundations/COMPETITIVE-LANDSCAPE.md` — competitors, positioning matrix, gaps
-- `.planning/foundations/MESSAGING-FRAMEWORK.md` — core messages, proof points, elevator pitches
-- `.planning/foundations/PRODUCT-SERVICE.md` — features→benefits, use cases, pricing
-- `.planning/foundations/CHANNELS-DISTRIBUTION.md` — channel strategy, content types
-- `.planning/foundations/BRAND-BIBLE.md` — synthesized quick-reference for all content creation
+- `.mario_planning/PROJECT.md` — project context and initial notes
+- `.mario_planning/config.json` — workflow preferences
+- `.mario_planning/foundations/BRAND-IDENTITY.md` — company story, mission, values, positioning
+- `.mario_planning/foundations/VOICE-TONE.md` — voice attributes, tone spectrum, do/don't examples
+- `.mario_planning/foundations/AUDIENCE-PERSONAS.md` — ICP, buyer personas, pain points, JTBD
+- `.mario_planning/foundations/COMPETITIVE-LANDSCAPE.md` — competitors, positioning matrix, gaps
+- `.mario_planning/foundations/MESSAGING-FRAMEWORK.md` — core messages, proof points, elevator pitches
+- `.mario_planning/foundations/PRODUCT-SERVICE.md` — features→benefits, use cases, pricing
+- `.mario_planning/foundations/CHANNELS-DISTRIBUTION.md` — channel strategy, content types
+- `.mario_planning/foundations/BRAND-BIBLE.md` — synthesized quick-reference for all content creation
 
 **After this command:** Run `/mario:create` to start creating content.
 </objective>

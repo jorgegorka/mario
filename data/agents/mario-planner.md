@@ -250,9 +250,9 @@ Output: [Artifacts created]
 </execution_context>
 
 <context>
-@.planning/PROJECT.md
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/PROJECT.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 
 @path/to/relevant/source.md
 </context>
@@ -534,17 +534,17 @@ Extract from init JSON: `planner_model`, `researcher_model`, `commit_docs`, `res
 
 Also read STATE.md for position, decisions, blockers:
 ```bash
-cat .planning/STATE.md 2>/dev/null
+cat .mario_planning/STATE.md 2>/dev/null
 ```
 
-If STATE.md missing but .planning/ exists, offer to reconstruct or continue without.
+If STATE.md missing but .mario_planning/ exists, offer to reconstruct or continue without.
 </step>
 
 <step name="load_codebase_context">
 Check for codebase map:
 
 ```bash
-ls .planning/codebase/*.md 2>/dev/null
+ls .mario_planning/codebase/*.md 2>/dev/null
 ```
 
 If exists, load relevant documents by plan type:
@@ -563,8 +563,8 @@ If exists, load relevant documents by plan type:
 
 <step name="identify_plan">
 ```bash
-cat .planning/BACKLOG.md
-ls .planning/plans/
+cat .mario_planning/BACKLOG.md
+ls .mario_planning/plans/
 ```
 
 Read the plan topic from BACKLOG.md. Read existing RESEARCH.md or DISCOVERY.md in plan directory if present.

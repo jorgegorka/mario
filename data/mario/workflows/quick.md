@@ -1,5 +1,5 @@
 <purpose>
-Execute small, ad-hoc tasks with Mario guarantees (atomic commits, STATE.md tracking) while skipping optional agents (research). Quick mode spawns mario-planner (quick mode) + mario-executor, creates a plan in `.planning/plans/`, and updates BACKLOG.md.
+Execute small, ad-hoc tasks with Mario guarantees (atomic commits, STATE.md tracking) while skipping optional agents (research). Quick mode spawns mario-planner (quick mode) + mario-executor, creates a plan in `.mario_planning/plans/`, and updates BACKLOG.md.
 </purpose>
 
 <required_reading>
@@ -73,7 +73,7 @@ Task(
 **Description:** ${DESCRIPTION}
 
 **Project State:**
-@.planning/STATE.md
+@.mario_planning/STATE.md
 
 </planning_context>
 
@@ -113,7 +113,7 @@ Task(
 Execute quick plan ${next_num}.
 
 Plan: @${plan_dir}/PLAN.md
-Project state: @.planning/STATE.md
+Project state: @.mario_planning/STATE.md
 
 <constraints>
 - Execute all tasks in the plan
@@ -160,7 +160,7 @@ Last activity: ${date} - Completed quick plan ${next_num}: ${DESCRIPTION}
 Stage and commit plan artifacts:
 
 ```bash
-mario-tools commit "docs(plan-${next_num}): ${DESCRIPTION}" --files ${plan_dir}/PLAN.md ${plan_dir}/SUMMARY.md .planning/STATE.md .planning/BACKLOG.md
+mario-tools commit "docs(plan-${next_num}): ${DESCRIPTION}" --files ${plan_dir}/PLAN.md ${plan_dir}/SUMMARY.md .mario_planning/STATE.md .mario_planning/BACKLOG.md
 ```
 
 Get final commit hash:
@@ -191,7 +191,7 @@ Ready for next task: /mario:quick
 - [ ] User provides task description
 - [ ] Slug generated (lowercase, hyphens, max 40 chars)
 - [ ] Next number calculated (001, 002, 003...)
-- [ ] Directory created at `.planning/plans/NNN-slug/`
+- [ ] Directory created at `.mario_planning/plans/NNN-slug/`
 - [ ] PLAN.md created by planner
 - [ ] SUMMARY.md created by executor
 - [ ] BACKLOG.md updated (plan added and marked complete)

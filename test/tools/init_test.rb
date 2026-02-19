@@ -4,7 +4,7 @@ require "marketing_mario/tools/init"
 class InitTest < Minitest::Test
   def setup
     @dir = Dir.mktmpdir
-    @planning_dir = File.join(@dir, ".planning")
+    @planning_dir = File.join(@dir, MarketingMario::PLANNING_DIR)
     @plans_dir = File.join(@planning_dir, "plans")
     FileUtils.mkdir_p(@plans_dir)
 

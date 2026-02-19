@@ -1,6 +1,6 @@
 # Performance Metrics Template
 
-Template for `.planning/codebase/PERFORMANCE-METRICS.md` - captures current marketing performance and measurement approach.
+Template for `.mario_planning/codebase/PERFORMANCE-METRICS.md` - captures current marketing performance and measurement approach.
 
 **Purpose:** Document how marketing performance is measured, what the current numbers are, and where tracking gaps exist. Answers "how is marketing performing and how do we know?"
 

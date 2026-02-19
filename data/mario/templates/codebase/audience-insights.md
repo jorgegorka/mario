@@ -1,6 +1,6 @@
 # Audience Insights Template
 
-Template for `.planning/codebase/AUDIENCE-INSIGHTS.md` - captures audience data, customer segments, and behavioral patterns.
+Template for `.mario_planning/codebase/AUDIENCE-INSIGHTS.md` - captures audience data, customer segments, and behavioral patterns.
 
 **Purpose:** Document who the audience is, how they behave, and what drives their decisions. Answers "who are we marketing to and what do they care about?"
 

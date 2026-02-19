@@ -37,7 +37,7 @@ One command takes you from idea to content-ready:
 - Produces comprehensive brand foundation documents
 - Synthesizes everything into BRAND-BIBLE.md
 
-Creates all `.planning/` artifacts:
+Creates all `.mario_planning/` artifacts:
 - `PROJECT.md` — project context and initial notes
 - `config.json` — workflow preferences
 - `foundations/` — 7 foundation documents + BRAND-BIBLE.md
@@ -141,7 +141,7 @@ Usage: `/mario:update`
 ## Files & Structure
 
 ```
-.planning/
+.mario_planning/
 ├── PROJECT.md            # Project vision & initial notes
 ├── config.json           # Workflow mode & settings
 ├── foundations/           # Brand foundation documents
@@ -183,7 +183,7 @@ Set during `/mario:new-project`:
 - Executes plans without confirmation
 - Only stops for critical checkpoints
 
-Change anytime by editing `.planning/config.json`
+Change anytime by editing `.mario_planning/config.json`
 
 ## Common Workflows
 
@@ -228,7 +228,7 @@ Change anytime by editing `.planning/config.json`
 
 ## Getting Help
 
-- Read `.planning/PROJECT.md` for project vision
-- Read `.planning/foundations/BRAND-BIBLE.md` for brand reference
+- Read `.mario_planning/PROJECT.md` for project vision
+- Read `.mario_planning/foundations/BRAND-BIBLE.md` for brand reference
 - Run `/mario:progress` to check where you're up to
 </reference>

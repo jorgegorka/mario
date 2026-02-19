@@ -3,7 +3,7 @@
 > **Note:** Planning methodology is in `agents/mario-planner.md`.
 > This template defines the PLAN.md output format that the agent produces.
 
-Template for `.planning/plans/NNN-name/NNN-PLAN.md` - executable plan documents.
+Template for `.mario_planning/plans/NNN-name/NNN-PLAN.md` - executable plan documents.
 
 **Naming:** Use `NNN-PLAN.md` format (e.g., `001-PLAN.md` for Plan 001)
 
@@ -42,9 +42,9 @@ Output: [What artifacts will be created]
 </execution_context>
 
 <context>
-@.planning/PROJECT.md
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/PROJECT.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 
 # Only reference prior plan SUMMARYs if genuinely needed:
 # - This plan uses outputs from prior plan
@@ -110,7 +110,7 @@ Before declaring plan complete:
   </success_criteria>
 
 <output>
-After completion, create `.planning/plans/NNN-name/NNN-SUMMARY.md`
+After completion, create `.mario_planning/plans/NNN-name/NNN-SUMMARY.md`
 </output>
 ```
 
@@ -136,9 +136,9 @@ After completion, create `.planning/plans/NNN-name/NNN-SUMMARY.md`
 
 ```markdown
 <context>
-@.planning/PROJECT.md
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/PROJECT.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 
 # Only include SUMMARY refs if genuinely needed:
 # - This plan uses outputs from prior plan
@@ -233,9 +233,9 @@ Output: Welcome sequence, nurture sequence, and subject line variants.
 </objective>
 
 <context>
-@.planning/PROJECT.md
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/PROJECT.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 </context>
 
 <tasks>
@@ -267,7 +267,7 @@ Output: Welcome sequence, nurture sequence, and subject line variants.
 </success_criteria>
 
 <output>
-After completion, create `.planning/plans/001-email-content/001-SUMMARY.md`
+After completion, create `.mario_planning/plans/001-email-content/001-SUMMARY.md`
 </output>
 ```
 
@@ -296,10 +296,10 @@ Output: Campaign brief and cross-channel coordination plan.
 </execution_context>
 
 <context>
-@.planning/PROJECT.md
-@.planning/BACKLOG.md
-@.planning/plans/001-email-content/001-SUMMARY.md
-@.planning/plans/002-web-content/002-SUMMARY.md
+@.mario_planning/PROJECT.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/plans/001-email-content/001-SUMMARY.md
+@.mario_planning/plans/002-web-content/002-SUMMARY.md
 </context>
 
 <tasks>
@@ -329,7 +329,7 @@ Output: Campaign brief and cross-channel coordination plan.
 </success_criteria>
 
 <output>
-After completion, create `.planning/plans/003-campaign-launch/003-SUMMARY.md`
+After completion, create `.mario_planning/plans/003-campaign-launch/003-SUMMARY.md`
 </output>
 ```
 

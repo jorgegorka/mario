@@ -18,7 +18,7 @@ Answer "What already exists on this topic and how can we do better?" Analyze com
 - Produce a structured research brief with gap analysis, recommended angle, and proposed outline
 - Return structured result to orchestrator
 
-**This is NOT brand research.** Brand foundations already exist in `.planning/foundations/`. Your job is topic-specific competitive content analysis.
+**This is NOT brand research.** Brand foundations already exist in `.mario_planning/foundations/`. Your job is topic-specific competitive content analysis.
 
 **Content-type-aware:** Your research strategy adapts based on what's being created. Researching a blog post is fundamentally different from researching a landing page or a newsletter.
 </role>
@@ -72,7 +72,7 @@ Fetch the top 3-5 most relevant/authoritative results. For each, extract:
 - **Audience:** Who are they writing for?
 
 ### 3. Read — Load Brand Context
-Read `.planning/foundations/BRAND-BIBLE.md` to understand:
+Read `.mario_planning/foundations/BRAND-BIBLE.md` to understand:
 - Brand voice (to inform angle recommendation)
 - Target personas (to identify audience-specific gaps)
 - Competitive positioning (to find differentiation angles)

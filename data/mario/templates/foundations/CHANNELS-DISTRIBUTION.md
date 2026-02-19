@@ -6,7 +6,7 @@ type: template
 
 # Channels & Distribution Template
 
-Template for `.planning/foundations/CHANNELS-DISTRIBUTION.md` — where and how the company reaches its audience. This is a permanent brand reference document loaded by every content creation session.
+Template for `.mario_planning/foundations/CHANNELS-DISTRIBUTION.md` — where and how the company reaches its audience. This is a permanent brand reference document loaded by every content creation session.
 
 <template>
 

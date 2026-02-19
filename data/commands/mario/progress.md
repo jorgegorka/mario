@@ -19,8 +19,8 @@ Provides situational awareness before continuing work.
 </execution_context>
 
 <context>
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 </context>
 
 <process>

@@ -32,7 +32,7 @@ Extract from $ARGUMENTS: plan number (3-digit like `001`), flags (`--research`, 
 
 **If `plan_found` is false:** Create the plan directory:
 ```bash
-mkdir -p ".planning/plans/${padded_plan}-${plan_slug}"
+mkdir -p ".mario_planning/plans/${padded_plan}-${plan_slug}"
 ```
 
 ## 3. Validate Plan
@@ -179,7 +179,7 @@ mario-tools state update-progress
 **If `commit_docs` is true:**
 
 ```bash
-mario-tools commit "docs(plan-${PLAN_NUM}): create plan" --files "${PLAN_DIR}/PLAN.md" .planning/STATE.md
+mario-tools commit "docs(plan-${PLAN_NUM}): create plan" --files "${PLAN_DIR}/PLAN.md" .mario_planning/STATE.md
 ```
 
 ## 11. Present Final Status
@@ -212,14 +212,14 @@ Research: {Completed | Used existing | Skipped}
 ───────────────────────────────────────────────────────────────
 
 **Also available:**
-- cat .planning/plans/{plan-dir}/PLAN.md — review plan
+- cat .mario_planning/plans/{plan-dir}/PLAN.md — review plan
 - /mario:plan {NNN} --research — re-research first
 
 ───────────────────────────────────────────────────────────────
 </offer_next>
 
 <success_criteria>
-- [ ] .planning/ directory validated
+- [ ] .mario_planning/ directory validated
 - [ ] Plan validated against backlog
 - [ ] Plan directory created if needed
 - [ ] Research completed (unless --skip-research or exists)

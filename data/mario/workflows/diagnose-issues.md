@@ -7,9 +7,9 @@ Orchestrator stays lean: parse gaps, spawn agents, collect results, update track
 </purpose>
 
 <paths>
-DEBUG_DIR=.planning/debug
+DEBUG_DIR=.mario_planning/debug
 
-Debug files use the `.planning/debug/` path (hidden directory with leading dot).
+Debug files use the `.mario_planning/debug/` path (hidden directory with leading dot).
 </paths>
 
 <core_principle>
@@ -151,14 +151,14 @@ For each gap, add artifacts and missing fields:
   missing:
     - "Rewrite CTAs to reflect specific outcomes from messaging hierarchy"
     - "Add social proof near CTA to reduce friction"
-  debug_session: .planning/debug/email-low-clickthrough.md
+  debug_session: .mario_planning/debug/email-low-clickthrough.md
 ```
 
 Update status to "diagnosed".
 
 Commit the updated tracking:
 ```bash
-mario-tools commit "docs(plan): add root causes from diagnosis" --files ".planning/plans/NNN-slug/gaps.md"
+mario-tools commit "docs(plan): add root causes from diagnosis" --files ".mario_planning/plans/NNN-slug/gaps.md"
 ```
 </step>
 

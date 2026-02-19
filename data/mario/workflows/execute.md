@@ -20,7 +20,7 @@ Parse JSON for: `executor_model`, `commit_docs`, `plan_found`, `plan_dir`, `plan
 **If `plan_found` is false:** Error — plan directory not found.
 **If `has_plan` is false:** Error — no PLAN.md found in plan directory.
 **If `has_summary` is true:** Plan already executed. Offer: 1) Re-execute, 2) View summary, 3) Abort.
-**If `state_exists` is false but `.planning/` exists:** Offer reconstruct or continue.
+**If `state_exists` is false but `.mario_planning/` exists:** Offer reconstruct or continue.
 </step>
 
 <step name="validate_plan">
@@ -98,8 +98,8 @@ Task(
     <files_to_read>
     Read these files at execution start using the Read tool:
     - Plan: {plan_dir}/PLAN.md
-    - State: .planning/STATE.md
-    - Config: .planning/config.json (if exists)
+    - State: .mario_planning/STATE.md
+    - Config: .mario_planning/config.json (if exists)
     </files_to_read>
 
     <success_criteria>
@@ -158,7 +158,7 @@ mario-tools state update-progress
 Task code already committed per-task. Commit plan metadata:
 
 ```bash
-mario-tools commit "docs(plan-${PLAN_NUM}): complete plan execution" --files "${PLAN_DIR}/SUMMARY.md" .planning/STATE.md .planning/BACKLOG.md
+mario-tools commit "docs(plan-${PLAN_NUM}): complete plan execution" --files "${PLAN_DIR}/SUMMARY.md" .mario_planning/STATE.md .mario_planning/BACKLOG.md
 ```
 </step>
 

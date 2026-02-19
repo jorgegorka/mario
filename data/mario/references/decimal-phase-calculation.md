@@ -8,9 +8,9 @@ Plans are numbered sequentially starting from 001. The numbering is automatic an
 
 | Plan | Directory |
 |------|-----------|
-| 1st plan | `.planning/plans/001-foundation/` |
-| 2nd plan | `.planning/plans/002-authentication/` |
-| 3rd plan | `.planning/plans/003-core-features/` |
+| 1st plan | `.mario_planning/plans/001-foundation/` |
+| 2nd plan | `.mario_planning/plans/002-authentication/` |
+| 3rd plan | `.mario_planning/plans/003-core-features/` |
 
 ## Adding Plans
 
@@ -24,7 +24,7 @@ Output:
 {
   "created": true,
   "plan_number": "001",
-  "directory": ".planning/plans/001-foundation/"
+  "directory": ".mario_planning/plans/001-foundation/"
 }
 ```
 
@@ -58,10 +58,10 @@ User input is normalized to 3-digit padding:
 Plan directories use the 3-digit number and a slug:
 
 ```
-.planning/plans/{NNN}-{slug}/
+.mario_planning/plans/{NNN}-{slug}/
 ```
 
 Examples:
-- `.planning/plans/001-foundation/`
-- `.planning/plans/002-authentication/`
-- `.planning/plans/003-core-features/`
+- `.mario_planning/plans/001-foundation/`
+- `.mario_planning/plans/002-authentication/`
+- `.mario_planning/plans/003-core-features/`

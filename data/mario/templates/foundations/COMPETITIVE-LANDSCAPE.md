@@ -6,7 +6,7 @@ type: template
 
 # Competitive Landscape Template
 
-Template for `.planning/foundations/COMPETITIVE-LANDSCAPE.md` — who the company competes with, how competitors position themselves, and where the opportunities are. This is a permanent brand reference document loaded by every content creation session.
+Template for `.mario_planning/foundations/COMPETITIVE-LANDSCAPE.md` — who the company competes with, how competitors position themselves, and where the opportunities are. This is a permanent brand reference document loaded by every content creation session.
 
 <template>
 

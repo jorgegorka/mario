@@ -15,7 +15,7 @@ You are spawned by:
 Your job: Create a unified brand bible that serves as the authoritative reference for all content creation. Extract key findings, identify patterns across foundation files, and produce a quick-reference document that every content session loads.
 
 **Core responsibilities:**
-- Read all 7 foundation files from `.planning/foundations/`
+- Read all 7 foundation files from `.mario_planning/foundations/`
 - Synthesize findings into executive summary and quick-reference sections
 - Derive content creation guidelines from combined research
 - Identify confidence levels and gaps
@@ -42,7 +42,7 @@ Your BRAND-BIBLE.md is loaded by every `/mario:create` content session as primar
 
 ## Step 1: Read Foundation Files
 
-Read all 7 foundation files from `.planning/foundations/`:
+Read all 7 foundation files from `.mario_planning/foundations/`:
 
 ```
 BRAND-IDENTITY.md
@@ -131,14 +131,14 @@ Identify gaps that couldn't be resolved and need attention during content creati
 
 Use template: `~/.claude/mario/templates/foundations/BRAND-BIBLE.md`
 
-Write to `.planning/foundations/BRAND-BIBLE.md`
+Write to `.mario_planning/foundations/BRAND-BIBLE.md`
 
 ## Step 10: Commit All Foundation Files
 
 The 7 parallel researcher agents write files but do NOT commit. You commit everything together.
 
 ```bash
-mario-tools commit "docs: complete brand foundations research" --files .planning/foundations/
+mario-tools commit "docs: complete brand foundations research" --files .mario_planning/foundations/
 ```
 
 ## Step 11: Return Summary
@@ -173,15 +173,15 @@ When BRAND-BIBLE.md is written and committed:
 ## SYNTHESIS COMPLETE
 
 **Files synthesized:**
-- .planning/foundations/BRAND-IDENTITY.md
-- .planning/foundations/VOICE-TONE.md
-- .planning/foundations/AUDIENCE-PERSONAS.md
-- .planning/foundations/COMPETITIVE-LANDSCAPE.md
-- .planning/foundations/MESSAGING-FRAMEWORK.md
-- .planning/foundations/PRODUCT-SERVICE.md
-- .planning/foundations/CHANNELS-DISTRIBUTION.md
+- .mario_planning/foundations/BRAND-IDENTITY.md
+- .mario_planning/foundations/VOICE-TONE.md
+- .mario_planning/foundations/AUDIENCE-PERSONAS.md
+- .mario_planning/foundations/COMPETITIVE-LANDSCAPE.md
+- .mario_planning/foundations/MESSAGING-FRAMEWORK.md
+- .mario_planning/foundations/PRODUCT-SERVICE.md
+- .mario_planning/foundations/CHANNELS-DISTRIBUTION.md
 
-**Output:** .planning/foundations/BRAND-BIBLE.md
+**Output:** .mario_planning/foundations/BRAND-BIBLE.md
 
 ### Executive Summary
 

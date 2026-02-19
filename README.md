@@ -75,7 +75,7 @@ Use `/clear` between commands to give each orchestrator a fresh context window. 
 - Produces comprehensive brand foundation documents
 - Synthesizes everything into BRAND-BIBLE.md
 
-The foundations created in `.planning/foundations/`:
+The foundations created in `.mario_planning/foundations/`:
 
 | Document | Purpose |
 |---|---|
@@ -115,7 +115,7 @@ Save successful content structures as reusable templates:
 /mario:new-from-template email-sequence    # Create a new plan from it
 ```
 
-Templates live in `.planning/templates/` and capture the task structure without the specific content, so you can replicate what works.
+Templates live in `.mario_planning/templates/` and capture the task structure without the specific content, so you can replicate what works.
 
 ### Quick Tasks
 
@@ -123,7 +123,7 @@ Templates live in `.planning/templates/` and capture the task structure without 
 /mario:quick    # Same guarantees, skips optional agents
 ```
 
-For small, ad-hoc tasks that don't warrant the full create workflow. Quick tasks live in `.planning/quick/`, get atomic commits, and update state — but skip research and checkpoints.
+For small, ad-hoc tasks that don't warrant the full create workflow. Quick tasks live in `.mario_planning/quick/`, get atomic commits, and update state — but skip research and checkpoints.
 
 ### Debugging
 
@@ -133,7 +133,7 @@ For small, ad-hoc tasks that don't warrant the full create workflow. Quick tasks
 /mario:debug                                      # Resume from where you left off
 ```
 
-Uses the scientific method: observe, hypothesize, test, conclude. Debug state persists in `.planning/debug/` and survives `/clear`, so you can continue across sessions.
+Uses the scientific method: observe, hypothesize, test, conclude. Debug state persists in `.mario_planning/debug/` and survives `/clear`, so you can continue across sessions.
 
 ## Commands
 
@@ -226,7 +226,7 @@ Guides are installed to `~/.claude/guides/` (global) or `.claude/guides/` (local
 ## Planning Directory
 
 ```
-.planning/
+.mario_planning/
 ├── PROJECT.md            # Project vision and initial notes
 ├── BACKLOG.md            # Ordered list of plans to execute
 ├── STATE.md              # Project memory across sessions
@@ -283,7 +283,7 @@ Set during `/mario:new-project`:
 
 **YOLO Mode** — auto-approves most decisions, executes without confirmation, only stops for critical checkpoints.
 
-Change anytime by editing `.planning/config.json`.
+Change anytime by editing `.mario_planning/config.json`.
 
 ## Common Workflows
 

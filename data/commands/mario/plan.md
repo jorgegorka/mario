@@ -29,8 +29,8 @@ Create a single PLAN.md for the given plan number with integrated research (togg
 <context>
 Plan number: $ARGUMENTS
 
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 </context>
 
 <process>

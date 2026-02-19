@@ -118,7 +118,7 @@ Loop until "Create PROJECT.md" selected.
 
 **If auto mode:** Synthesize from provided document. No "Ready?" gate was shown — proceed directly to commit.
 
-Synthesize all context into `.planning/PROJECT.md` using the template from `templates/project.md`.
+Synthesize all context into `.mario_planning/PROJECT.md` using the template from `templates/project.md`.
 
 Initialize requirements as hypotheses:
 
@@ -167,8 +167,8 @@ Do not compress. Capture everything gathered.
 **Commit PROJECT.md:**
 
 ```bash
-mkdir -p .planning
-mario-tools commit "docs: initialize project" --files .planning/PROJECT.md
+mkdir -p .mario_planning
+mario-tools commit "docs: initialize project" --files .mario_planning/PROJECT.md
 ```
 
 ## 4. Workflow Preferences
@@ -192,7 +192,7 @@ questions: [
     multiSelect: false,
     options: [
       { label: "Yes (Recommended)", description: "Planning docs tracked in version control" },
-      { label: "No", description: "Keep .planning/ local-only (add to .gitignore)" }
+      { label: "No", description: "Keep .mario_planning/ local-only (add to .gitignore)" }
     ]
   }
 ]
@@ -215,7 +215,7 @@ questions: [
 ]
 ```
 
-Create `.planning/config.json` with all settings:
+Create `.mario_planning/config.json` with all settings:
 
 ```json
 {
@@ -227,7 +227,7 @@ Create `.planning/config.json` with all settings:
 
 **If commit_docs = No:**
 - Set `commit_docs: false` in config.json
-- Add `.planning/` to `.gitignore` (create if needed)
+- Add `.mario_planning/` to `.gitignore` (create if needed)
 
 **If commit_docs = Yes:**
 - No additional gitignore entries needed
@@ -235,7 +235,7 @@ Create `.planning/config.json` with all settings:
 **Commit config.json:**
 
 ```bash
-mario-tools commit "chore: add project config" --files .planning/config.json
+mario-tools commit "chore: add project config" --files .mario_planning/config.json
 ```
 
 **Note:** Run `/mario:settings` anytime to update these preferences.
@@ -268,7 +268,7 @@ Researching brand foundations for [project name]...
 
 Create foundations directory:
 ```bash
-mkdir -p .planning/foundations
+mkdir -p .mario_planning/foundations
 ```
 
 Display spawning indicator:
@@ -311,7 +311,7 @@ Your BRAND-IDENTITY.md is a permanent brand reference loaded by every content se
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/BRAND-IDENTITY.md
+Write to: .mario_planning/foundations/BRAND-IDENTITY.md
 Use template: ~/.claude/mario/templates/foundations/BRAND-IDENTITY.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Brand identity research")
@@ -340,7 +340,7 @@ Your VOICE-TONE.md is a permanent brand reference loaded by every content sessio
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/VOICE-TONE.md
+Write to: .mario_planning/foundations/VOICE-TONE.md
 Use template: ~/.claude/mario/templates/foundations/VOICE-TONE.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Voice & tone research")
@@ -369,7 +369,7 @@ Your AUDIENCE-PERSONAS.md is a permanent brand reference loaded by every content
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/AUDIENCE-PERSONAS.md
+Write to: .mario_planning/foundations/AUDIENCE-PERSONAS.md
 Use template: ~/.claude/mario/templates/foundations/AUDIENCE-PERSONAS.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Audience & personas research")
@@ -398,7 +398,7 @@ Your COMPETITIVE-LANDSCAPE.md is a permanent brand reference loaded by every con
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/COMPETITIVE-LANDSCAPE.md
+Write to: .mario_planning/foundations/COMPETITIVE-LANDSCAPE.md
 Use template: ~/.claude/mario/templates/foundations/COMPETITIVE-LANDSCAPE.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Competitive landscape research")
@@ -429,7 +429,7 @@ Your MESSAGING-FRAMEWORK.md is a permanent brand reference loaded by every conte
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/MESSAGING-FRAMEWORK.md
+Write to: .mario_planning/foundations/MESSAGING-FRAMEWORK.md
 Use template: ~/.claude/mario/templates/foundations/MESSAGING-FRAMEWORK.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Messaging framework research")
@@ -466,7 +466,7 @@ Your PRODUCT-SERVICE.md is a permanent brand reference loaded by every content s
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/PRODUCT-SERVICE.md
+Write to: .mario_planning/foundations/PRODUCT-SERVICE.md
 Use template: ~/.claude/mario/templates/foundations/PRODUCT-SERVICE.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Product/service research")
@@ -495,7 +495,7 @@ Your CHANNELS-DISTRIBUTION.md is a permanent brand reference loaded by every con
 </downstream_consumer>
 
 <output>
-Write to: .planning/foundations/CHANNELS-DISTRIBUTION.md
+Write to: .mario_planning/foundations/CHANNELS-DISTRIBUTION.md
 Use template: ~/.claude/mario/templates/foundations/CHANNELS-DISTRIBUTION.md
 </output>
 ", subagent_type="general-purpose", model="{researcher_model}", description="Channels & distribution research")
@@ -511,17 +511,17 @@ Synthesize 7 foundation research files into BRAND-BIBLE.md.
 
 <research_files>
 Read these files:
-- .planning/foundations/BRAND-IDENTITY.md
-- .planning/foundations/VOICE-TONE.md
-- .planning/foundations/AUDIENCE-PERSONAS.md
-- .planning/foundations/COMPETITIVE-LANDSCAPE.md
-- .planning/foundations/MESSAGING-FRAMEWORK.md
-- .planning/foundations/PRODUCT-SERVICE.md
-- .planning/foundations/CHANNELS-DISTRIBUTION.md
+- .mario_planning/foundations/BRAND-IDENTITY.md
+- .mario_planning/foundations/VOICE-TONE.md
+- .mario_planning/foundations/AUDIENCE-PERSONAS.md
+- .mario_planning/foundations/COMPETITIVE-LANDSCAPE.md
+- .mario_planning/foundations/MESSAGING-FRAMEWORK.md
+- .mario_planning/foundations/PRODUCT-SERVICE.md
+- .mario_planning/foundations/CHANNELS-DISTRIBUTION.md
 </research_files>
 
 <output>
-Write to: .planning/foundations/BRAND-BIBLE.md
+Write to: .mario_planning/foundations/BRAND-BIBLE.md
 Use template: ~/.claude/mario/templates/foundations/BRAND-BIBLE.md
 Commit ALL foundation files after writing BRAND-BIBLE.md.
 </output>
@@ -541,7 +541,7 @@ Display research complete banner and key findings:
 **Core Message:** [from BRAND-BIBLE.md]
 **Positioning:** [from BRAND-BIBLE.md competitive positioning]
 
-Files: `.planning/foundations/`
+Files: `.mario_planning/foundations/`
 ```
 
 **If "Skip research":** Continue to Step 6.
@@ -559,16 +559,16 @@ Present completion with next steps:
 
 | Artifact        | Location                                    |
 |-----------------|---------------------------------------------|
-| Project         | `.planning/PROJECT.md`                      |
-| Config          | `.planning/config.json`                     |
-| Brand Identity  | `.planning/foundations/BRAND-IDENTITY.md`    |
-| Voice & Tone    | `.planning/foundations/VOICE-TONE.md`        |
-| Audience        | `.planning/foundations/AUDIENCE-PERSONAS.md`  |
-| Competitors     | `.planning/foundations/COMPETITIVE-LANDSCAPE.md` |
-| Messaging       | `.planning/foundations/MESSAGING-FRAMEWORK.md` |
-| Product         | `.planning/foundations/PRODUCT-SERVICE.md`    |
-| Channels        | `.planning/foundations/CHANNELS-DISTRIBUTION.md` |
-| Brand Bible     | `.planning/foundations/BRAND-BIBLE.md`       |
+| Project         | `.mario_planning/PROJECT.md`                      |
+| Config          | `.mario_planning/config.json`                     |
+| Brand Identity  | `.mario_planning/foundations/BRAND-IDENTITY.md`    |
+| Voice & Tone    | `.mario_planning/foundations/VOICE-TONE.md`        |
+| Audience        | `.mario_planning/foundations/AUDIENCE-PERSONAS.md`  |
+| Competitors     | `.mario_planning/foundations/COMPETITIVE-LANDSCAPE.md` |
+| Messaging       | `.mario_planning/foundations/MESSAGING-FRAMEWORK.md` |
+| Product         | `.mario_planning/foundations/PRODUCT-SERVICE.md`    |
+| Channels        | `.mario_planning/foundations/CHANNELS-DISTRIBUTION.md` |
+| Brand Bible     | `.mario_planning/foundations/BRAND-BIBLE.md`       |
 
 **8 foundation documents** | Ready for content creation ✓
 
@@ -595,9 +595,9 @@ Present completion with next steps:
 
 <output>
 
-- `.planning/PROJECT.md`
-- `.planning/config.json`
-- `.planning/foundations/` (if research selected)
+- `.mario_planning/PROJECT.md`
+- `.mario_planning/config.json`
+- `.mario_planning/foundations/` (if research selected)
   - `BRAND-IDENTITY.md`
   - `VOICE-TONE.md`
   - `AUDIENCE-PERSONAS.md`
@@ -611,7 +611,7 @@ Present completion with next steps:
 
 <success_criteria>
 
-- [ ] .planning/ directory created
+- [ ] .mario_planning/ directory created
 - [ ] Git repo initialized
 - [ ] Deep questioning completed (threads followed, not rushed)
 - [ ] PROJECT.md captures full context → **committed**

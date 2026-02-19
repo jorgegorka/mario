@@ -15,7 +15,7 @@ module MarketingMario
       }.freeze
 
       def self.load_config(cwd = Dir.pwd)
-        config_path = File.join(cwd, ".planning", "config.json")
+        config_path = File.join(cwd, PLANNING_DIR, "config.json")
         return DEFAULTS.dup unless File.exist?(config_path)
 
         parsed = JSON.parse(File.read(config_path))
@@ -34,8 +34,8 @@ module MarketingMario
 
       def self.ensure_section(_argv, raw: false)
         cwd = Dir.pwd
-        config_path = File.join(cwd, ".planning", "config.json")
-        planning_dir = File.join(cwd, ".planning")
+        config_path = File.join(cwd, PLANNING_DIR, "config.json")
+        planning_dir = File.join(cwd, PLANNING_DIR)
 
         FileUtils.mkdir_p(planning_dir) unless File.directory?(planning_dir)
 
@@ -45,7 +45,7 @@ module MarketingMario
         end
 
         File.write(config_path, JSON.pretty_generate(DEFAULTS))
-        Output.json({ created: true, path: ".planning/config.json" }, raw: raw, raw_value: "created")
+        Output.json({ created: true, path: "#{PLANNING_DIR}/config.json" }, raw: raw, raw_value: "created")
       end
 
       def self.set(argv, raw: false)
@@ -54,7 +54,7 @@ module MarketingMario
         Output.error("Usage: config-set <key.path> <value>") unless key_path
 
         cwd = Dir.pwd
-        config_path = File.join(cwd, ".planning", "config.json")
+        config_path = File.join(cwd, PLANNING_DIR, "config.json")
 
         config = {}
         config = JSON.parse(File.read(config_path)) if File.exist?(config_path)

@@ -26,14 +26,14 @@ STATE_CONTENT=$(echo "$INIT" | jq -r '.state_content // empty')
 CONFIG_CONTENT=$(echo "$INIT" | jq -r '.config_content // empty')
 ```
 
-If `.planning/` missing: error.
+If `.mario_planning/` missing: error.
 </step>
 
 <step name="identify_plan">
 ```bash
 # Find PLAN.md in the plan directory
-ls .planning/plans/NNN-name/PLAN.md 2>/dev/null
-ls .planning/plans/NNN-name/SUMMARY.md 2>/dev/null
+ls .mario_planning/plans/NNN-name/PLAN.md 2>/dev/null
+ls .mario_planning/plans/NNN-name/SUMMARY.md 2>/dev/null
 ```
 
 Find the PLAN.md. If SUMMARY.md already exists, plan is already executed.
@@ -56,7 +56,7 @@ PLAN_START_EPOCH=$(date +%s)
 
 <step name="parse_segments">
 ```bash
-grep -n "type=\"checkpoint" .planning/plans/NNN-name/PLAN.md
+grep -n "type=\"checkpoint" .mario_planning/plans/NNN-name/PLAN.md
 ```
 
 **Routing by checkpoint type:**
@@ -78,12 +78,12 @@ Fresh context per subagent preserves peak quality. Main context stays lean.
 
 <step name="init_agent_tracking">
 ```bash
-if [ ! -f .planning/agent-history.json ]; then
-  echo '{"version":"1.0","max_entries":50,"entries":[]}' > .planning/agent-history.json
+if [ ! -f .mario_planning/agent-history.json ]; then
+  echo '{"version":"1.0","max_entries":50,"entries":[]}' > .mario_planning/agent-history.json
 fi
-rm -f .planning/current-agent-id.txt
-if [ -f .planning/current-agent-id.txt ]; then
-  INTERRUPTED_ID=$(cat .planning/current-agent-id.txt)
+rm -f .mario_planning/current-agent-id.txt
+if [ -f .mario_planning/current-agent-id.txt ]; then
+  INTERRUPTED_ID=$(cat .mario_planning/current-agent-id.txt)
   echo "Found interrupted agent: $INTERRUPTED_ID"
 fi
 ```
@@ -112,7 +112,7 @@ Pattern B only (verify-only checkpoints). Skip for A/C.
 
 <step name="load_prompt">
 ```bash
-cat .planning/plans/NNN-name/PLAN.md
+cat .mario_planning/plans/NNN-name/PLAN.md
 ```
 This IS the execution instructions. Follow exactly.
 </step>
@@ -294,14 +294,14 @@ fi
 
 <step name="generate_user_setup">
 ```bash
-grep -A 50 "^user_setup:" .planning/plans/NNN-name/PLAN.md | head -50
+grep -A 50 "^user_setup:" .mario_planning/plans/NNN-name/PLAN.md | head -50
 ```
 
 If user_setup exists: create `USER-SETUP.md` using template `~/.claude/mario/templates/user-setup.md`. Per service: env vars table, account setup checklist, dashboard config, local dev notes, verification commands. Status "Incomplete". Set `USER_SETUP_CREATED=true`. If empty/missing: skip.
 </step>
 
 <step name="create_summary">
-Create `SUMMARY.md` at `.planning/plans/NNN-name/`. Use `~/.claude/mario/templates/summary.md`.
+Create `SUMMARY.md` at `.mario_planning/plans/NNN-name/`. Use `~/.claude/mario/templates/summary.md`.
 
 **Frontmatter:** plan, subsystem, tags | requires/provides/affects | tech-stack.added/patterns | key-files.created/modified | key-decisions | duration ($DURATION), completed ($PLAN_END_TIME date).
 
@@ -358,7 +358,7 @@ If SUMMARY "Issues Encountered" ≠ "None": yolo → log and continue. Interacti
 Task code already committed per-task. Commit plan metadata:
 
 ```bash
-mario-tools commit "docs(plan-${PLAN_NUM}): complete plan execution" --files .planning/plans/NNN-name/SUMMARY.md .planning/STATE.md .planning/BACKLOG.md
+mario-tools commit "docs(plan-${PLAN_NUM}): complete plan execution" --files .mario_planning/plans/NNN-name/SUMMARY.md .mario_planning/STATE.md .mario_planning/BACKLOG.md
 ```
 </step>
 

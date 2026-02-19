@@ -1,6 +1,6 @@
 # Backlog Template
 
-Template for `.planning/BACKLOG.md`.
+Template for `.mario_planning/BACKLOG.md`.
 
 ```markdown
 # Backlog: {{project_name}}

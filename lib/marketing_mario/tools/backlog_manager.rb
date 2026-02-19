@@ -27,7 +27,7 @@ module MarketingMario
 
       def self.analyze(raw: false)
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
 
         unless File.exist?(backlog_path)
           Output.json({ error: "BACKLOG.md not found", plans: [], current_plan: nil }, raw: raw)
@@ -58,7 +58,7 @@ module MarketingMario
       def self.add(description, raw: false)
         Output.error("description required") unless description && !description.empty?
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
 
         unless File.exist?(backlog_path)
           Output.json({ added: false, reason: "BACKLOG.md not found" }, raw: raw, raw_value: "false")
@@ -80,7 +80,7 @@ module MarketingMario
       def self.complete(plan_num, options, raw: false)
         Output.error("plan number required") unless plan_num
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
 
         unless File.exist?(backlog_path)
           Output.json({ completed: false, reason: "BACKLOG.md not found" }, raw: raw, raw_value: "false")
@@ -116,7 +116,7 @@ module MarketingMario
       def self.get(plan_num, raw: false)
         Output.error("plan number required") unless plan_num
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
 
         unless File.exist?(backlog_path)
           Output.json({ found: false, error: "BACKLOG.md not found" }, raw: raw, raw_value: "")
@@ -138,7 +138,7 @@ module MarketingMario
 
       def self.render_progress(format, raw: false)
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
         project_name = "Project"
 
         plans = []

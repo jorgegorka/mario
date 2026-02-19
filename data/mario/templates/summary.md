@@ -1,6 +1,6 @@
 # Summary Template
 
-Template for `.planning/plans/NNN-name/NNN-SUMMARY.md` - plan completion documentation.
+Template for `.mario_planning/plans/NNN-name/NNN-SUMMARY.md` - plan completion documentation.
 
 ---
 

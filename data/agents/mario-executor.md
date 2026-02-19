@@ -26,11 +26,11 @@ Extract from init JSON: `executor_model`, `commit_docs`, `plan_dir`, `plan_file`
 
 Also read STATE.md for position, decisions, blockers:
 ```bash
-cat .planning/STATE.md 2>/dev/null
+cat .mario_planning/STATE.md 2>/dev/null
 ```
 
-If STATE.md missing but .planning/ exists: offer to reconstruct or continue without.
-If .planning/ missing: Error — project not initialized.
+If STATE.md missing but .mario_planning/ exists: offer to reconstruct or continue without.
+If .mario_planning/ missing: Error — project not initialized.
 </step>
 
 <step name="load_plan">
@@ -347,7 +347,7 @@ mario-tools state add-blocker "Blocker description"
 
 <final_commit>
 ```bash
-mario-tools commit "docs(${PLAN}): complete plan" --files "${PLAN_DIR}/SUMMARY.md" .planning/STATE.md
+mario-tools commit "docs(${PLAN}): complete plan" --files "${PLAN_DIR}/SUMMARY.md" .mario_planning/STATE.md
 ```
 
 Separate from per-task commits — captures execution results only.

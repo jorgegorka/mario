@@ -56,11 +56,11 @@ Extract from init JSON: `executor_model`, `commit_docs`, `plan_dir`, `plan_numbe
 
 Also read STATE.md for position, decisions, blockers:
 ```bash
-cat .planning/STATE.md 2>/dev/null
+cat .mario_planning/STATE.md 2>/dev/null
 ```
 
-If STATE.md missing but .planning/ exists: offer to reconstruct or continue without.
-If .planning/ missing: Error — project not initialized.
+If STATE.md missing but .mario_planning/ exists: offer to reconstruct or continue without.
+If .mario_planning/ missing: Error — project not initialized.
 </step>
 
 <step name="load_plan">
@@ -176,7 +176,7 @@ git commit -m "{type}(plan-{NNN}): {concise task description}
 </task_commit_protocol>
 
 <summary_creation>
-After all tasks complete, create `SUMMARY.md` at `.planning/plans/NNN-slug/`.
+After all tasks complete, create `SUMMARY.md` at `.mario_planning/plans/NNN-slug/`.
 
 **Use template:** @~/.claude/mario/templates/summary.md
 
@@ -212,7 +212,7 @@ mario-tools state update \
 
 <final_commit>
 ```bash
-mario-tools commit "docs(plan-{NNN}): complete [plan-name] plan" --files .planning/plans/NNN-slug/SUMMARY.md .planning/STATE.md
+mario-tools commit "docs(plan-{NNN}): complete [plan-name] plan" --files .mario_planning/plans/NNN-slug/SUMMARY.md .mario_planning/STATE.md
 ```
 </final_commit>
 

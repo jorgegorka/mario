@@ -4,7 +4,7 @@ require "marketing_mario/tools/template_manager"
 class TemplateManagerTest < Minitest::Test
   def setup
     @dir = Dir.mktmpdir
-    @planning_dir = File.join(@dir, ".planning")
+    @planning_dir = File.join(@dir, MarketingMario::PLANNING_DIR)
     @templates_dir = File.join(@planning_dir, "templates")
     FileUtils.mkdir_p(@templates_dir)
 

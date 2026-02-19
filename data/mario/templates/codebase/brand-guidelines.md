@@ -1,6 +1,6 @@
 # Brand Guidelines Template
 
-Template for `.planning/codebase/BRAND-GUIDELINES.md` - captures brand voice, visual identity, and content standards.
+Template for `.mario_planning/codebase/BRAND-GUIDELINES.md` - captures brand voice, visual identity, and content standards.
 
 **Purpose:** Document how the brand sounds, looks, and communicates. Prescriptive guide for creating consistent content across channels.
 

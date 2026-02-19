@@ -12,16 +12,16 @@ Template for spawning mario-planner agent. The agent contains all planning exper
 **Plan:** {plan_number}
 
 **Project State:**
-@.planning/STATE.md
+@.mario_planning/STATE.md
 
 **Backlog:**
-@.planning/BACKLOG.md
+@.mario_planning/BACKLOG.md
 
 **Requirements (if exists):**
-@.planning/REQUIREMENTS.md
+@.mario_planning/REQUIREMENTS.md
 
 **Research (if exists):**
-@.planning/plans/{plan_dir}/{plan}-RESEARCH.md
+@.mario_planning/plans/{plan_dir}/{plan}-RESEARCH.md
 
 </planning_context>
 
@@ -79,8 +79,8 @@ Continue planning for Plan {plan_number}: {plan_name}
 </objective>
 
 <prior_state>
-Plan directory: @.planning/plans/{plan_dir}/
-Existing plans: @.planning/plans/{plan_dir}/*-PLAN.md
+Plan directory: @.mario_planning/plans/{plan_dir}/
+Existing plans: @.mario_planning/plans/{plan_dir}/*-PLAN.md
 </prior_state>
 
 <checkpoint_response>

@@ -1,6 +1,6 @@
 <planning_config>
 
-Configuration options for `.planning/` directory behavior.
+Configuration options for `.mario_planning/` directory behavior.
 
 <config_schema>
 ```json
@@ -32,15 +32,15 @@ Configuration options for `.planning/` directory behavior.
 - Full history of planning decisions preserved
 
 **When `commit_docs: false`:**
-- Skip all `git add`/`git commit` for `.planning/` files
-- User must add `.planning/` to `.gitignore`
+- Skip all `git add`/`git commit` for `.mario_planning/` files
+- User must add `.mario_planning/` to `.gitignore`
 - Useful for: OSS contributions, client projects, keeping planning private
 
 **Using mario-tools (preferred):**
 
 ```bash
 # Commit with automatic commit_docs + gitignore checks:
-mario-tools commit "docs: update state" --files .planning/STATE.md
+mario-tools commit "docs: update state" --files .mario_planning/STATE.md
 
 # Load config via state load (returns JSON):
 INIT=$(mario-tools state load)
@@ -51,12 +51,12 @@ INIT=$(mario-tools init execute "1")
 # commit_docs is included in all init command outputs
 ```
 
-**Auto-detection:** If `.planning/` is gitignored, `commit_docs` is automatically `false` regardless of config.json. This prevents git errors when users have `.planning/` in `.gitignore`.
+**Auto-detection:** If `.mario_planning/` is gitignored, `commit_docs` is automatically `false` regardless of config.json. This prevents git errors when users have `.mario_planning/` in `.gitignore`.
 
 **Commit via CLI (handles checks automatically):**
 
 ```bash
-mario-tools commit "docs: update state" --files .planning/STATE.md
+mario-tools commit "docs: update state" --files .mario_planning/STATE.md
 ```
 
 The CLI checks `commit_docs` config and gitignore status internally — no manual conditionals needed.
@@ -67,12 +67,12 @@ The CLI checks `commit_docs` config and gitignore status internally — no manua
 
 **When `search_gitignored: false` (default):**
 - Standard rg behavior (respects .gitignore)
-- Direct path searches work: `rg "pattern" .planning/` finds files
-- Broad searches skip gitignored: `rg "pattern"` skips `.planning/`
+- Direct path searches work: `rg "pattern" .mario_planning/` finds files
+- Broad searches skip gitignored: `rg "pattern"` skips `.mario_planning/`
 
 **When `search_gitignored: true`:**
-- Add `--no-ignore` to broad rg searches that should include `.planning/`
-- Only needed when searching entire repo and expecting `.planning/` matches
+- Add `--no-ignore` to broad rg searches that should include `.mario_planning/`
+- Only needed when searching entire repo and expecting `.mario_planning/` matches
 
 **Note:** Most Mario operations use direct file reads or explicit paths, which work regardless of gitignore status.
 
@@ -92,12 +92,12 @@ To use uncommitted mode:
 
 2. **Add to .gitignore:**
    ```
-   .planning/
+   .mario_planning/
    ```
 
-3. **Existing tracked files:** If `.planning/` was previously tracked:
+3. **Existing tracked files:** If `.mario_planning/` was previously tracked:
    ```bash
-   git rm -r --cached .planning/
+   git rm -r --cached .mario_planning/
    git commit -m "chore: stop tracking planning docs"
    ```
 

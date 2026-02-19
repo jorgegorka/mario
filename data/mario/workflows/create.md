@@ -12,7 +12,7 @@ Read all files referenced by the invoking prompt's execution_context before star
 
 **MANDATORY FIRST STEP — Verify foundations exist:**
 
-Check that `.planning/foundations/BRAND-BIBLE.md` exists.
+Check that `.mario_planning/foundations/BRAND-BIBLE.md` exists.
 
 **If foundations missing:**
 
@@ -29,7 +29,7 @@ create your brand reference documents.
 
 **If foundations exist:**
 
-Read `.planning/foundations/BRAND-BIBLE.md` and `.planning/PROJECT.md` for brand context.
+Read `.mario_planning/foundations/BRAND-BIBLE.md` and `.mario_planning/PROJECT.md` for brand context.
 
 Parse $ARGUMENTS for the content description (e.g., "Write a blog post about NPS surveys").
 
@@ -97,11 +97,11 @@ This determines your search queries, analysis dimensions, gap criteria, and outp
 4. Identify gaps using content-type-specific gap criteria
 5. Recommend a specific angle that aligns with our brand
 6. Propose a content outline using the content-type-specific output focus
-7. Write research brief to .planning/topic-research.md
+7. Write research brief to .mario_planning/topic-research.md
 </instructions>
 
 <output>
-Write to: .planning/topic-research.md
+Write to: .mario_planning/topic-research.md
 Return structured result with: landscape summary, key gaps, recommended angle, proposed outline.
 </output>
 ", subagent_type="general-purpose", description="Topic research")
@@ -280,7 +280,7 @@ mario-tools commit "content: [content type] — [brief topic description]" --fil
 
 Remove the temporary research brief:
 ```bash
-rm -f .planning/topic-research.md
+rm -f .mario_planning/topic-research.md
 ```
 
 **Present completion:**
@@ -312,7 +312,7 @@ rm -f .planning/topic-research.md
 <output>
 
 - `content/[type]/[slug].md` — the created content
-- `.planning/topic-research.md` — temporary (deleted after finalization)
+- `.mario_planning/topic-research.md` — temporary (deleted after finalization)
 
 </output>
 

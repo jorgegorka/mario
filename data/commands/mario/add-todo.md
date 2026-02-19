@@ -23,7 +23,7 @@ Routes to the add-todo workflow which handles:
 </objective>
 
 <execution_context>
-@.planning/STATE.md
+@.mario_planning/STATE.md
 @~/.claude/mario/workflows/add-todo.md
 </execution_context>
 

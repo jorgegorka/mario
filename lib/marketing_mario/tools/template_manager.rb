@@ -6,7 +6,7 @@ require_relative "frontmatter"
 module MarketingMario
   module Tools
     module TemplateManager
-      PROJECT_DIR = ".planning/templates".freeze
+      PROJECT_DIR = "#{PLANNING_DIR}/templates".freeze
       GLOBAL_DIR = File.join(Dir.home, ".claude", "mario", "templates", "recurring")
 
       def self.dispatch(argv, raw: false)

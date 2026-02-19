@@ -1,6 +1,6 @@
 # Tools and Platforms Template
 
-Template for `.planning/codebase/TOOLS-AND-PLATFORMS.md` - captures the marketing technology stack.
+Template for `.mario_planning/codebase/TOOLS-AND-PLATFORMS.md` - captures the marketing technology stack.
 
 **Purpose:** Document what tools and platforms power the marketing operation. Focused on "what do we use to execute marketing?"
 

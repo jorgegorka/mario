@@ -1,6 +1,6 @@
 # Channel Architecture Template
 
-Template for `.planning/codebase/CHANNEL-ARCHITECTURE.md` - captures marketing channel organization and distribution strategy.
+Template for `.mario_planning/codebase/CHANNEL-ARCHITECTURE.md` - captures marketing channel organization and distribution strategy.
 
 **Purpose:** Document how marketing channels are organized, how content flows across them, and how they map to the customer journey. Answers "how does our marketing ecosystem work?"
 

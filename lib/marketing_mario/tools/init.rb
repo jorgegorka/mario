@@ -52,19 +52,19 @@ module MarketingMario
           incomplete_plans: plan_info&.dig(:incomplete_plans) || [],
           plan_count: plan_info&.dig(:plans)&.length || 0,
           incomplete_count: plan_info&.dig(:incomplete_plans)&.length || 0,
-          state_exists: path_exists?(cwd, ".planning/STATE.md"),
-          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
-          config_exists: path_exists?(cwd, ".planning/config.json")
+          state_exists: path_exists?(cwd, "#{PLANNING_DIR}/STATE.md"),
+          backlog_exists: path_exists?(cwd, "#{PLANNING_DIR}/BACKLOG.md"),
+          config_exists: path_exists?(cwd, "#{PLANNING_DIR}/config.json")
         }
 
-        result[:state_content] = safe_read_file(File.join(cwd, ".planning", "STATE.md")) if includes.include?("state")
+        result[:state_content] = safe_read_file(File.join(cwd, PLANNING_DIR, "STATE.md")) if includes.include?("state")
         if includes.include?("config")
           result[:config_content] =
-            safe_read_file(File.join(cwd, ".planning", "config.json"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "config.json"))
         end
         if includes.include?("backlog")
           result[:backlog_content] =
-            safe_read_file(File.join(cwd, ".planning", "BACKLOG.md"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "BACKLOG.md"))
         end
 
         Output.json(result, raw: raw)
@@ -90,18 +90,18 @@ module MarketingMario
           has_research: plan_info&.dig(:has_research) || false,
           has_plans: (plan_info&.dig(:plans)&.length || 0).positive?,
           plan_count: plan_info&.dig(:plans)&.length || 0,
-          planning_exists: path_exists?(cwd, ".planning"),
-          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md")
+          planning_exists: path_exists?(cwd, PLANNING_DIR),
+          backlog_exists: path_exists?(cwd, "#{PLANNING_DIR}/BACKLOG.md")
         }
 
-        result[:state_content] = safe_read_file(File.join(cwd, ".planning", "STATE.md")) if includes.include?("state")
+        result[:state_content] = safe_read_file(File.join(cwd, PLANNING_DIR, "STATE.md")) if includes.include?("state")
         if includes.include?("backlog")
           result[:backlog_content] =
-            safe_read_file(File.join(cwd, ".planning", "BACKLOG.md"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "BACKLOG.md"))
         end
         if includes.include?("requirements")
           result[:requirements_content] =
-            safe_read_file(File.join(cwd, ".planning", "REQUIREMENTS.md"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "REQUIREMENTS.md"))
         end
 
         if includes.include?("research") && plan_info&.dig(:directory)
@@ -141,13 +141,13 @@ module MarketingMario
           synthesizer_model: resolve_model(cwd, "mario-research-synthesizer"),
           backlog_planner_model: resolve_model(cwd, "mario-backlog-planner"),
           commit_docs: config["commit_docs"],
-          project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
-          has_codebase_map: path_exists?(cwd, ".planning/codebase"),
-          planning_exists: path_exists?(cwd, ".planning"),
+          project_exists: path_exists?(cwd, "#{PLANNING_DIR}/PROJECT.md"),
+          has_codebase_map: path_exists?(cwd, "#{PLANNING_DIR}/codebase"),
+          planning_exists: path_exists?(cwd, PLANNING_DIR),
           has_existing_code: has_code,
           has_package_file: has_package_file,
           is_brownfield: has_code || has_package_file,
-          needs_codebase_map: (has_code || has_package_file) && !path_exists?(cwd, ".planning/codebase"),
+          needs_codebase_map: (has_code || has_package_file) && !path_exists?(cwd, "#{PLANNING_DIR}/codebase"),
           has_git: path_exists?(cwd, ".git")
         }
 
@@ -160,7 +160,7 @@ module MarketingMario
         now = Time.now.utc
         slug = description && !description.empty? ? generate_slug(description)&.slice(0, 40) : nil
 
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         next_num = 1
         if File.directory?(plans_dir)
           existing = Dir.children(plans_dir)
@@ -184,10 +184,10 @@ module MarketingMario
           description: description && !description.empty? ? description : nil,
           date: now.strftime("%Y-%m-%d"),
           timestamp: now.iso8601,
-          plans_dir: ".planning/plans",
-          task_dir: slug ? ".planning/plans/#{padded}-#{slug}" : nil,
-          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
-          planning_exists: path_exists?(cwd, ".planning")
+          plans_dir: "#{PLANNING_DIR}/plans",
+          task_dir: slug ? "#{PLANNING_DIR}/plans/#{padded}-#{slug}" : nil,
+          backlog_exists: path_exists?(cwd, "#{PLANNING_DIR}/BACKLOG.md"),
+          planning_exists: path_exists?(cwd, PLANNING_DIR)
         }
 
         Output.json(result, raw: raw)
@@ -198,7 +198,7 @@ module MarketingMario
         config = ConfigManager.load_config(cwd)
         now = Time.now.utc
 
-        pending_dir = File.join(cwd, ".planning", "todos", "pending")
+        pending_dir = File.join(cwd, PLANNING_DIR, "todos", "pending")
         count = 0
         todo_list = []
 
@@ -214,7 +214,7 @@ module MarketingMario
             count += 1
             todo_list << {
               file: File.basename(file), created: created, title: title, area: todo_area,
-              path: File.join(".planning", "todos", "pending", File.basename(file))
+              path: File.join(PLANNING_DIR, "todos", "pending", File.basename(file))
             }
           end
         end
@@ -226,11 +226,11 @@ module MarketingMario
           todo_count: count,
           todos: todo_list,
           area_filter: area,
-          pending_dir: ".planning/todos/pending",
-          completed_dir: ".planning/todos/completed",
-          planning_exists: path_exists?(cwd, ".planning"),
-          todos_dir_exists: path_exists?(cwd, ".planning/todos"),
-          pending_dir_exists: path_exists?(cwd, ".planning/todos/pending")
+          pending_dir: "#{PLANNING_DIR}/todos/pending",
+          completed_dir: "#{PLANNING_DIR}/todos/completed",
+          planning_exists: path_exists?(cwd, PLANNING_DIR),
+          todos_dir_exists: path_exists?(cwd, "#{PLANNING_DIR}/todos"),
+          pending_dir_exists: path_exists?(cwd, "#{PLANNING_DIR}/todos/pending")
         }
 
         Output.json(result, raw: raw)
@@ -243,7 +243,7 @@ module MarketingMario
         require_relative "template_manager"
         TemplateManager.list(raw: false)
 
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         next_num = 1
         if File.directory?(plans_dir)
           existing = Dir.children(plans_dir)
@@ -265,9 +265,9 @@ module MarketingMario
           template_name: template_name,
           next_num: next_num,
           padded_num: padded,
-          plans_dir: ".planning/plans",
-          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
-          planning_exists: path_exists?(cwd, ".planning")
+          plans_dir: "#{PLANNING_DIR}/plans",
+          backlog_exists: path_exists?(cwd, "#{PLANNING_DIR}/BACKLOG.md"),
+          planning_exists: path_exists?(cwd, PLANNING_DIR)
         }
 
         Output.json(result, raw: raw)
@@ -277,7 +277,7 @@ module MarketingMario
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
 
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         plans = []
         current_plan = nil
         next_plan = nil
@@ -311,7 +311,7 @@ module MarketingMario
 
             plan_entry = {
               number: plan_number, name: plan_name,
-              directory: File.join(".planning", "plans", dir),
+              directory: File.join(PLANNING_DIR, "plans", dir),
               status: status, plan_count: plan_docs.length,
               summary_count: summaries.length, has_research: has_research
             }
@@ -333,23 +333,23 @@ module MarketingMario
           current_plan: current_plan,
           next_plan: next_plan,
           has_work_in_progress: !current_plan.nil?,
-          project_exists: path_exists?(cwd, ".planning/PROJECT.md"),
-          backlog_exists: path_exists?(cwd, ".planning/BACKLOG.md"),
-          state_exists: path_exists?(cwd, ".planning/STATE.md")
+          project_exists: path_exists?(cwd, "#{PLANNING_DIR}/PROJECT.md"),
+          backlog_exists: path_exists?(cwd, "#{PLANNING_DIR}/BACKLOG.md"),
+          state_exists: path_exists?(cwd, "#{PLANNING_DIR}/STATE.md")
         }
 
-        result[:state_content] = safe_read_file(File.join(cwd, ".planning", "STATE.md")) if includes.include?("state")
+        result[:state_content] = safe_read_file(File.join(cwd, PLANNING_DIR, "STATE.md")) if includes.include?("state")
         if includes.include?("backlog")
           result[:backlog_content] =
-            safe_read_file(File.join(cwd, ".planning", "BACKLOG.md"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "BACKLOG.md"))
         end
         if includes.include?("project")
           result[:project_content] =
-            safe_read_file(File.join(cwd, ".planning", "PROJECT.md"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "PROJECT.md"))
         end
         if includes.include?("config")
           result[:config_content] =
-            safe_read_file(File.join(cwd, ".planning", "config.json"))
+            safe_read_file(File.join(cwd, PLANNING_DIR, "config.json"))
         end
 
         Output.json(result, raw: raw)
@@ -360,7 +360,7 @@ module MarketingMario
       def self.find_plan_internal(cwd, plan_num)
         return nil unless plan_num
 
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         normalized = normalize_plan_number(plan_num)
 
         return nil unless File.directory?(plans_dir)
@@ -388,7 +388,7 @@ module MarketingMario
         end
 
         {
-          directory: File.join(".planning", "plans", match),
+          directory: File.join(PLANNING_DIR, "plans", match),
           plan_number: plan_number,
           plan_name: plan_name,
           plan_slug: plan_slug,

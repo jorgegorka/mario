@@ -6,7 +6,7 @@ type: template
 
 # Messaging Framework Template
 
-Template for `.planning/foundations/MESSAGING-FRAMEWORK.md` — the structured messaging system that ensures consistent, persuasive communication across all content. This is a permanent brand reference document loaded by every content creation session.
+Template for `.mario_planning/foundations/MESSAGING-FRAMEWORK.md` — the structured messaging system that ensures consistent, persuasive communication across all content. This is a permanent brand reference document loaded by every content creation session.
 
 <template>
 

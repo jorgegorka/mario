@@ -50,8 +50,8 @@ Output: [Polished, reviewed content ready for publication]
 </objective>
 
 <context>
-@.planning/PROJECT.md
-@.planning/BACKLOG.md
+@.mario_planning/PROJECT.md
+@.mario_planning/BACKLOG.md
 @relevant/strategy/briefs.md
 @relevant/brand/voice-guide.md
 </context>

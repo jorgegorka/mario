@@ -4,7 +4,7 @@ require "marketing_mario/tools/state_manager"
 class StateManagerTest < Minitest::Test
   def setup
     @dir = Dir.mktmpdir
-    @planning_dir = File.join(@dir, ".planning")
+    @planning_dir = File.join(@dir, MarketingMario::PLANNING_DIR)
     FileUtils.mkdir_p(@planning_dir)
   end
 

@@ -1,6 +1,6 @@
 # PROJECT.md Template
 
-Template for `.planning/PROJECT.md` — the living project context document.
+Template for `.mario_planning/PROJECT.md` — the living project context document.
 
 <template>
 
@@ -218,7 +218,7 @@ STATE.md references PROJECT.md:
 ```markdown
 ## Project Reference
 
-See: .planning/PROJECT.md (updated [date])
+See: .mario_planning/PROJECT.md (updated [date])
 
 **Core message:** [One-liner from Core Message section]
 **Current focus:** [Current plan name]

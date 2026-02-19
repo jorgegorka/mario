@@ -1,6 +1,6 @@
 # Content Inventory Template
 
-Template for `.planning/codebase/CONTENT-INVENTORY.md` - maps existing marketing content and assets.
+Template for `.mario_planning/codebase/CONTENT-INVENTORY.md` - maps existing marketing content and assets.
 
 **Purpose:** Document what marketing content exists, where it lives, and how it's organized. Answers "what content do we have and where is it?"
 

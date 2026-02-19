@@ -4,20 +4,20 @@ Commit planning artifacts using the mario-tools CLI, which automatically checks 
 
 ## Commit via CLI
 
-Always use `mario-tools commit` for `.planning/` files — it handles `commit_docs` and gitignore checks automatically:
+Always use `mario-tools commit` for `.mario_planning/` files — it handles `commit_docs` and gitignore checks automatically:
 
 ```bash
-mario-tools commit "docs({scope}): {description}" --files .planning/STATE.md .planning/BACKLOG.md
+mario-tools commit "docs({scope}): {description}" --files .mario_planning/STATE.md .mario_planning/BACKLOG.md
 ```
 
-The CLI will return `skipped` (with reason) if `commit_docs` is `false` or `.planning/` is gitignored. No manual conditional checks needed.
+The CLI will return `skipped` (with reason) if `commit_docs` is `false` or `.mario_planning/` is gitignored. No manual conditional checks needed.
 
 ## Amend previous commit
 
-To fold `.planning/` file changes into the previous commit:
+To fold `.mario_planning/` file changes into the previous commit:
 
 ```bash
-mario-tools commit "" --files .planning/codebase/*.md --amend
+mario-tools commit "" --files .mario_planning/codebase/*.md --amend
 ```
 
 ## Commit Message Patterns
@@ -30,5 +30,5 @@ mario-tools commit "" --files .planning/codebase/*.md --amend
 ## When to Skip
 
 - `commit_docs: false` in config
-- `.planning/` is gitignored
-- No changes to commit (check with `git status --porcelain .planning/`)
+- `.mario_planning/` is gitignored
+- No changes to commit (check with `git status --porcelain .mario_planning/`)

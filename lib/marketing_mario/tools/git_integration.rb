@@ -22,14 +22,14 @@ module MarketingMario
           return
         end
 
-        if git_ignored?(cwd, ".planning")
+        if git_ignored?(cwd, PLANNING_DIR)
           Output.json({ committed: false, hash: nil, reason: "skipped_gitignored" }, raw: raw, raw_value: "skipped")
           return
         end
 
         # Stage files
         if files.empty?
-          exec_git(cwd, ["add", ".planning/"])
+          exec_git(cwd, ["add", "#{PLANNING_DIR}/"])
         else
           files.each { |f| exec_git(cwd, ["add", f]) }
         end

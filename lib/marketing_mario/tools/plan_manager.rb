@@ -25,7 +25,7 @@ module MarketingMario
         Output.error("plan identifier required") unless plan
 
         cwd = Dir.pwd
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         normalized = normalize_plan_number(plan)
         not_found = { found: false, directory: nil, plan_number: nil, plan_name: nil }
 
@@ -48,7 +48,7 @@ module MarketingMario
 
         result = {
           found: true,
-          directory: File.join(".planning", "plans", match),
+          directory: File.join(PLANNING_DIR, "plans", match),
           plan_number: plan_number,
           plan_name: plan_name
         }
@@ -59,7 +59,7 @@ module MarketingMario
 
       def self.list(options, raw: false)
         cwd = Dir.pwd
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
 
         unless File.directory?(plans_dir)
           Output.json({ directories: [], count: 0 }, raw: raw, raw_value: "")
@@ -90,7 +90,7 @@ module MarketingMario
       def self.add(description, raw: false)
         Output.error("description required") unless description && !description.empty?
         cwd = Dir.pwd
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
 
         existing = if File.directory?(plans_dir)
                      Dir.children(plans_dir)
@@ -115,7 +115,7 @@ module MarketingMario
       def self.remove(plan, force: false, raw: false)
         Output.error("plan required") unless plan
         cwd = Dir.pwd
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         normalized = normalize_plan_number(plan)
 
         unless File.directory?(plans_dir)
@@ -146,7 +146,7 @@ module MarketingMario
       def self.complete(plan, raw: false)
         Output.error("plan required") unless plan
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
         normalized = normalize_plan_number(plan)
 
         if File.exist?(backlog_path)

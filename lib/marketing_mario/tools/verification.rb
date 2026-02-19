@@ -363,8 +363,8 @@ module MarketingMario
 
       def self.validate_consistency(raw: false)
         cwd = Dir.pwd
-        backlog_path = File.join(cwd, ".planning", "BACKLOG.md")
-        plans_dir = File.join(cwd, ".planning", "plans")
+        backlog_path = File.join(cwd, PLANNING_DIR, "BACKLOG.md")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         errors = []
         warnings = []
 
@@ -432,7 +432,7 @@ module MarketingMario
       # --- Private helpers ---
 
       def self.find_plan_internal(cwd, plan)
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         normalized = normalize_plan(plan)
 
         return nil unless File.directory?(plans_dir)
@@ -445,7 +445,7 @@ module MarketingMario
         plan_number = dir_match ? dir_match[1] : normalized
         plan_name = dir_match && !dir_match[2].empty? ? dir_match[2] : nil
 
-        { directory: File.join(".planning", "plans", match), plan_number: plan_number, plan_name: plan_name }
+        { directory: File.join(PLANNING_DIR, "plans", match), plan_number: plan_number, plan_name: plan_name }
       rescue StandardError
         nil
       end

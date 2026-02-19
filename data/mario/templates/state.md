@@ -1,6 +1,6 @@
 # State Template
 
-Template for `.planning/STATE.md` — the project's living memory.
+Template for `.mario_planning/STATE.md` — the project's living memory.
 
 ---
 
@@ -11,7 +11,7 @@ Template for `.planning/STATE.md` — the project's living memory.
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated [date])
+See: .mario_planning/PROJECT.md (updated [date])
 
 **Core value:** [One-liner from PROJECT.md Core Value section]
 **Current focus:** [Current plan name]
@@ -36,7 +36,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-[From .planning/todos/pending/ — ideas captured during sessions]
+[From .mario_planning/todos/pending/ — ideas captured during sessions]
 
 None yet.
 
@@ -116,7 +116,7 @@ Progress calculation: (completed plans) / (total plans in BACKLOG.md) × 100%
 
 **Pending Todos:** Ideas captured via /mario:add-todo
 - Count of pending todos
-- Reference to .planning/todos/pending/
+- Reference to .mario_planning/todos/pending/
 - Brief list if few, count if many (e.g., "5 pending todos — see /mario:check-todos")
 
 **Blockers/Concerns:** Issues that affect future work

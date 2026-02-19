@@ -37,7 +37,7 @@ module MarketingMario
 
       def self.history_digest(_argv, raw: false)
         cwd = Dir.pwd
-        plans_dir = File.join(cwd, ".planning", "plans")
+        plans_dir = File.join(cwd, PLANNING_DIR, "plans")
         digest = { plans: {}, decisions: [], tech_stack: [] }
 
         unless File.directory?(plans_dir)
@@ -101,7 +101,7 @@ module MarketingMario
 
       def self.snapshot(_argv, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         Output.error("STATE.md not found") unless File.exist?(state_path)
 
         content = File.read(state_path)
@@ -116,7 +116,7 @@ module MarketingMario
       def self.load_state(raw: false)
         cwd = Dir.pwd
         config = ConfigManager.load_config(cwd)
-        planning_dir = File.join(cwd, ".planning")
+        planning_dir = File.join(cwd, PLANNING_DIR)
 
         state_raw = begin
           File.read(File.join(planning_dir, "STATE.md"))
@@ -146,7 +146,7 @@ module MarketingMario
 
       def self.get(section, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         content = File.read(state_path)
 
         unless section
@@ -177,7 +177,7 @@ module MarketingMario
         Output.error("field and value required for state update") unless field && value
 
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         content = File.read(state_path)
 
         new_content = replace_field(content, field, value)
@@ -193,7 +193,7 @@ module MarketingMario
 
       def self.patch(patches, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         content = File.read(state_path)
 
         results = { updated: [], failed: [] }
@@ -215,7 +215,7 @@ module MarketingMario
 
       def self.add_decision(options, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         unless File.exist?(state_path)
           Output.json({ error: "STATE.md not found" }, raw: raw)
           return
@@ -243,7 +243,7 @@ module MarketingMario
 
       def self.add_blocker(text, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         unless File.exist?(state_path)
           Output.json({ error: "STATE.md not found" }, raw: raw)
           return
@@ -267,7 +267,7 @@ module MarketingMario
 
       def self.resolve_blocker(text, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         unless File.exist?(state_path)
           Output.json({ error: "STATE.md not found" }, raw: raw)
           return
@@ -292,7 +292,7 @@ module MarketingMario
 
       def self.record_session(options, raw: false)
         cwd = Dir.pwd
-        state_path = File.join(cwd, ".planning", "STATE.md")
+        state_path = File.join(cwd, PLANNING_DIR, "STATE.md")
         unless File.exist?(state_path)
           Output.json({ error: "STATE.md not found" }, raw: raw)
           return

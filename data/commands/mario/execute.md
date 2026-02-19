@@ -27,8 +27,8 @@ Context budget: ~15% orchestrator, 100% fresh per subagent.
 <context>
 Plan number: $ARGUMENTS
 
-@.planning/BACKLOG.md
-@.planning/STATE.md
+@.mario_planning/BACKLOG.md
+@.mario_planning/STATE.md
 </context>
 
 <process>

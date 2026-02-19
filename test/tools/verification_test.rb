@@ -4,7 +4,7 @@ require "marketing_mario/tools/verification"
 class VerificationTest < Minitest::Test
   def setup
     @dir = Dir.mktmpdir
-    @planning_dir = File.join(@dir, ".planning")
+    @planning_dir = File.join(@dir, MarketingMario::PLANNING_DIR)
     @plans_dir = File.join(@planning_dir, "plans")
     FileUtils.mkdir_p(@plans_dir)
   end
@@ -27,7 +27,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@planning_dir, "test-SUMMARY.md"), summary)
 
     Dir.chdir(@dir) do
-      result = capture_json { MarketingMario::Tools::Verification.verify_summary([".planning/test-SUMMARY.md"]) }
+      result = capture_json { MarketingMario::Tools::Verification.verify_summary(["#{MarketingMario::PLANNING_DIR}/test-SUMMARY.md"]) }
       assert result[:passed]
       assert result[:checks][:summary_exists]
     end
@@ -35,7 +35,7 @@ class VerificationTest < Minitest::Test
 
   def test_verify_summary_fails_for_missing_file
     Dir.chdir(@dir) do
-      result = capture_json { MarketingMario::Tools::Verification.verify_summary([".planning/missing-SUMMARY.md"]) }
+      result = capture_json { MarketingMario::Tools::Verification.verify_summary(["#{MarketingMario::PLANNING_DIR}/missing-SUMMARY.md"]) }
       refute result[:passed]
       refute result[:checks][:summary_exists]
     end
@@ -46,7 +46,7 @@ class VerificationTest < Minitest::Test
     File.write(File.join(@planning_dir, "bad-SUMMARY.md"), summary)
 
     Dir.chdir(@dir) do
-      result = capture_json { MarketingMario::Tools::Verification.verify_summary([".planning/bad-SUMMARY.md"]) }
+      result = capture_json { MarketingMario::Tools::Verification.verify_summary(["#{MarketingMario::PLANNING_DIR}/bad-SUMMARY.md"]) }
       refute result[:passed]
       assert_equal "failed", result[:checks][:self_check]
     end

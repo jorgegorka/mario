@@ -1,6 +1,8 @@
 require_relative "marketing_mario/version"
 
 module MarketingMario
+  PLANNING_DIR = ".mario_planning".freeze
+
   class Error < StandardError; end
 
   def self.gem_root

@@ -21,8 +21,8 @@ Routes to the check-todos workflow which handles:
 </objective>
 
 <execution_context>
-@.planning/STATE.md
-@.planning/BACKLOG.md
+@.mario_planning/STATE.md
+@.mario_planning/BACKLOG.md
 @~/.claude/mario/workflows/check-todos.md
 </execution_context>
 
