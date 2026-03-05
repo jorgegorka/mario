@@ -401,6 +401,7 @@ Local modifications to guides and templates are backed up automatically during u
 
 - [GSD](https://gsd.build/) for inspiring the project and providing a solid foundation to build upon.
 - [Corey Heines](https://github.com/coreyhaines31/marketingskills) for his amazing collection of marketing skills.
+- [Zubair Trabzada](https://github.com/zubair-trabzada/ai-marketing-claude) great skills for audits.
 - [TalentoHQ](https://talentohq.com/) for testing early versions and providing invaluable feedback to shape Mario into a practical tool for marketers.
 
 ## License
