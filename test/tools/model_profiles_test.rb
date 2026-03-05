@@ -33,10 +33,21 @@ class ModelProfilesTest < Minitest::Test
       mario-plan-checker mario-integration-checker
       mario-backend-executor mario-frontend-executor
       mario-test-executor
+      mario-website-auditor mario-audit-synthesizer
     ]
     expected.each do |agent|
       refute_nil MarketingMario::Tools::ModelProfiles::PROFILES[agent], "Missing profile for #{agent}"
     end
+  end
+
+  def test_audit_agent_profiles
+    assert_equal "opus", MarketingMario::Tools::ModelProfiles.resolve_model("mario-website-auditor", "quality")
+    assert_equal "sonnet", MarketingMario::Tools::ModelProfiles.resolve_model("mario-website-auditor", "balanced")
+    assert_equal "haiku", MarketingMario::Tools::ModelProfiles.resolve_model("mario-website-auditor", "budget")
+
+    assert_equal "sonnet", MarketingMario::Tools::ModelProfiles.resolve_model("mario-audit-synthesizer", "quality")
+    assert_equal "sonnet", MarketingMario::Tools::ModelProfiles.resolve_model("mario-audit-synthesizer", "balanced")
+    assert_equal "haiku", MarketingMario::Tools::ModelProfiles.resolve_model("mario-audit-synthesizer", "budget")
   end
 
   def test_domain_executor_profiles

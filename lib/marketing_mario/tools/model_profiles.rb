@@ -20,7 +20,9 @@ module MarketingMario
         "mario-integration-checker" =>  { "quality" => "sonnet", "balanced" => "sonnet", "budget" => "haiku" },
         "mario-backend-executor" =>   { "quality" => "opus", "balanced" => "sonnet", "budget" => "sonnet" },
         "mario-frontend-executor" =>  { "quality" => "opus", "balanced" => "sonnet", "budget" => "sonnet" },
-        "mario-test-executor" =>      { "quality" => "opus", "balanced" => "sonnet", "budget" => "sonnet" }
+        "mario-test-executor" =>      { "quality" => "opus", "balanced" => "sonnet", "budget" => "sonnet" },
+        "mario-website-auditor" =>    { "quality" => "opus", "balanced" => "sonnet", "budget" => "haiku" },
+        "mario-audit-synthesizer" =>  { "quality" => "sonnet", "balanced" => "sonnet", "budget" => "haiku" }
       }.freeze
 
       def self.resolve(argv, raw: false)

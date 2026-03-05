@@ -1,4 +1,5 @@
 require "json"
+require "uri"
 require "fileutils"
 require_relative "output"
 require_relative "config_manager"
@@ -27,8 +28,15 @@ module MarketingMario
           init_progress(includes, raw: raw)
         when "template"
           template(argv, raw: raw)
+        when "audit"
+          audit(argv.first, raw: raw)
+        when "competitors"
+          competitors(argv, raw: raw)
         else
-          Output.error("Unknown init workflow: #{workflow}\nAvailable: execute, plan, new-project, quick, todos, progress, template")
+          Output.error(
+            "Unknown init workflow: #{workflow}\n" \
+            "Available: execute, plan, new-project, quick, todos, progress, template, audit, competitors"
+          )
         end
       end
 
@@ -355,6 +363,54 @@ module MarketingMario
         Output.json(result, raw: raw)
       end
 
+      def self.audit(url, raw: false)
+        cwd = Dir.pwd
+        config = ConfigManager.load_config(cwd)
+
+        url = url&.strip
+        Output.error("URL required for init audit") if url.nil? || url.empty?
+
+        domain = extract_domain(url)
+        slug = domain_slug(domain)
+        audit_dir = "#{PLANNING_DIR}/audits/#{slug}"
+
+        result = {
+          auditor_model: resolve_model(cwd, "mario-website-auditor"),
+          synthesizer_model: resolve_model(cwd, "mario-audit-synthesizer"),
+          commit_docs: config["commit_docs"],
+          url: url,
+          domain: domain,
+          slug: slug,
+          audit_dir: audit_dir,
+          has_brand_context: path_exists?(cwd, "#{PLANNING_DIR}/foundations/BRAND-BIBLE.md"),
+          has_previous_audit: path_exists?(cwd, audit_dir)
+        }
+
+        Output.json(result, raw: raw)
+      end
+
+      def self.competitors(argv, raw: false)
+        cwd = Dir.pwd
+        config = ConfigManager.load_config(cwd)
+
+        urls = argv.map(&:strip).reject(&:empty?)
+        Output.error("At least one competitor URL required") if urls.empty?
+
+        result = {
+          auditor_model: resolve_model(cwd, "mario-website-auditor"),
+          synthesizer_model: resolve_model(cwd, "mario-audit-synthesizer"),
+          commit_docs: config["commit_docs"],
+          urls: urls,
+          competitor_count: urls.length,
+          competitors: urls.map do |u|
+            { url: u, domain: extract_domain(u), slug: domain_slug(extract_domain(u)) }
+          end,
+          has_brand_context: path_exists?(cwd, "#{PLANNING_DIR}/foundations/BRAND-BIBLE.md")
+        }
+
+        Output.json(result, raw: raw)
+      end
+
       # --- Private helpers ---
 
       def self.find_plan_internal(cwd, plan_num)
@@ -440,9 +496,21 @@ module MarketingMario
         value.split(",").map(&:strip)
       end
 
+      def self.extract_domain(url)
+        url = "https://#{url}" unless url.match?(%r{\A\w+://})
+        URI.parse(url).host&.sub(/\Awww\./, "") || url
+      rescue URI::InvalidURIError
+        url
+      end
+
+      def self.domain_slug(domain)
+        domain.gsub(/[^a-z0-9]+/i, "-").downcase.gsub(/\A-+|-+\z/, "")
+      end
+
       private_class_method :find_plan_internal, :resolve_model,
                            :path_exists?, :safe_read_file, :generate_slug,
-                           :normalize_plan_number, :parse_include_flag
+                           :normalize_plan_number, :parse_include_flag,
+                           :extract_domain, :domain_slug
     end
   end
 end

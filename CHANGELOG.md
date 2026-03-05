@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-03-05
+
+### Added
+
+- **Website auditing**: `/mario:audit <url>` runs a full marketing audit with 5 parallel dimension agents (Content & Messaging, Conversion Optimization, SEO & Discoverability, Competitive Positioning, Brand & Trust) plus a synthesized Growth & Strategy dimension. Produces scored reports (0-100) with prioritized recommendations in `.mario_planning/audits/`
+- **Quick auditing**: `/mario:quick-audit <url>` runs a single-pass 60-second audit snapshot with condensed scorecard
+- **Competitor analysis**: `/mario:competitors <url> [urls...]` analyzes competitor websites against your brand foundations with positioning maps, messaging comparison, content gaps, and strategic opportunities
+- **`mario-website-auditor` agent**: Scores websites across audit dimensions with evidence-based analysis. Reused for both audit dimensions and competitor profiling
+- **`mario-audit-synthesizer` agent**: Combines 5 dimension analyses into weighted composite report with derived Growth & Strategy dimension
+- **Audit scoring reference** (`audit-scoring.md`): Rubric and subcriteria definitions for all 6 audit dimensions
+- **Audit report template** (`audit-report.md`): Structured template for synthesized audit output
+- **Competitor report template** (`competitor-report.md`): Template for competitive analysis output
+- **3 new workflows**: `audit.md`, `quick-audit.md`, `competitors.md`
+
+### Changed
+
+- **Init tool**: Updated to support audit and competitor workflow initialization
+- **Model profiles**: Audit agents mapped to the Research column in the profile system
+- **New project workflow**: Updated to reference competitor analysis capabilities
+
 ## [1.0.1] - 2026-02-19
 
 ### Changed

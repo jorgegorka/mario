@@ -139,6 +139,75 @@ class InitTest < Minitest::Test
     end
   end
 
+  def test_init_audit
+    Dir.chdir(@dir) do
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["audit", "https://example.com"]) }
+      assert_equal "https://example.com", result[:url]
+      assert_equal "example.com", result[:domain]
+      assert_equal "example-com", result[:slug]
+      assert_equal ".mario_planning/audits/example-com", result[:audit_dir]
+      assert_includes result.keys, :auditor_model
+      assert_includes result.keys, :synthesizer_model
+      refute result[:has_brand_context]
+      refute result[:has_previous_audit]
+    end
+  end
+
+  def test_init_audit_with_brand_context
+    foundations_dir = File.join(@planning_dir, "foundations")
+    FileUtils.mkdir_p(foundations_dir)
+    File.write(File.join(foundations_dir, "BRAND-BIBLE.md"), "# Brand Bible\n")
+
+    Dir.chdir(@dir) do
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["audit", "https://example.com"]) }
+      assert result[:has_brand_context]
+    end
+  end
+
+  def test_init_audit_detects_previous_audit
+    audit_dir = File.join(@planning_dir, "audits", "example-com")
+    FileUtils.mkdir_p(audit_dir)
+
+    Dir.chdir(@dir) do
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["audit", "https://example.com"]) }
+      assert result[:has_previous_audit]
+    end
+  end
+
+  def test_init_audit_strips_www
+    Dir.chdir(@dir) do
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["audit", "https://www.example.com"]) }
+      assert_equal "example.com", result[:domain]
+      assert_equal "example-com", result[:slug]
+    end
+  end
+
+  def test_init_competitors
+    Dir.chdir(@dir) do
+      result = capture_json do
+        MarketingMario::Tools::Init.dispatch(["competitors", "https://a.com", "https://b.com"])
+      end
+      assert_equal 2, result[:competitor_count]
+      assert_equal 2, result[:urls].length
+      assert_equal 2, result[:competitors].length
+      assert_equal "a.com", result[:competitors][0][:domain]
+      assert_equal "b.com", result[:competitors][1][:domain]
+      assert_includes result.keys, :auditor_model
+      refute result[:has_brand_context]
+    end
+  end
+
+  def test_init_competitors_with_brand_context
+    foundations_dir = File.join(@planning_dir, "foundations")
+    FileUtils.mkdir_p(foundations_dir)
+    File.write(File.join(foundations_dir, "BRAND-BIBLE.md"), "# Brand Bible\n")
+
+    Dir.chdir(@dir) do
+      result = capture_json { MarketingMario::Tools::Init.dispatch(["competitors", "https://rival.io"]) }
+      assert result[:has_brand_context]
+    end
+  end
+
   private
 
   def capture_json(&block)

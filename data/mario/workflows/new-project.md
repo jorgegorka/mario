@@ -244,6 +244,42 @@ mario-tools commit "chore: add project config" --files .mario_planning/config.js
 
 Use models from init: `researcher_model`, `synthesizer_model`.
 
+## 4.7. Optional Website Audit
+
+If the user provided a website URL during questioning (check PROJECT.md for a URL):
+
+Use AskUserQuestion:
+- header: "Website Audit"
+- question: "Audit your website before research? This gives foundation researchers real data about your current marketing."
+- options:
+  - "Audit first (Recommended)" — Run a quick audit, feed findings to researchers
+  - "Skip audit" — Go straight to foundation research
+
+**If "Audit first":**
+
+1. Extract the website URL from PROJECT.md
+2. Run a quick audit inline (single-pass, no subagents — same as quick-audit workflow):
+   - WebFetch the homepage
+   - Score all 6 dimensions quickly against the audit-scoring rubric
+   - Write results to `.mario_planning/audits/{domain-slug}/QUICK-AUDIT.md`
+3. Commit the quick audit:
+   ```bash
+   mario-tools commit "audit: quick website audit for {domain}" --files .mario_planning/audits/
+   ```
+4. When spawning foundation researchers in Step 5, pass the audit summary as additional context to all 7 researcher agents:
+   ```
+   <website_audit_context>
+   A quick website audit was performed. Key findings:
+   [Paste composite score and dimension scores from quick audit]
+   [Paste top recommendations]
+   Use these findings to inform your research — they represent the current state of the brand's website.
+   </website_audit_context>
+   ```
+
+**If "Skip audit":** Continue to Step 5 without audit context.
+
+**If no URL was mentioned:** Skip this step entirely (don't ask).
+
 ## 5. Foundation Research
 
 **If auto mode:** Proceed directly without asking.

@@ -19,6 +19,8 @@ Mario turns Claude Code into a brand-aware marketing content engine. It builds d
 - **Marketing-aware agents** — strategy, web, email, social, SEO, and ads executors load domain-specific guides
 - **Consistent voice** — every piece of content draws from the same brand bible
 - **On-demand content** — one command to create any marketing asset, informed by your foundations
+- **Website audits** — scored marketing audits across 6 dimensions with prioritized recommendations
+- **Competitor analysis** — side-by-side comparison against your brand positioning
 
 ## How It Works
 
@@ -135,6 +137,25 @@ For small, ad-hoc tasks that don't warrant the full create workflow. Quick tasks
 
 Uses the scientific method: observe, hypothesize, test, conclude. Debug state persists in `.mario_planning/debug/` and survives `/clear`, so you can continue across sessions.
 
+### Website Audits
+
+```
+/mario:audit https://example.com        # Full scored audit (5 parallel agents)
+/mario:quick-audit https://example.com  # 60-second snapshot
+```
+
+`/mario:audit` spawns 5 parallel auditor agents scoring Content & Messaging, Conversion Optimization, SEO & Discoverability, Competitive Positioning, and Brand & Trust. A synthesizer then combines results and derives a 6th Growth & Strategy dimension. Produces a scored report (0-100) with prioritized recommendations in `.mario_planning/audits/`.
+
+`/mario:quick-audit` runs a single-pass analysis — no subagents, just a condensed scorecard in about 60 seconds. Option to save or discard.
+
+### Competitor Analysis
+
+```
+/mario:competitors https://rival1.com https://rival2.com
+```
+
+Analyzes competitor websites against your brand foundations. Requires `/mario:new-project` first. Spawns parallel profiler agents for each competitor, then synthesizes a comparison with positioning maps, messaging comparison, content gaps, and strategic opportunities.
+
 ## Commands
 
 ### Core Workflow
@@ -146,6 +167,14 @@ Uses the scientific method: observe, hypothesize, test, conclude. Debug state pe
 | `/mario:plan <number>` | Create detailed execution plan for a backlog item |
 | `/mario:execute <number>` | Execute a plan |
 | `/mario:quick` | Small ad-hoc tasks with Mario guarantees |
+
+### Audits & Competitors
+
+| Command | Description |
+|---|---|
+| `/mario:audit <url>` | Comprehensive scored website marketing audit |
+| `/mario:quick-audit <url>` | Fast 60-second audit snapshot |
+| `/mario:competitors <url> [urls...]` | Competitor analysis against your brand positioning |
 
 ### Templates
 
@@ -205,6 +234,8 @@ Each specialized executor loads its domain guide automatically, applying domain-
 | `mario-plan-researcher` | Researches a plan topic before planning |
 | `mario-research-synthesizer` | Synthesizes parallel research outputs into unified briefs |
 | `mario-debugger` | Scientific method debugging with persistent state |
+| `mario-website-auditor` | Scores websites across audit dimensions with evidence-based analysis |
+| `mario-audit-synthesizer` | Combines dimension analyses into weighted composite report |
 
 ## Guides
 
@@ -247,6 +278,14 @@ Guides are installed to `~/.claude/guides/` (global) or `.claude/guides/` (local
 │   └── 002-core-features/
 │       ├── PLAN.md
 │       └── SUMMARY.md
+├── audits/               # Website audit reports
+│   ├── {domain-slug}/
+│   │   ├── AUDIT-REPORT.md
+│   │   ├── QUICK-AUDIT.md
+│   │   └── dimension-*.md
+│   └── competitive-analysis/
+│       ├── COMPETITORS.md
+│       └── profile-*.md
 ├── templates/            # Reusable plan templates
 ├── quick/                # Quick task plans and summaries
 ├── todos/
@@ -267,6 +306,8 @@ Control which Claude models agents use via `/mario:settings`:
 | **quality** | Opus | Opus | Opus |
 | **balanced** (default) | Opus | Sonnet | Sonnet |
 | **budget** | Sonnet | Sonnet | Haiku |
+
+Audit agents (auditors, synthesizer, competitor profilers) follow the same profile system — mapped to the Research column.
 
 ### Settings
 
@@ -315,6 +356,19 @@ Change anytime by editing `.mario_planning/config.json`.
 /mario:add-todo                    # Capture from conversation context
 /mario:add-todo Fix modal z-index  # Capture with explicit description
 /mario:check-todos                 # Review and work on todos
+```
+
+**Auditing a website:**
+
+```
+/mario:quick-audit https://example.com          # Fast snapshot
+/mario:audit https://example.com                # Deep analysis
+```
+
+**Analyzing competitors:**
+
+```
+/mario:competitors https://rival1.com https://rival2.com
 ```
 
 **Debugging an issue:**
